@@ -836,6 +836,7 @@ hr{
 
 const STORE_KEY = "octo-tracker-data";
 
+
 let data = {
 
   settings:{
@@ -860,6 +861,7 @@ let data = {
   rates:{}
 
 };
+
 
 let currentView = "all";
 
@@ -1397,10 +1399,16 @@ function buildTariffCode(
 }
 
 
+/*
+  Unit Rate 同 Standing Charge
+  係兩個獨立 API endpoint。
+*/
+
 async function fetchProductTariff(
   productCode,
   region,
-  fuel
+  fuel,
+  type
 ){
 
   const tariffCode =
@@ -1411,36 +1419,38 @@ async function fetchProductTariff(
     );
 
 
-  const elecUrl =
-    "https://api.octopus.energy/v1/products/" +
-    encodeURIComponent(productCode) +
-    "/electricity-tariffs/" +
-    encodeURIComponent(tariffCode) +
-    "/standard-unit-rates/";
-
-
-  const gasUrl =
-    "https://api.octopus.energy/v1/products/" +
-    encodeURIComponent(productCode) +
-    "/gas-tariffs/" +
-    encodeURIComponent(tariffCode) +
-    "/standard-unit-rates/";
-
-
-  const target =
+  const fuelPath =
     fuel === "elec"
-      ? elecUrl
-      : gasUrl;
+      ? "electricity-tariffs"
+      : "gas-tariffs";
+
+
+  const endpoint =
+    type === "standing"
+      ? "standing-charges"
+      : "standard-unit-rates";
+
+
+  const url =
+    "https://api.octopus.energy/v1/products/" +
+    encodeURIComponent(productCode) +
+    "/" +
+    fuelPath +
+    "/" +
+    encodeURIComponent(tariffCode) +
+    "/" +
+    endpoint +
+    "/";
 
 
   const res =
-    await fetch(target);
+    await fetch(url);
 
 
   if(!res.ok){
 
     throw new Error(
-      `Octopus API ${res.status}`
+      `Octopus API ${res.status} · ${fuel} · ${type}`
     );
 
   }
@@ -1452,10 +1462,10 @@ async function fetchProductTariff(
 
 
 /* =========================================================
-   FIND RATE
+   FIND UNIT RATE
 ========================================================= */
 
-function findRateForDate(
+function findUnitRateForDate(
   results,
   dateStr
 ){
@@ -1514,10 +1524,84 @@ function findRateForDate(
       return {
 
         unit:
-          r.value_inc_vat,
+          r.value_inc_vat
+
+      };
+
+    }
+
+  }
+
+
+  return null;
+
+}
+
+
+/* =========================================================
+   FIND STANDING CHARGE
+========================================================= */
+
+function findStandingForDate(
+  results,
+  dateStr
+){
+
+  if(
+    !results ||
+    !Array.isArray(
+      results.results
+    )
+  ){
+
+    return null;
+
+  }
+
+
+  const target =
+    new Date(
+      dateStr + "T12:00:00"
+    );
+
+
+  for(
+    const r of results.results
+  ){
+
+    if(!r.valid_from){
+      continue;
+    }
+
+
+    const from =
+      new Date(
+        r.valid_from
+      );
+
+
+    let to = null;
+
+
+    if(r.valid_to){
+
+      to =
+        new Date(
+          r.valid_to
+        );
+
+    }
+
+
+    if(
+      target >= from &&
+      (!to || target < to)
+    ){
+
+      return {
 
         standing:
-          r.standing_charge_inc_vat
+          r.value_inc_vat
 
       };
 
@@ -1577,66 +1661,113 @@ async function fetchRateForDate(
 
   try{
 
+    /*
+      一次過查四個：
+
+      1. Electricity Unit Rate
+      2. Electricity Standing Charge
+      3. Gas Unit Rate
+      4. Gas Standing Charge
+    */
+
     const [
-      elecResults,
-      gasResults
+      elecUnitResults,
+      elecStandingResults,
+      gasUnitResults,
+      gasStandingResults
     ] =
       await Promise.all([
 
         fetchProductTariff(
           version.code,
           region,
-          "elec"
+          "elec",
+          "unit"
         ),
 
         fetchProductTariff(
           version.code,
           region,
-          "gas"
+          "elec",
+          "standing"
+        ),
+
+        fetchProductTariff(
+          version.code,
+          region,
+          "gas",
+          "unit"
+        ),
+
+        fetchProductTariff(
+          version.code,
+          region,
+          "gas",
+          "standing"
         )
 
       ]);
 
 
-    const elec =
-      findRateForDate(
-        elecResults,
+    const elecUnit =
+      findUnitRateForDate(
+        elecUnitResults,
         dateStr
       );
 
 
-    const gas =
-      findRateForDate(
-        gasResults,
+    const elecStanding =
+      findStandingForDate(
+        elecStandingResults,
+        dateStr
+      );
+
+
+    const gasUnit =
+      findUnitRateForDate(
+        gasUnitResults,
+        dateStr
+      );
+
+
+    const gasStanding =
+      findStandingForDate(
+        gasStandingResults,
         dateStr
       );
 
 
     if(
-      !elec ||
-      !gas
+      !elecUnit ||
+      !elecStanding ||
+      !gasUnit ||
+      !gasStanding
     ){
 
       throw new Error(
-        "API 有回覆，但搵唔到指定日期價格"
+        "API 有回覆，但搵唔到指定日期嘅完整價格，包括 Standard Charge"
       );
 
     }
 
 
+    /*
+      ★ 四個 Tracker 價格一齊儲存
+    */
+
     data.rates[dateStr] = {
 
       elecUnit:
-        elec.unit,
+        elecUnit.unit,
 
       elecStanding:
-        elec.standing,
+        elecStanding.standing,
 
       gasUnit:
-        gas.unit,
+        gasUnit.unit,
 
       gasStanding:
-        gas.standing,
+        gasStanding.standing,
 
       source:"auto",
 
@@ -1853,6 +1984,11 @@ function loadEntryIntoForm(
   }
 
 
+  /*
+    無論有冇電錶紀錄，
+    都會嘗試載入 Tracker rate。
+  */
+
   loadRateIntoForm(
     dateStr
   );
@@ -1933,6 +2069,10 @@ async function saveEntry(){
   }
 
 
+  /*
+    0 係有效數據。
+  */
+
   data.entries[dateStr] = {
 
     elec,
@@ -1943,6 +2083,14 @@ async function saveEntry(){
 
   };
 
+
+  /*
+    如果四個 Tracker 欄位都有數字，
+    就更新該日 rate。
+
+    如果冇輸入，
+    就保留原本 rate。
+  */
 
   const te =
     num(
@@ -2037,7 +2185,7 @@ async function saveEntry(){
 /* =========================================================
    DELETE ENTRY
    ★ 只刪除電錶紀錄
-   ★ 絕對不刪除 Tracker rate
+   ★ Tracker 完全保留
 ========================================================= */
 
 async function deleteEntry(){
@@ -2075,7 +2223,7 @@ async function deleteEntry(){
   const confirmed =
     confirm(
       `確定要刪除 ${formatDate(dateStr)} 嘅電錶紀錄？\n\n` +
-      `只會刪除呢日 Electricity 同 Gas 使用量。\n` +
+      `只會刪除 Electricity 同 Gas 使用量。\n` +
       `Tracker Unit Rate 同 Standard Charge 會保留。`
     );
 
@@ -2086,14 +2234,19 @@ async function deleteEntry(){
 
 
   /*
-    ★★★ 最重要 ★★★
+    ★★★★★
+    只刪 data.entries
 
-    只刪除 data.entries
+    絕對唔刪：
+    data.rates[dateStr]
 
-    絕對唔好：
-    delete data.rates[dateStr];
+    所以 Tracker 四項價格：
+    - Electricity Unit Rate
+    - Electricity Standing Charge
+    - Gas Unit Rate
+    - Gas Standing Charge
 
-    因為 Tracker rate 要保留。
+    全部保留。
   */
 
   delete data.entries[dateStr];
@@ -2103,9 +2256,7 @@ async function deleteEntry(){
 
 
   /*
-    清除電錶輸入欄。
-
-    Tracker 四個價格欄位唔會清除。
+    只清除電錶使用量。
   */
 
   $("entryElec").value =
@@ -2117,19 +2268,14 @@ async function deleteEntry(){
 
   $("existingInfo").innerHTML =
     `<span class="muted">
-      ${formatDate(dateStr)} 電錶紀錄已刪除。
+      ${formatDate(dateStr)} 電錶紀錄已刪除。<br>
       Tracker 價格資料仍然保留。
     </span>`;
 
 
   /*
-    重新載入原本儲存嘅 Tracker rate。
-
-    包括：
-    - Electricity Unit Rate
-    - Electricity Standard Charge
-    - Gas Unit Rate
-    - Gas Standard Charge
+    ★ 重新載入 Tracker
+    ★ 包括 Standard Charge
   */
 
   loadRateIntoForm(
@@ -3247,9 +3393,23 @@ async function fetchAllRates(){
     const date of dates
   ){
 
-    if(
-      data.rates[date]
-    ){
+    /*
+      已有完整 rate 就唔重新查。
+    */
+
+    const existing =
+      data.rates[date];
+
+
+    const complete =
+      existing &&
+      existing.elecUnit !== undefined &&
+      existing.elecStanding !== undefined &&
+      existing.gasUnit !== undefined &&
+      existing.gasStanding !== undefined;
+
+
+    if(complete){
 
       continue;
 
@@ -3277,7 +3437,7 @@ async function fetchAllRates(){
 
 
   $("entryStatus").textContent =
-    `完成。新增 ${success} 日 Tracker 價格。`;
+    `完成。新增／補回 ${success} 日 Tracker 價格。`;
 
   $("entryStatus").className =
     "small success";
