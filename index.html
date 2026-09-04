@@ -302,6 +302,31 @@ hr{
   text-align:center;
   margin-top:6px;
 }
+
+.rate-box{
+  background:#10161e;
+  border-radius:12px;
+  padding:11px;
+  margin-top:10px;
+  font-size:12px;
+  line-height:1.7;
+}
+
+.rate-line{
+  display:flex;
+  justify-content:space-between;
+}
+
+.rate-value{
+  font-weight:700;
+}
+
+.debug{
+  margin-top:8px;
+  font-size:11px;
+  color:#697585;
+  word-break:break-all;
+}
 </style>
 </head>
 
@@ -337,12 +362,10 @@ hr{
     </div>
 
     <svg
-      class="sparkline"
       viewBox="0 0 500 55"
       preserveAspectRatio="none"
       style="width:100%;height:55px;margin-top:8px"
     >
-
       <polyline
         id="sparkLine"
         fill="none"
@@ -350,7 +373,6 @@ hr{
         stroke-width="2"
         points=""
       />
-
     </svg>
 
   </div>
@@ -365,29 +387,19 @@ hr{
 
     <div class="tabs">
 
-      <div
-        class="tab active"
-        data-view="all"
-      >
+      <div class="tab active" data-view="all">
         全部
       </div>
 
-      <div
-        class="tab"
-        data-view="month"
-      >
+      <div class="tab" data-view="month">
         每月
       </div>
 
-      <div
-        class="tab"
-        data-view="day"
-      >
+      <div class="tab" data-view="day">
         每日
       </div>
 
     </div>
-
 
     <div id="monthFilter" class="hidden">
 
@@ -402,7 +414,6 @@ hr{
 
     </div>
 
-
     <div id="dayFilter" class="hidden">
 
       <label>
@@ -416,7 +427,6 @@ hr{
 
     </div>
 
-
     <div
       id="filterInfo"
       class="small"
@@ -429,10 +439,7 @@ hr{
   <!-- SETTINGS -->
   <div class="card">
 
-    <div
-      id="settingsHeader"
-      class="row settings-header"
-    >
+    <div id="settingsHeader" class="row settings-header">
 
       <div>
 
@@ -446,20 +453,14 @@ hr{
 
       </div>
 
-      <div
-        id="settingsArrow"
-        class="settings-arrow"
-      >
+      <div id="settingsArrow" class="settings-arrow">
         ＋
       </div>
 
     </div>
 
 
-    <div
-      id="settingsContent"
-      class="hidden"
-    >
+    <div id="settingsContent" class="hidden">
 
       <hr>
 
@@ -469,79 +470,27 @@ hr{
 
       <select id="gspRegion">
 
-        <option value="_A">
-          _A · Eastern England
-        </option>
-
-        <option value="_B">
-          _B · East Midlands
-        </option>
-
-        <option value="_C">
-          _C · East Midlands / East Anglia
-        </option>
-
-        <option value="_D">
-          _D · Merseyside / North Wales
-        </option>
-
-        <option value="_E">
-          _E · West Midlands
-        </option>
-
-        <option value="_F">
-          _F · North East England
-        </option>
-
-        <option value="_G">
-          _G · North West England
-        </option>
-
-        <option value="_H">
-          _H · Southern England
-        </option>
-
-        <option value="_J">
-          _J · South East England
-        </option>
-
-        <option value="_K">
-          _K · South Wales
-        </option>
-
-        <option value="_L">
-          _L · South West England
-        </option>
-
-        <option value="_M">
-          _M · Yorkshire
-        </option>
-
-        <option value="_N">
-          _N · South East England
-        </option>
-
-        <option value="_P">
-          _P · North Scotland
-        </option>
-
-        <option value="_Q">
-          _Q · South Scotland
-        </option>
-
-        <option value="_S">
-          _S · Southern Scotland
-        </option>
-
-        <option value="_T">
-          _T · North Wales / Cheshire
-        </option>
-
-        <option value="_V">
-          _V · South West Scotland
-        </option>
+        <option value="_A">_A · Eastern England</option>
+        <option value="_B">_B · East Midlands</option>
+        <option value="_C">_C · East Midlands / East Anglia</option>
+        <option value="_D">_D · Merseyside / North Wales</option>
+        <option value="_E">_E · West Midlands</option>
+        <option value="_F">_F · North East England</option>
+        <option value="_G">_G · North West England</option>
+        <option value="_H">_H · Southern England</option>
+        <option value="_J">_J · South East England</option>
+        <option value="_K">_K · South Wales</option>
+        <option value="_L">_L · South West England</option>
+        <option value="_M">_M · Yorkshire</option>
+        <option value="_N">_N · South East England</option>
+        <option value="_P">_P · North Scotland</option>
+        <option value="_Q">_Q · South Scotland</option>
+        <option value="_S">_S · Southern Scotland</option>
+        <option value="_T">_T · North Wales / Cheshire</option>
+        <option value="_V">_V · South West Scotland</option>
 
       </select>
+
 
       <hr>
 
@@ -578,6 +527,7 @@ hr{
         id="fuseElecUnit"
         step="0.01"
       >
+
 
       <hr>
 
@@ -730,6 +680,7 @@ hr{
       揀日期唔會自動查 Tracker 價錢。
     </div>
 
+
     <label>
       Electricity Unit Rate (p/kWh)
     </label>
@@ -740,8 +691,9 @@ hr{
       step="0.001"
     >
 
+
     <label>
-      Electricity Standing Charge (p/day)
+      Electricity Standard Charge (p/day)
     </label>
 
     <input
@@ -749,6 +701,7 @@ hr{
       id="trackerElecStanding"
       step="0.001"
     >
+
 
     <label>
       Gas Unit Rate (p/kWh)
@@ -760,8 +713,9 @@ hr{
       step="0.001"
     >
 
+
     <label>
-      Gas Standing Charge (p/day)
+      Gas Standard Charge (p/day)
     </label>
 
     <input
@@ -769,6 +723,32 @@ hr{
       id="trackerGasStanding"
       step="0.001"
     >
+
+
+    <div id="rateDisplay" class="rate-box hidden">
+
+      <div class="rate-line">
+        <span>⚡ Electricity Unit</span>
+        <span id="showElecUnit" class="rate-value">—</span>
+      </div>
+
+      <div class="rate-line">
+        <span>⚡ Electricity Standard</span>
+        <span id="showElecStanding" class="rate-value">—</span>
+      </div>
+
+      <div class="rate-line">
+        <span>🔥 Gas Unit</span>
+        <span id="showGasUnit" class="rate-value">—</span>
+      </div>
+
+      <div class="rate-line">
+        <span>🔥 Gas Standard</span>
+        <span id="showGasStanding" class="rate-value">—</span>
+      </div>
+
+    </div>
+
 
     <button
       id="fetchRateBtn"
@@ -778,12 +758,14 @@ hr{
       重新查詢 Tracker 價錢
     </button>
 
+
     <button
       id="fetchAllRatesBtn"
       style="margin-top:8px"
     >
       自動更新全部歷史 Tracker 價格
     </button>
+
 
     <button
       id="saveEntryBtn"
@@ -793,6 +775,7 @@ hr{
       儲存呢日紀錄
     </button>
 
+
     <button
       id="deleteEntryBtn"
       class="danger"
@@ -801,9 +784,11 @@ hr{
       🗑️ 刪除呢日紀錄
     </button>
 
+
     <div class="small delete-note">
       刪除只會移除呢日電錶紀錄，Tracker 價格會保留
     </div>
+
 
     <div
       id="entryStatus"
@@ -836,7 +821,6 @@ hr{
 
 const STORE_KEY = "octo-tracker-data";
 
-
 let data = {
 
   settings:{
@@ -861,7 +845,6 @@ let data = {
   rates:{}
 
 };
-
 
 let currentView = "all";
 
@@ -948,17 +931,9 @@ function todayString(){
 
   const d = new Date();
 
-  const y = d.getFullYear();
-
-  const m =
-    String(d.getMonth()+1)
-      .padStart(2,"0");
-
-  const day =
-    String(d.getDate())
-      .padStart(2,"0");
-
-  return `${y}-${m}-${day}`;
+  return d.getFullYear() + "-" +
+    String(d.getMonth()+1).padStart(2,"0") + "-" +
+    String(d.getDate()).padStart(2,"0");
 
 }
 
@@ -967,21 +942,11 @@ function yesterdayString(){
 
   const d = new Date();
 
-  d.setDate(
-    d.getDate()-1
-  );
+  d.setDate(d.getDate()-1);
 
-  const y = d.getFullYear();
-
-  const m =
-    String(d.getMonth()+1)
-      .padStart(2,"0");
-
-  const day =
-    String(d.getDate())
-      .padStart(2,"0");
-
-  return `${y}-${m}-${day}`;
+  return d.getFullYear() + "-" +
+    String(d.getMonth()+1).padStart(2,"0") + "-" +
+    String(d.getDate()).padStart(2,"0");
 
 }
 
@@ -993,9 +958,7 @@ function formatDate(dateStr){
   }
 
   const d =
-    new Date(
-      dateStr + "T00:00:00"
-    );
+    new Date(dateStr + "T12:00:00");
 
   return d.toLocaleDateString(
     "zh-HK",
@@ -1041,15 +1004,55 @@ function daysInMonth(month){
     y,
     m
   ] =
-    month
-      .split("-")
-      .map(Number);
+    month.split("-").map(Number);
 
-  return new Date(
-    y,
-    m,
-    0
-  ).getDate();
+  return new Date(y,m,0).getDate();
+
+}
+
+
+/* =========================================================
+   DATE NORMALISATION
+========================================================= */
+
+function dateOnly(value){
+
+  if(!value){
+    return null;
+  }
+
+  return String(value).slice(0,10);
+
+}
+
+
+function rateMatchesDate(rate,dateStr){
+
+  if(!rate || !rate.valid_from){
+    return false;
+  }
+
+  const from =
+    dateOnly(rate.valid_from);
+
+  const to =
+    rate.valid_to
+      ? dateOnly(rate.valid_to)
+      : null;
+
+  if(!from){
+    return false;
+  }
+
+  if(dateStr < from){
+    return false;
+  }
+
+  if(to && dateStr >= to){
+    return false;
+  }
+
+  return true;
 
 }
 
@@ -1060,7 +1063,7 @@ function daysInMonth(month){
 
 async function loadData(){
 
-  let loadedFromWindowStorage = false;
+  let loaded = false;
 
   try{
 
@@ -1082,8 +1085,7 @@ async function loadData(){
           typeof saved === "string"
         ){
 
-          parsed =
-            JSON.parse(saved);
+          parsed = JSON.parse(saved);
 
         }else if(saved.value){
 
@@ -1116,7 +1118,7 @@ async function loadData(){
 
           };
 
-          loadedFromWindowStorage = true;
+          loaded = true;
 
         }
 
@@ -1134,7 +1136,7 @@ async function loadData(){
   }
 
 
-  if(!loadedFromWindowStorage){
+  if(!loaded){
 
     try{
 
@@ -1290,42 +1292,28 @@ async function saveSettings(){
       $("gspRegion").value,
 
     fuseElecMonthly:
-      num(
-        $("fuseElecMonthly").value
-      ) || 0,
+      num($("fuseElecMonthly").value) ?? 0,
 
     fuseElecStanding:
-      num(
-        $("fuseElecStanding").value
-      ) || 0,
+      num($("fuseElecStanding").value) ?? 0,
 
     fuseElecUnit:
-      num(
-        $("fuseElecUnit").value
-      ) || 0,
+      num($("fuseElecUnit").value) ?? 0,
 
     fuseGasMonthly:
-      num(
-        $("fuseGasMonthly").value
-      ) || 0,
+      num($("fuseGasMonthly").value) ?? 0,
 
     fuseGasStanding:
-      num(
-        $("fuseGasStanding").value
-      ) || 0,
+      num($("fuseGasStanding").value) ?? 0,
 
     fuseGasUnit:
-      num(
-        $("fuseGasUnit").value
-      ) || 0,
+      num($("fuseGasUnit").value) ?? 0,
 
     gasUnit:
       $("gasUnit").value,
 
     gasFactor:
-      num(
-        $("gasFactor").value
-      ) || 11.1
+      num($("gasFactor").value) ?? 11.1
 
   };
 
@@ -1384,7 +1372,8 @@ function buildTariffCode(
 ){
 
   const regionCode =
-    region.replace("_","");
+    String(region || "_B")
+      .replace("_","");
 
 
   if(fuel === "elec"){
@@ -1398,11 +1387,6 @@ function buildTariffCode(
 
 }
 
-
-/*
-  Unit Rate 同 Standing Charge
-  係兩個獨立 API endpoint。
-*/
 
 async function fetchProductTariff(
   productCode,
@@ -1462,19 +1446,17 @@ async function fetchProductTariff(
 
 
 /* =========================================================
-   FIND UNIT RATE
+   FIND RATE
 ========================================================= */
 
-function findUnitRateForDate(
+function findRateForDate(
   results,
   dateStr
 ){
 
   if(
     !results ||
-    !Array.isArray(
-      results.results
-    )
+    !Array.isArray(results.results)
   ){
 
     return null;
@@ -1482,10 +1464,31 @@ function findUnitRateForDate(
   }
 
 
-  const target =
-    new Date(
-      dateStr + "T12:00:00"
+  /*
+    先用正常 valid_from / valid_to
+  */
+
+  const matched =
+    results.results.find(
+      r => rateMatchesDate(r,dateStr)
     );
+
+
+  if(matched){
+
+    return matched;
+
+  }
+
+
+  /*
+    有部分歷史 API 資料 valid_to
+    可能同日邊界比較特殊。
+    再做一次較寬鬆日期比較。
+  */
+
+  const targetTime =
+    new Date(dateStr + "T12:00:00").getTime();
 
 
   for(
@@ -1496,114 +1499,21 @@ function findUnitRateForDate(
       continue;
     }
 
+    const fromTime =
+      new Date(r.valid_from).getTime();
 
-    const from =
-      new Date(
-        r.valid_from
-      );
-
-
-    let to = null;
-
-
-    if(r.valid_to){
-
-      to =
-        new Date(
-          r.valid_to
-        );
-
-    }
+    const toTime =
+      r.valid_to
+        ? new Date(r.valid_to).getTime()
+        : Infinity;
 
 
     if(
-      target >= from &&
-      (!to || target < to)
+      targetTime >= fromTime &&
+      targetTime < toTime
     ){
 
-      return {
-
-        unit:
-          r.value_inc_vat
-
-      };
-
-    }
-
-  }
-
-
-  return null;
-
-}
-
-
-/* =========================================================
-   FIND STANDING CHARGE
-========================================================= */
-
-function findStandingForDate(
-  results,
-  dateStr
-){
-
-  if(
-    !results ||
-    !Array.isArray(
-      results.results
-    )
-  ){
-
-    return null;
-
-  }
-
-
-  const target =
-    new Date(
-      dateStr + "T12:00:00"
-    );
-
-
-  for(
-    const r of results.results
-  ){
-
-    if(!r.valid_from){
-      continue;
-    }
-
-
-    const from =
-      new Date(
-        r.valid_from
-      );
-
-
-    let to = null;
-
-
-    if(r.valid_to){
-
-      to =
-        new Date(
-          r.valid_to
-        );
-
-    }
-
-
-    if(
-      target >= from &&
-      (!to || target < to)
-    ){
-
-      return {
-
-        standing:
-          r.value_inc_vat
-
-      };
+      return r;
 
     }
 
@@ -1625,9 +1535,7 @@ async function fetchRateForDate(
 ){
 
   const version =
-    getTrackerVersion(
-      dateStr
-    );
+    getTrackerVersion(dateStr);
 
 
   if(!version){
@@ -1644,15 +1552,17 @@ async function fetchRateForDate(
 
 
   const region =
-    data.settings.gspRegion ||
-    "_B";
+    data.settings.gspRegion || "_B";
 
 
   $("trackerStatus").className =
     "status warn";
 
   $("trackerStatus").innerHTML =
-    `正在查詢 ${formatDate(dateStr)} Tracker 價格…`;
+    `正在查詢 ${formatDate(dateStr)} Tracker 價格…<br>
+     <span class="small">
+       Unit Rate + Standard Charge
+     </span>`;
 
 
   $("fetchRateBtn").disabled =
@@ -1662,12 +1572,12 @@ async function fetchRateForDate(
   try{
 
     /*
-      一次過查四個：
+      四個 API 分開查：
 
-      1. Electricity Unit Rate
-      2. Electricity Standing Charge
-      3. Gas Unit Rate
-      4. Gas Standing Charge
+      1. Electricity Unit
+      2. Electricity Standing
+      3. Gas Unit
+      4. Gas Standing
     */
 
     const [
@@ -1710,64 +1620,147 @@ async function fetchRateForDate(
 
 
     const elecUnit =
-      findUnitRateForDate(
+      findRateForDate(
         elecUnitResults,
         dateStr
       );
 
 
     const elecStanding =
-      findStandingForDate(
+      findRateForDate(
         elecStandingResults,
         dateStr
       );
 
 
     const gasUnit =
-      findUnitRateForDate(
+      findRateForDate(
         gasUnitResults,
         dateStr
       );
 
 
     const gasStanding =
-      findStandingForDate(
+      findRateForDate(
         gasStandingResults,
         dateStr
       );
 
 
-    if(
-      !elecUnit ||
-      !elecStanding ||
-      !gasUnit ||
-      !gasStanding
-    ){
+    if(!elecUnit){
 
       throw new Error(
-        "API 有回覆，但搵唔到指定日期嘅完整價格，包括 Standard Charge"
+        "搵唔到 Electricity Unit Rate"
+      );
+
+    }
+
+
+    if(!elecStanding){
+
+      throw new Error(
+        "搵唔到 Electricity Standard Charge"
+      );
+
+    }
+
+
+    if(!gasUnit){
+
+      throw new Error(
+        "搵唔到 Gas Unit Rate"
+      );
+
+    }
+
+
+    if(!gasStanding){
+
+      throw new Error(
+        "搵唔到 Gas Standard Charge"
+      );
+
+    }
+
+
+    const elecUnitValue =
+      num(elecUnit.value_inc_vat);
+
+
+    const elecStandingValue =
+      num(elecStanding.value_inc_vat);
+
+
+    const gasUnitValue =
+      num(gasUnit.value_inc_vat);
+
+
+    const gasStandingValue =
+      num(gasStanding.value_inc_vat);
+
+
+    if(elecUnitValue === null){
+
+      throw new Error(
+        "Electricity Unit Rate 沒有 value_inc_vat"
+      );
+
+    }
+
+
+    if(elecStandingValue === null){
+
+      throw new Error(
+        "Electricity Standard Charge 沒有 value_inc_vat"
+      );
+
+    }
+
+
+    if(gasUnitValue === null){
+
+      throw new Error(
+        "Gas Unit Rate 沒有 value_inc_vat"
+      );
+
+    }
+
+
+    if(gasStandingValue === null){
+
+      throw new Error(
+        "Gas Standard Charge 沒有 value_inc_vat"
       );
 
     }
 
 
     /*
-      ★ 四個 Tracker 價格一齊儲存
+      注意：
+
+      只更新 rates。
+      絕對唔會改 entries。
     */
+
+    const oldRate =
+      data.rates[dateStr] || {};
+
 
     data.rates[dateStr] = {
 
+      ...oldRate,
+
       elecUnit:
-        elecUnit.unit,
+        elecUnitValue,
 
       elecStanding:
-        elecStanding.standing,
+        elecStandingValue,
 
       gasUnit:
-        gasUnit.unit,
+        gasUnitValue,
 
       gasStanding:
-        gasStanding.standing,
+        gasStandingValue,
 
       source:"auto",
 
@@ -1783,15 +1776,25 @@ async function fetchRateForDate(
     await saveData();
 
 
-    loadRateIntoForm(
-      dateStr
-    );
+    loadRateIntoForm(dateStr);
+
+
+    $("trackerStatus").className =
+      "status ok";
+
+    $("trackerStatus").innerHTML =
+      `Tracker 價格已更新 ✓<br>` +
+      `${version.code} · ${region}<br>` +
+      `<span class="small">
+        Electricity Standard: ${elecStandingValue.toFixed(3)}p/day ·
+        Gas Standard: ${gasStandingValue.toFixed(3)}p/day
+      </span>`;
 
 
     if(!silent){
 
       $("entryStatus").textContent =
-        "Tracker 價格已更新 ✓";
+        "Tracker Unit Rate + Standard Charge 已更新 ✓";
 
       $("entryStatus").className =
         "small success";
@@ -1800,7 +1803,6 @@ async function fetchRateForDate(
 
 
     render();
-
 
     return true;
 
@@ -1812,7 +1814,6 @@ async function fetchRateForDate(
 
     $("trackerStatus").className =
       "status error";
-
 
     $("trackerStatus").innerHTML =
       "查詢 Tracker 價格失敗。<br>" +
@@ -1847,9 +1848,7 @@ async function fetchRateForDate(
    LOAD TRACKER RATE
 ========================================================= */
 
-function loadRateIntoForm(
-  dateStr
-){
+function loadRateIntoForm(dateStr){
 
   const rate =
     data.rates[dateStr];
@@ -1857,23 +1856,16 @@ function loadRateIntoForm(
 
   if(!rate){
 
-    $("trackerElecUnit").value =
-      "";
+    $("trackerElecUnit").value = "";
+    $("trackerElecStanding").value = "";
+    $("trackerGasUnit").value = "";
+    $("trackerGasStanding").value = "";
 
-    $("trackerElecStanding").value =
-      "";
-
-    $("trackerGasUnit").value =
-      "";
-
-    $("trackerGasStanding").value =
-      "";
+    $("rateDisplay").classList.add("hidden");
 
 
     const version =
-      getTrackerVersion(
-        dateStr
-      );
+      getTrackerVersion(dateStr);
 
 
     if(version){
@@ -1881,22 +1873,19 @@ function loadRateIntoForm(
       $("trackerStatus").className =
         "status warn";
 
-
       $("trackerStatus").innerHTML =
-        `呢日未有儲存 Tracker 價格。<br>` +
-        `需要查價時，先撳「重新查詢 Tracker 價錢」。`;
+        `呢日未有儲存 Tracker 價格。<br>
+         需要查價時，先撳「重新查詢 Tracker 價錢」。`;
 
     }else{
 
       $("trackerStatus").className =
         "status error";
 
-
       $("trackerStatus").innerHTML =
         "呢日沒有對應 Tracker tariff version。";
 
     }
-
 
     return;
 
@@ -1906,17 +1895,41 @@ function loadRateIntoForm(
   $("trackerElecUnit").value =
     rate.elecUnit ?? "";
 
-
   $("trackerElecStanding").value =
     rate.elecStanding ?? "";
-
 
   $("trackerGasUnit").value =
     rate.gasUnit ?? "";
 
-
   $("trackerGasStanding").value =
     rate.gasStanding ?? "";
+
+
+  $("showElecUnit").textContent =
+    rate.elecUnit != null
+      ? Number(rate.elecUnit).toFixed(3) + "p"
+      : "—";
+
+
+  $("showElecStanding").textContent =
+    rate.elecStanding != null
+      ? Number(rate.elecStanding).toFixed(3) + "p/day"
+      : "—";
+
+
+  $("showGasUnit").textContent =
+    rate.gasUnit != null
+      ? Number(rate.gasUnit).toFixed(3) + "p"
+      : "—";
+
+
+  $("showGasStanding").textContent =
+    rate.gasStanding != null
+      ? Number(rate.gasStanding).toFixed(3) + "p/day"
+      : "—";
+
+
+  $("rateDisplay").classList.remove("hidden");
 
 
   const source =
@@ -1927,7 +1940,6 @@ function loadRateIntoForm(
 
   $("trackerStatus").className =
     "status ok";
-
 
   $("trackerStatus").innerHTML =
     `Tracker 價格已儲存 ✓<br>` +
@@ -1940,16 +1952,14 @@ function loadRateIntoForm(
    LOAD ENTRY
 ========================================================= */
 
-function loadEntryIntoForm(
-  dateStr
-){
-
-  const entry =
-    data.entries[dateStr];
-
+function loadEntryIntoForm(dateStr){
 
   $("entryDate").value =
     dateStr;
+
+
+  const entry =
+    data.entries[dateStr];
 
 
   if(entry){
@@ -1957,10 +1967,8 @@ function loadEntryIntoForm(
     $("entryElec").value =
       entry.elec ?? "";
 
-
     $("entryGas").value =
       entry.gas ?? "";
-
 
     $("existingInfo").innerHTML =
       `<span class="success">
@@ -1975,7 +1983,6 @@ function loadEntryIntoForm(
     $("entryGas").value =
       "";
 
-
     $("existingInfo").innerHTML =
       `<span class="muted">
         呢日未有紀錄，可以輸入新資料。
@@ -1984,14 +1991,7 @@ function loadEntryIntoForm(
   }
 
 
-  /*
-    無論有冇電錶紀錄，
-    都會嘗試載入 Tracker rate。
-  */
-
-  loadRateIntoForm(
-    dateStr
-  );
+  loadRateIntoForm(dateStr);
 
 }
 
@@ -2011,9 +2011,12 @@ function onDateChanged(){
   }
 
 
-  loadEntryIntoForm(
-    dateStr
-  );
+  /*
+    揀日期只載入已儲存資料。
+    唔會自動打 API。
+  */
+
+  loadEntryIntoForm(dateStr);
 
 }
 
@@ -2042,24 +2045,22 @@ async function saveEntry(){
 
 
   const elec =
-    num(
-      $("entryElec").value
-    );
+    num($("entryElec").value);
 
 
   const gas =
-    num(
-      $("entryGas").value
-    );
+    num($("entryGas").value);
 
 
   if(
     elec === null ||
-    gas === null
+    gas === null ||
+    elec < 0 ||
+    gas < 0
   ){
 
     $("entryStatus").textContent =
-      "請輸入 Electricity 同 Gas 使用量。";
+      "請輸入有效 Electricity 同 Gas 使用量。";
 
     $("entryStatus").className =
       "small error-text";
@@ -2070,7 +2071,7 @@ async function saveEntry(){
 
 
   /*
-    0 係有效數據。
+    只寫入 entries。
   */
 
   data.entries[dateStr] = {
@@ -2085,35 +2086,24 @@ async function saveEntry(){
 
 
   /*
-    如果四個 Tracker 欄位都有數字，
-    就更新該日 rate。
+    如果手動改 Tracker 價格，
+    就更新 rates。
 
-    如果冇輸入，
-    就保留原本 rate。
+    注意：
+    這裡永遠唔會刪除已有 Standard Charge。
   */
 
   const te =
-    num(
-      $("trackerElecUnit").value
-    );
-
+    num($("trackerElecUnit").value);
 
   const tes =
-    num(
-      $("trackerElecStanding").value
-    );
-
+    num($("trackerElecStanding").value);
 
   const tg =
-    num(
-      $("trackerGasUnit").value
-    );
-
+    num($("trackerGasUnit").value);
 
   const tgs =
-    num(
-      $("trackerGasStanding").value
-    );
+    num($("trackerGasStanding").value);
 
 
   if(
@@ -2124,11 +2114,10 @@ async function saveEntry(){
   ){
 
     const oldRate =
-      data.rates[dateStr];
+      data.rates[dateStr] || {};
 
 
     const sameAsOld =
-      oldRate &&
       oldRate.elecUnit === te &&
       oldRate.elecStanding === tes &&
       oldRate.gasUnit === tg &&
@@ -2136,6 +2125,8 @@ async function saveEntry(){
 
 
     data.rates[dateStr] = {
+
+      ...oldRate,
 
       elecUnit:te,
 
@@ -2150,9 +2141,6 @@ async function saveEntry(){
         oldRate.source === "auto"
           ? "auto"
           : "manual",
-
-      product:
-        oldRate?.product || "",
 
       updatedAt:
         new Date().toISOString()
@@ -2172,10 +2160,7 @@ async function saveEntry(){
     "small success";
 
 
-  loadEntryIntoForm(
-    dateStr
-  );
-
+  loadEntryIntoForm(dateStr);
 
   render();
 
@@ -2184,8 +2169,6 @@ async function saveEntry(){
 
 /* =========================================================
    DELETE ENTRY
-   ★ 只刪除電錶紀錄
-   ★ Tracker 完全保留
 ========================================================= */
 
 async function deleteEntry(){
@@ -2234,19 +2217,11 @@ async function deleteEntry(){
 
 
   /*
-    ★★★★★
-    只刪 data.entries
+    最重要：
 
-    絕對唔刪：
-    data.rates[dateStr]
+    只 delete data.entries[dateStr]
 
-    所以 Tracker 四項價格：
-    - Electricity Unit Rate
-    - Electricity Standing Charge
-    - Gas Unit Rate
-    - Gas Standing Charge
-
-    全部保留。
+    絕對唔 delete data.rates[dateStr]
   */
 
   delete data.entries[dateStr];
@@ -2254,10 +2229,6 @@ async function deleteEntry(){
 
   await saveData();
 
-
-  /*
-    只清除電錶使用量。
-  */
 
   $("entryElec").value =
     "";
@@ -2269,18 +2240,11 @@ async function deleteEntry(){
   $("existingInfo").innerHTML =
     `<span class="muted">
       ${formatDate(dateStr)} 電錶紀錄已刪除。<br>
-      Tracker 價格資料仍然保留。
+      Tracker Unit Rate + Standard Charge 仍然保留。
     </span>`;
 
 
-  /*
-    ★ 重新載入 Tracker
-    ★ 包括 Standard Charge
-  */
-
-  loadRateIntoForm(
-    dateStr
-  );
+  loadRateIntoForm(dateStr);
 
 
   $("entryStatus").textContent =
@@ -2299,9 +2263,7 @@ async function deleteEntry(){
    CALCULATE FUSE
 ========================================================= */
 
-function calculateFuse(
-  dateStr
-){
+function calculateFuse(dateStr){
 
   const entry =
     data.entries[dateStr];
@@ -2320,9 +2282,7 @@ function calculateFuse(
     Number(entry.gas) || 0;
 
 
-  if(
-    s.gasUnit === "m3"
-  ){
+  if(s.gasUnit === "m3"){
 
     gasKwh *=
       Number(
@@ -2338,29 +2298,20 @@ function calculateFuse(
 
   const elecUnitCost =
     elecUsage *
-    Number(
-      s.fuseElecUnit || 0
-    ) /
+    Number(s.fuseElecUnit || 0) /
     100;
 
 
   const gasUnitCost =
     gasKwh *
-    Number(
-      s.fuseGasUnit || 0
-    ) /
+    Number(s.fuseGasUnit || 0) /
     100;
 
 
   const standing =
     (
-      Number(
-        s.fuseElecStanding || 0
-      ) +
-
-      Number(
-        s.fuseGasStanding || 0
-      )
+      Number(s.fuseElecStanding || 0) +
+      Number(s.fuseGasStanding || 0)
     ) / 100;
 
 
@@ -2386,9 +2337,7 @@ function calculateFuse(
    CALCULATE TRACKER
 ========================================================= */
 
-function calculateTracker(
-  dateStr
-){
+function calculateTracker(dateStr){
 
   const entry =
     data.entries[dateStr];
@@ -2400,7 +2349,11 @@ function calculateTracker(
 
   if(
     !entry ||
-    !rate
+    !rate ||
+    rate.elecUnit == null ||
+    rate.elecStanding == null ||
+    rate.gasUnit == null ||
+    rate.gasStanding == null
   ){
 
     return null;
@@ -2438,13 +2391,8 @@ function calculateTracker(
 
   const standing =
     (
-      Number(
-        rate.elecStanding || 0
-      ) +
-
-      Number(
-        rate.gasStanding || 0
-      )
+      Number(rate.elecStanding || 0) +
+      Number(rate.gasStanding || 0)
     ) / 100;
 
 
@@ -2470,9 +2418,7 @@ function calculateTracker(
    MONTH CALCULATION
 ========================================================= */
 
-function calculateMonth(
-  month
-){
+function calculateMonth(month){
 
   const prefix =
     month + "-";
@@ -2551,13 +2497,8 @@ function calculateMonth(
 
 
   const monthlyFees =
-    Number(
-      s.fuseElecMonthly || 0
-    ) +
-
-    Number(
-      s.fuseGasMonthly || 0
-    );
+    Number(s.fuseElecMonthly || 0) +
+    Number(s.fuseGasMonthly || 0);
 
 
   if(
@@ -2568,8 +2509,7 @@ function calculateMonth(
     fuseTotal +=
       monthlyFees *
       (
-        dates.length /
-        days
+        dates.length / days
       );
 
   }
@@ -2594,9 +2534,7 @@ function calculateMonth(
    DAILY ROW
 ========================================================= */
 
-function renderDailyRow(
-  dateStr
-){
+function renderDailyRow(dateStr){
 
   const entry =
     data.entries[dateStr];
@@ -2655,20 +2593,34 @@ function renderDailyRow(
     data.rates[dateStr];
 
 
-  const badge =
-    rate
+  let badge = "";
 
-      ? `<span class="badge ${
-          rate.source === "manual"
-            ? "manual"
-            : "auto"
-        }">${
-          rate.source === "manual"
-            ? "手動"
-            : "Tracker"
-        }</span>`
 
-      : "";
+  if(rate){
+
+    const complete =
+      rate.elecUnit != null &&
+      rate.elecStanding != null &&
+      rate.gasUnit != null &&
+      rate.gasStanding != null;
+
+
+    badge =
+      `<span class="badge ${
+        rate.source === "manual"
+          ? "manual"
+          : "auto"
+      }">${
+        complete
+          ? (
+              rate.source === "manual"
+                ? "手動"
+                : "Tracker"
+            )
+          : "價格未完整"
+      }</span>`;
+
+  }
 
 
   return `
@@ -2727,9 +2679,7 @@ function renderDailyRow(
    MONTH DISPLAY
 ========================================================= */
 
-function renderMonth(
-  month
-){
+function renderMonth(month){
 
   const result =
     calculateMonth(month);
@@ -2819,7 +2769,7 @@ function renderMonth(
 
           ${
             tracker === null
-              ? "未有價格"
+              ? "未有完整價格"
               : formatMoney(tracker)
           }
 
@@ -2852,7 +2802,7 @@ function renderMonth(
         style="margin-top:7px"
       >
 
-        Tracker 價格已覆蓋
+        Tracker 價格完整覆蓋
         ${result.trackerDates}/${result.dates.length}
         個有紀錄日
 
@@ -2869,9 +2819,7 @@ function renderMonth(
    HERO
 ========================================================= */
 
-function updateHero(
-  dates
-){
+function updateHero(dates){
 
   let totalFuse = 0;
 
@@ -2945,7 +2893,7 @@ function updateHero(
       "—";
 
     $("heroSub").textContent =
-      "已有電錶資料，但尚未有 Tracker 價格";
+      "已有電錶資料，但尚未有完整 Tracker 價格";
 
     $("sparkLine")
       .setAttribute(
@@ -2990,15 +2938,11 @@ function updateHero(
   ){
 
     const min =
-      Math.min(
-        ...sparkValues
-      );
+      Math.min(...sparkValues);
 
 
     const max =
-      Math.max(
-        ...sparkValues
-      );
+      Math.max(...sparkValues);
 
 
     const range =
@@ -3013,9 +2957,7 @@ function updateHero(
             const x =
               (
                 i /
-                (
-                  sparkValues.length-1
-                )
+                (sparkValues.length - 1)
               ) * 500;
 
 
@@ -3059,9 +3001,7 @@ function updateHero(
    FILTER
 ========================================================= */
 
-function setView(
-  view
-){
+function setView(view){
 
   currentView =
     view;
@@ -3159,9 +3099,7 @@ function render(){
 
 
   const dates =
-    Object.keys(
-      data.entries
-    )
+    Object.keys(data.entries)
       .sort()
       .reverse();
 
@@ -3208,14 +3146,10 @@ function render(){
 
 
     html +=
-      renderDailyRow(
-        selected
-      );
+      renderDailyRow(selected);
 
 
-    updateHero([
-      selected
-    ]);
+    updateHero([selected]);
 
   }
 
@@ -3242,9 +3176,7 @@ function render(){
 
 
     html =
-      renderMonth(
-        month
-      );
+      renderMonth(month);
 
 
     const prefix =
@@ -3252,17 +3184,13 @@ function render(){
 
 
     const monthDates =
-      Object.keys(
-        data.entries
-      )
+      Object.keys(data.entries)
         .filter(
           d => d.startsWith(prefix)
         );
 
 
-    updateHero(
-      monthDates
-    );
+    updateHero(monthDates);
 
   }
 
@@ -3287,16 +3215,12 @@ function render(){
     ){
 
       html +=
-        renderDailyRow(
-          date
-        );
+        renderDailyRow(date);
 
     }
 
 
-    updateHero(
-      dates
-    );
+    updateHero(dates);
 
   }
 
@@ -3306,9 +3230,7 @@ function render(){
 
 
   history
-    .querySelectorAll(
-      ".entry-row"
-    )
+    .querySelectorAll(".entry-row")
     .forEach(
       row => {
 
@@ -3328,9 +3250,7 @@ function render(){
               date;
 
 
-            loadEntryIntoForm(
-              date
-            );
+            loadEntryIntoForm(date);
 
 
             const entryCard =
@@ -3363,9 +3283,7 @@ function render(){
 async function fetchAllRates(){
 
   const dates =
-    Object.keys(
-      data.entries
-    )
+    Object.keys(data.entries)
       .sort();
 
 
@@ -3388,14 +3306,14 @@ async function fetchAllRates(){
 
   let success = 0;
 
+  let skipped = 0;
+
+  let failed = 0;
+
 
   for(
     const date of dates
   ){
-
-    /*
-      已有完整 rate 就唔重新查。
-    */
 
     const existing =
       data.rates[date];
@@ -3403,13 +3321,15 @@ async function fetchAllRates(){
 
     const complete =
       existing &&
-      existing.elecUnit !== undefined &&
-      existing.elecStanding !== undefined &&
-      existing.gasUnit !== undefined &&
-      existing.gasStanding !== undefined;
+      existing.elecUnit != null &&
+      existing.elecStanding != null &&
+      existing.gasUnit != null &&
+      existing.gasStanding != null;
 
 
     if(complete){
+
+      skipped++;
 
       continue;
 
@@ -3427,6 +3347,10 @@ async function fetchAllRates(){
 
       success++;
 
+    }else{
+
+      failed++;
+
     }
 
   }
@@ -3437,10 +3361,14 @@ async function fetchAllRates(){
 
 
   $("entryStatus").textContent =
-    `完成。新增／補回 ${success} 日 Tracker 價格。`;
+    `完成。新增／補回 ${success} 日，` +
+    `已有完整價格 ${skipped} 日，` +
+    `失敗 ${failed} 日。`;
 
   $("entryStatus").className =
-    "small success";
+    failed
+      ? "small warning"
+      : "small success";
 
 
   render();
@@ -3466,25 +3394,19 @@ $("settingsHeader")
 
 
       const isHidden =
-        content.classList.contains(
-          "hidden"
-        );
+        content.classList.contains("hidden");
 
 
       if(isHidden){
 
-        content.classList.remove(
-          "hidden"
-        );
+        content.classList.remove("hidden");
 
         arrow.textContent =
           "−";
 
       }else{
 
-        content.classList.add(
-          "hidden"
-        );
+        content.classList.add("hidden");
 
         arrow.textContent =
           "＋";
@@ -3566,9 +3488,7 @@ $("fetchRateBtn")
       }
 
 
-      fetchRateForDate(
-        date
-      );
+      fetchRateForDate(date);
 
     }
   );
@@ -3603,9 +3523,7 @@ $("saveSettingsBtn")
 
 
 document
-  .querySelectorAll(
-    ".tab"
-  )
+  .querySelectorAll(".tab")
   .forEach(
     tab => {
 
@@ -3661,9 +3579,7 @@ async function init(){
 
 
   const dates =
-    Object.keys(
-      data.entries
-    )
+    Object.keys(data.entries)
       .sort();
 
 
