@@ -37,11 +37,6 @@ body{
   padding-bottom:48px;
 }
 
-.mono{
-  font-family:'IBM Plex Mono',monospace;
-  font-variant-numeric:tabular-nums;
-}
-
 .wrap{
   max-width:520px;
   margin:0 auto;
@@ -186,6 +181,7 @@ details.card[open] summary::after{
 }
 
 input[type=date],
+input[type=month],
 input[type=number],
 input[type=text],
 select{
@@ -295,21 +291,10 @@ button{
   margin-top:5px;
 }
 
-.dot.ok{
-  background:var(--good);
-}
-
-.dot.manual{
-  background:var(--elec);
-}
-
-.dot.fail{
-  background:var(--bad);
-}
-
-.dot.loading{
-  background:var(--gas);
-}
+.dot.ok{background:var(--good);}
+.dot.manual{background:var(--elec);}
+.dot.fail{background:var(--bad);}
+.dot.loading{background:var(--gas);}
 
 .ratepair{
   display:grid;
@@ -336,13 +321,8 @@ button{
   font-weight:600;
 }
 
-.rate-box.elec .f{
-  color:var(--elec);
-}
-
-.rate-box.gas .f{
-  color:var(--gas);
-}
+.rate-box.elec .f{color:var(--elec);}
+.rate-box.gas .f{color:var(--gas);}
 
 .hrow{
   display:grid;
@@ -385,13 +365,8 @@ button{
   font-weight:600;
 }
 
-.hrow .delta.good{
-  color:var(--good);
-}
-
-.hrow .delta.bad{
-  color:var(--bad);
-}
+.hrow .delta.good{color:var(--good);}
+.hrow .delta.bad{color:var(--bad);}
 
 .hrow .delta .sub{
   display:block;
@@ -431,6 +406,139 @@ button{
 .tbox .v{
   font-size:19px;
   font-weight:600;
+}
+
+.filter-card{
+  padding:14px;
+}
+
+.filter-title{
+  color:var(--muted);
+  font-size:12px;
+  margin-bottom:8px;
+}
+
+.filter-tabs{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:7px;
+  margin-bottom:10px;
+}
+
+.filter-tab{
+  background:var(--surface-alt);
+  border:1px solid var(--border);
+  color:var(--muted);
+  border-radius:9px;
+  padding:9px 6px;
+  font-size:13px;
+  text-align:center;
+  cursor:pointer;
+}
+
+.filter-tab.active{
+  color:var(--text);
+  border-color:var(--elec);
+  background:#2b333b;
+}
+
+.filter-picker{
+  display:none;
+}
+
+.filter-picker.show{
+  display:block;
+}
+
+.month-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.month-summary{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-bottom:12px;
+}
+
+.month-box{
+  background:var(--surface-alt);
+  border-radius:10px;
+  padding:10px;
+}
+
+.month-box .label{
+  color:var(--muted);
+  font-size:11px;
+  margin-bottom:3px;
+}
+
+.month-box .value{
+  font-size:16px;
+  font-weight:600;
+}
+
+.month-box.elec .label{color:var(--elec);}
+.month-box.gas .label{color:var(--gas);}
+
+.month-row-item{
+  padding:14px 4px;
+  border-bottom:1px solid var(--border);
+}
+
+.month-row-item:last-child{
+  border-bottom:none;
+}
+
+.month-row-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:8px;
+}
+
+.month-name{
+  font-size:15px;
+  font-weight:600;
+}
+
+.month-delta{
+  font-size:15px;
+  font-weight:600;
+}
+
+.month-delta.good{color:var(--good);}
+.month-delta.bad{color:var(--bad);}
+
+.month-detail{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+}
+
+.month-detail-box{
+  background:var(--surface-alt);
+  border-radius:8px;
+  padding:8px;
+}
+
+.month-detail-box .small-label{
+  color:var(--muted);
+  font-size:10.5px;
+}
+
+.month-detail-box .small-value{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12.5px;
+  margin-top:2px;
+}
+
+.month-meta{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:7px;
 }
 
 .toast{
@@ -483,6 +591,7 @@ button{
 }
 
 @media(max-width:390px){
+
   .row3{
     grid-template-columns:1fr;
   }
@@ -508,34 +617,103 @@ button{
 <div class="wrap">
 
 <header>
-  <p class="eyebrow">Fuse · Octopus Tracker</p>
-  <h1>電錶紀錄同比較</h1>
 
-  <div class="hero">
-    <div class="hero-label">總差額（Fuse − Tracker）</div>
+<p class="eyebrow">Fuse · Octopus Tracker</p>
 
-    <div class="hero-figure mono" id="heroFigure">
-      £0.00
-    </div>
+<h1>電錶紀錄同比較</h1>
 
-    <div class="hero-sub" id="heroSub">
-      未有紀錄 — 喺下面輸入第一日嘅使用量開始。
-    </div>
+<div class="hero">
 
-    <svg id="sparkline"
-         viewBox="0 0 300 44"
-         preserveAspectRatio="none"></svg>
-  </div>
+<div class="hero-label" id="heroLabel">
+總差額（Fuse − Tracker）
+</div>
+
+<div class="hero-figure mono" id="heroFigure">
+£0.00
+</div>
+
+<div class="hero-sub" id="heroSub">
+未有紀錄 — 喺下面輸入第一日嘅使用量開始。
+</div>
+
+<svg id="sparkline"
+     viewBox="0 0 300 44"
+     preserveAspectRatio="none">
+</svg>
+
+</div>
+
 </header>
 
 
+<!-- FILTER -->
+
+<section>
+
+<div class="card filter-card">
+
+<div class="filter-title">
+📊 睇邊段時間？
+</div>
+
+<div class="filter-tabs">
+
+<div class="filter-tab active"
+     id="filterAll">
+全部
+</div>
+
+<div class="filter-tab"
+     id="filterMonth">
+每月
+</div>
+
+<div class="filter-tab"
+     id="filterDay">
+每日
+</div>
+
+</div>
+
+
+<div class="filter-picker"
+     id="monthPicker">
+
+<label class="filter-title">
+選擇月份
+</label>
+
+<input type="month"
+       id="historyMonth">
+
+</div>
+
+
+<div class="filter-picker"
+     id="dayPicker">
+
+<label class="filter-title">
+選擇日期
+</label>
+
+<input type="date"
+       id="historyDay">
+
+</div>
+
+</div>
+
+</section>
+
+
 <!-- SETTINGS -->
+
 <section>
 
 <details class="card" id="settingsCard">
 
 <summary>
-  ⚙️ 設定：地區 &amp; Fuse 收費
+⚙️ 設定：地區 &amp; Fuse 收費
 </summary>
 
 <div class="details-body">
@@ -546,56 +724,60 @@ button{
 
 <select id="regionSel">
 
-<option value="_A">_A 東英倫 Eastern England</option>
-
-<option value="_B" selected>
-  _B 東米德蘭 East Midlands（NG10 適用）
+<option value="_A">
+_A 東英倫 Eastern England
 </option>
 
-<option value="_C">_C 倫敦 London</option>
+<option value="_B" selected>
+_B 東米德蘭 East Midlands（NG10 適用）
+</option>
+
+<option value="_C">
+_C 倫敦 London
+</option>
 
 <option value="_D">
-  _D 北威爾斯 / Merseyside
+_D 北威爾斯 / Merseyside
 </option>
 
 <option value="_E">
-  _E 西米德蘭 West Midlands
+_E 西米德蘭 West Midlands
 </option>
 
 <option value="_F">
-  _F 東北英格蘭
+_F 東北英格蘭
 </option>
 
 <option value="_G">
-  _G 西北英格蘭
+_G 西北英格蘭
 </option>
 
 <option value="_H">
-  _H 南英格蘭
+_H 南英格蘭
 </option>
 
 <option value="_J">
-  _J 東南英格蘭
+_J 東南英格蘭
 </option>
 
 <option value="_K">
-  _K 南威爾斯
+_K 南威爾斯
 </option>
 
 <option value="_L">
-  _L 西南英格蘭
+_L 西南英格蘭
 </option>
 
 <option value="_M">
-  _M 約克郡
+_M 約克郡
 </option>
 
 <option value="_N">
-  _N 蘇格蘭中南部
+_N 蘇格蘭中南部
 </option>
 
 <option value="_P">
-  _P 蘇格蘭北部
+_P 蘇格蘭北部
 </option>
 
 </select>
@@ -610,27 +792,36 @@ Fuse — 電
 <div class="row3">
 
 <div class="field">
+
 <label>月費 (£)</label>
+
 <input type="number"
        step="0.01"
        id="fuseElecMonthly"
        value="0">
+
 </div>
 
 <div class="field">
+
 <label>Standing (p/日)</label>
+
 <input type="number"
        step="0.01"
        id="fuseElecStanding"
        value="41.44">
+
 </div>
 
 <div class="field">
+
 <label>Unit rate (p/kWh)</label>
+
 <input type="number"
        step="0.01"
        id="fuseElecUnit"
        value="23.24">
+
 </div>
 
 </div>
@@ -643,27 +834,36 @@ Fuse — 煤氣
 <div class="row3">
 
 <div class="field">
+
 <label>月費 (£)</label>
+
 <input type="number"
        step="0.01"
        id="fuseGasMonthly"
        value="0">
+
 </div>
 
 <div class="field">
+
 <label>Standing (p/日)</label>
+
 <input type="number"
        step="0.01"
        id="fuseGasStanding"
        value="10.83">
+
 </div>
 
 <div class="field">
+
 <label>Unit rate (p/kWh)</label>
+
 <input type="number"
        step="0.01"
        id="fuseGasUnit"
        value="7.55">
+
 </div>
 
 </div>
@@ -676,8 +876,15 @@ Fuse — 煤氣
 <div class="row2">
 
 <select id="gasUnitSel">
-<option value="kWh">kWh</option>
-<option value="m3">立方米 m³</option>
+
+<option value="kWh">
+kWh
+</option>
+
+<option value="m3">
+立方米 m³
+</option>
+
 </select>
 
 <input type="number"
@@ -698,9 +905,11 @@ Fuse — 煤氣
 
 
 <p class="note">
+
 Tracker 價格會直接使用 Octopus 公開 API 的 Tracker product
 及歷史 unit-rate / standing-charge 資料。
 程式會按日期自動選擇當時適用嘅 Tracker 版本。
+
 </p>
 
 </div>
@@ -711,6 +920,7 @@ Tracker 價格會直接使用 Octopus 公開 API 的 Tracker product
 
 
 <!-- ENTRY -->
+
 <section>
 
 <div class="card">
@@ -780,7 +990,8 @@ Tracker 價格會直接使用 Octopus 公開 API 的 Tracker product
 <div class="rate-status">
 
 <span class="dot"
-      id="rateDot"></span>
+      id="rateDot">
+</span>
 
 <span id="rateStatusText">
 未查詢呢日嘅 Tracker 價錢
@@ -796,7 +1007,6 @@ Tracker 價格會直接使用 Octopus 公開 API 的 Tracker product
 
 
 <div class="ratepair">
-
 
 <div class="rate-box elec">
 
@@ -880,9 +1090,11 @@ Tracker 價格會直接使用 Octopus 公開 API 的 Tracker product
 
 
 <p class="note">
+
 自動查詢會根據你選擇嘅日期，
 找出當日有效嘅 Tracker product version，
 再取得 East Midlands（_B）嘅 electricity / gas tariff。
+
 </p>
 
 </div>
@@ -891,17 +1103,62 @@ Tracker 價格會直接使用 Octopus 公開 API 的 Tracker product
 
 
 <!-- HISTORY -->
+
 <section>
 
 <div class="card">
 
 <h2>
+
+<span id="historyTitle">
 歷史紀錄
+</span>
+
 <span class="tag"
       id="countTag">
 0 日
 </span>
+
 </h2>
+
+
+<!-- MONTH SUMMARY -->
+
+<div id="monthSummary"
+     style="display:none;">
+
+<div class="month-summary">
+
+<div class="month-box elec">
+
+<div class="label">
+⚡ 電費
+</div>
+
+<div class="value mono"
+     id="monthElec">
+£0.00
+</div>
+
+</div>
+
+
+<div class="month-box gas">
+
+<div class="label">
+🔥 Gas費
+</div>
+
+<div class="value mono"
+     id="monthGas">
+£0.00
+</div>
+
+</div>
+
+</div>
+
+</div>
 
 
 <div id="historyList">
@@ -1001,14 +1258,14 @@ let editingDate = null;
 
 
 /* =========================================================
+   FILTER
+========================================================= */
+
+let historyFilter = 'all';
+
+
+/* =========================================================
    TRACKER PRODUCT HISTORY
-=========================================================
-
-   Octopus currently uses SILVER-26-04-01.
-
-   The previous Tracker versions are included so that
-   historical dates can be matched to the correct tariff.
-
 ========================================================= */
 
 const TRACKER_VERSIONS = [
@@ -1089,31 +1346,18 @@ const tariffCache = {};
 const OCTOTRACK_SLUGS = {
 
   '_A':'a-eastern-england',
-
   '_B':'b-east-midlands',
-
   '_C':'c-london',
-
   '_D':'d-north-wales-merseyside-cheshire',
-
   '_E':'e-west-midlands',
-
   '_F':'f-north-east-england',
-
   '_G':'g-north-west-england',
-
   '_H':'h-southern-england',
-
   '_J':'j-south-east-england',
-
   '_K':'k-south-wales',
-
   '_L':'l-south-west-england',
-
   '_M':'m-yorkshire',
-
   '_N':'n-south-central-scotland',
-
   '_P':'p-north-scotland'
 
 };
@@ -1125,11 +1369,14 @@ function updateOctotrackLink(){
     OCTOTRACK_SLUGS[data.settings.region]
     || 'b-east-midlands';
 
-  const oldLink = $('octotrackLink');
+  const oldLink =
+    $('octotrackLink');
 
   if(oldLink){
+
     oldLink.href =
       `https://octotrack.co.uk/region/${slug}`;
+
   }
 
 }
@@ -1141,9 +1388,11 @@ function updateOctotrackLink(){
 
 function toast(msg){
 
-  const t = $('toast');
+  const t =
+    $('toast');
 
-  t.textContent = msg;
+  t.textContent =
+    msg;
 
   t.classList.add('show');
 
@@ -1160,13 +1409,16 @@ function toast(msg){
 
 function fmtDateStr(d){
 
-  const y = d.getFullYear();
+  const y =
+    d.getFullYear();
 
   const m =
-    String(d.getMonth()+1).padStart(2,'0');
+    String(d.getMonth()+1)
+      .padStart(2,'0');
 
   const day =
-    String(d.getDate()).padStart(2,'0');
+    String(d.getDate())
+      .padStart(2,'0');
 
   return `${y}-${m}-${day}`;
 
@@ -1176,9 +1428,15 @@ function fmtDateStr(d){
 function daysInMonth(dateStr){
 
   const [y,m] =
-    dateStr.split('-').map(Number);
+    dateStr
+      .split('-')
+      .map(Number);
 
-  return new Date(y,m,0).getDate();
+  return new Date(
+    y,
+    m,
+    0
+  ).getDate();
 
 }
 
@@ -1189,9 +1447,46 @@ function displayDate(dateStr){
     dateStr.split('-');
 
   return {
+
     main:`${m}/${d}`,
+
     yr:y
+
   };
+
+}
+
+
+function monthKey(dateStr){
+
+  return dateStr.slice(0,7);
+
+}
+
+
+function monthDisplay(month){
+
+  const [y,m] =
+    month.split('-');
+
+  const names = [
+
+    '一月',
+    '二月',
+    '三月',
+    '四月',
+    '五月',
+    '六月',
+    '七月',
+    '八月',
+    '九月',
+    '十月',
+    '十一月',
+    '十二月'
+
+  ];
+
+  return `${y}年${names[Number(m)-1]}`;
 
 }
 
@@ -1274,10 +1569,6 @@ async function saveData(){
 
     }
 
-    /*
-      Fallback for normal GitHub Pages/browser use.
-    */
-
     try{
 
       localStorage.setItem(
@@ -1311,7 +1602,8 @@ async function saveData(){
 
 function applySettingsToForm(){
 
-  const s = data.settings;
+  const s =
+    data.settings;
 
   $('regionSel').value =
     s.region;
@@ -1409,7 +1701,9 @@ $('saveSettingsBtn')
 
     await saveData();
 
-    toast('設定已儲存');
+    toast(
+      '設定已儲存'
+    );
 
     render();
 
@@ -1446,9 +1740,13 @@ $('chipToday')
   ()=>{
 
     $('entryDate').value =
-      fmtDateStr(new Date());
+      fmtDateStr(
+        new Date()
+      );
 
-    setQuickActive('today');
+    setQuickActive(
+      'today'
+    );
 
     onDateChanged();
 
@@ -1461,7 +1759,8 @@ $('chipYesterday')
   'click',
   ()=>{
 
-    const d = new Date();
+    const d =
+      new Date();
 
     d.setDate(
       d.getDate()-1
@@ -1470,7 +1769,9 @@ $('chipYesterday')
     $('entryDate').value =
       fmtDateStr(d);
 
-    setQuickActive('yesterday');
+    setQuickActive(
+      'yesterday'
+    );
 
     onDateChanged();
 
@@ -1483,7 +1784,9 @@ $('entryDate')
   'change',
   ()=>{
 
-    setQuickActive(null);
+    setQuickActive(
+      null
+    );
 
     onDateChanged();
 
@@ -1500,12 +1803,15 @@ function onDateChanged(){
   const dateStr =
     $('entryDate').value;
 
-  if(!dateStr) return;
+  if(!dateStr)
+    return;
 
   editingDate = null;
 
   const existing =
-    data.entries[dateStr];
+    data.entries[
+      dateStr
+    ];
 
   $('entryElec').value =
     existing
@@ -1517,9 +1823,13 @@ function onDateChanged(){
       ? existing.gas
       : '';
 
-  loadRateIntoForm(dateStr);
+  loadRateIntoForm(
+    dateStr
+  );
 
-  if(!data.rates[dateStr]){
+  if(
+    !data.rates[dateStr]
+  ){
 
     fetchRateForDate(
       dateStr
@@ -1551,7 +1861,9 @@ function setRateStatus(
 
   if(source==='auto'){
 
-    dot.classList.add('ok');
+    dot.classList.add(
+      'ok'
+    );
 
     txt.textContent =
       `已自動查到 ${dateStr} 嘅 Tracker 價錢`;
@@ -1567,7 +1879,9 @@ function setRateStatus(
 
   else if(source==='manual'){
 
-    dot.classList.add('manual');
+    dot.classList.add(
+      'manual'
+    );
 
     txt.textContent =
       `${dateStr} 用緊手動輸入嘅價錢`;
@@ -1576,7 +1890,9 @@ function setRateStatus(
 
   else if(source==='fail'){
 
-    dot.classList.add('fail');
+    dot.classList.add(
+      'fail'
+    );
 
     txt.textContent =
       `查唔到 ${dateStr} 嘅 Tracker 價錢，請手動輸入`;
@@ -1585,7 +1901,9 @@ function setRateStatus(
 
   else if(source==='loading'){
 
-    dot.classList.add('loading');
+    dot.classList.add(
+      'loading'
+    );
 
     txt.textContent =
       `查緊 ${dateStr} 嘅 Tracker 價錢…`;
@@ -1603,13 +1921,17 @@ function setRateStatus(
 
 
 /* =========================================================
-   LOAD RATE INTO FORM
+   LOAD RATE
 ========================================================= */
 
-function loadRateIntoForm(dateStr){
+function loadRateIntoForm(
+  dateStr
+){
 
   const r =
-    data.rates[dateStr];
+    data.rates[
+      dateStr
+    ];
 
   const info =
     $('trackerVersionInfo');
@@ -1633,7 +1955,6 @@ function loadRateIntoForm(dateStr){
       dateStr,
       r.productCode
     );
-
 
     if(r.productCode){
 
@@ -1683,7 +2004,9 @@ function loadRateIntoForm(dateStr){
    FETCH JSON
 ========================================================= */
 
-async function fetchJSON(url){
+async function fetchJSON(
+  url
+){
 
   const res =
     await fetch(
@@ -1710,7 +2033,9 @@ async function fetchJSON(url){
    DATE → TRACKER VERSION
 ========================================================= */
 
-function getTrackerVersion(dateStr){
+function getTrackerVersion(
+  dateStr
+){
 
   for(
     const v of TRACKER_VERSIONS
@@ -1755,22 +2080,15 @@ function getTariffCodes(
 
 
 /* =========================================================
-   FIND RATE FOR LONDON DATE
-=========================================================
-
-   Tracker is a daily price.
-
-   API timestamps may be expressed in UTC,
-   while the tariff applies to the UK calendar day.
-
-   We therefore compare dates after converting
-   API timestamps to Europe/London.
-
+   LONDON DATE
 ========================================================= */
 
-function londonDateFromISO(iso){
+function londonDateFromISO(
+  iso
+){
 
-  if(!iso) return null;
+  if(!iso)
+    return null;
 
   const d =
     new Date(iso);
@@ -1791,6 +2109,10 @@ function londonDateFromISO(iso){
 }
 
 
+/* =========================================================
+   FIND RATE
+========================================================= */
+
 function findRateForDate(
   results,
   dateStr
@@ -1798,11 +2120,6 @@ function findRateForDate(
 
   if(!Array.isArray(results))
     return null;
-
-  /*
-    First look for a rate whose London date
-    equals the requested date.
-  */
 
   const exact =
     results.find(
@@ -1815,17 +2132,10 @@ function findRateForDate(
   if(exact)
     return exact;
 
-
-  /*
-    If API returns a range that covers the date,
-    use that.
-  */
-
   const midnight =
     new Date(
       `${dateStr}T12:00:00`
     ).getTime();
-
 
   const covered =
     results.find(
@@ -1886,7 +2196,6 @@ async function fetchRateForDate(
         dateStr
       );
 
-
     if(!version){
 
       throw new Error(
@@ -1895,10 +2204,8 @@ async function fetchRateForDate(
 
     }
 
-
     const region =
       data.settings.region;
-
 
     const codes =
       getTariffCodes(
@@ -1906,22 +2213,13 @@ async function fetchRateForDate(
         region
       );
 
-
     const cacheKey =
       `${version.code}|${region}`;
-
-
-    /*
-      Fetch and cache the complete
-      historical unit-rate data for this
-      Tracker version.
-    */
 
     if(!tariffCache[cacheKey]){
 
       const base =
         'https://api.octopus.energy/v1/products';
-
 
       const elecUnitURL =
         `${base}/${version.code}` +
@@ -1929,13 +2227,11 @@ async function fetchRateForDate(
         `${codes.elec}` +
         `/standard-unit-rates/`;
 
-
       const gasUnitURL =
         `${base}/${version.code}` +
         `/gas-tariffs/` +
         `${codes.gas}` +
         `/standard-unit-rates/`;
-
 
       const elecStandURL =
         `${base}/${version.code}` +
@@ -1943,13 +2239,11 @@ async function fetchRateForDate(
         `${codes.elec}` +
         `/standing-charges/`;
 
-
       const gasStandURL =
         `${base}/${version.code}` +
         `/gas-tariffs/` +
         `${codes.gas}` +
         `/standing-charges/`;
-
 
       const [
         elecUnit,
@@ -1977,7 +2271,6 @@ async function fetchRateForDate(
 
         ]);
 
-
       tariffCache[cacheKey] = {
 
         elecUnit:
@@ -1996,10 +2289,10 @@ async function fetchRateForDate(
 
     }
 
-
     const cached =
-      tariffCache[cacheKey];
-
+      tariffCache[
+        cacheKey
+      ];
 
     const er =
       findRateForDate(
@@ -2025,7 +2318,6 @@ async function fetchRateForDate(
         dateStr
       );
 
-
     if(!er || !gr){
 
       throw new Error(
@@ -2033,14 +2325,6 @@ async function fetchRateForDate(
       );
 
     }
-
-
-    /*
-      Standing charges may occasionally have
-      slightly different validity structures.
-      If a matching date isn't found, use the
-      closest standing charge.
-    */
 
     const elecStanding =
       es
@@ -2056,7 +2340,6 @@ async function fetchRateForDate(
           )
         : null;
 
-
     if(
       elecStanding == null ||
       gasStanding == null
@@ -2067,7 +2350,6 @@ async function fetchRateForDate(
       );
 
     }
-
 
     const found = {
 
@@ -2115,18 +2397,15 @@ async function fetchRateForDate(
 
     };
 
-
-    data.rates[dateStr] =
-      found;
-
+    data.rates[
+      dateStr
+    ] = found;
 
     await saveData();
-
 
     loadRateIntoForm(
       dateStr
     );
-
 
     if(!silent){
 
@@ -2136,9 +2415,7 @@ async function fetchRateForDate(
 
     }
 
-
     return found;
-
 
   }catch(e){
 
@@ -2148,12 +2425,10 @@ async function fetchRateForDate(
       e
     );
 
-
     setRateStatus(
       'fail',
       dateStr
     );
-
 
     if(!silent){
 
@@ -2163,9 +2438,7 @@ async function fetchRateForDate(
 
     }
 
-
     return null;
-
 
   }finally{
 
@@ -2182,7 +2455,7 @@ async function fetchRateForDate(
 
 
 /* =========================================================
-   MANUAL FETCH BUTTON
+   MANUAL FETCH
 ========================================================= */
 
 $('fetchRateBtn')
@@ -2195,15 +2468,14 @@ $('fetchRateBtn')
 
     if(dateStr){
 
-      /*
-        Clear cached rate so a fresh API request
-        is definitely made.
-      */
-
       const old =
-        data.rates[dateStr];
+        data.rates[
+          dateStr
+        ];
 
-      delete data.rates[dateStr];
+      delete data.rates[
+        dateStr
+      ];
 
       if(old){
 
@@ -2217,7 +2489,9 @@ $('fetchRateBtn')
           const key =
             `${version.code}|${data.settings.region}`;
 
-          delete tariffCache[key];
+          delete tariffCache[
+            key
+          ];
 
         }
 
@@ -2234,7 +2508,7 @@ $('fetchRateBtn')
 
 
 /* =========================================================
-   AUTO UPDATE ALL EXISTING HISTORY
+   AUTO UPDATE ALL
 ========================================================= */
 
 $('fetchAllRatesBtn')
@@ -2247,7 +2521,6 @@ $('fetchAllRatesBtn')
         data.entries
       ).sort();
 
-
     if(!dates.length){
 
       toast(
@@ -2258,36 +2531,25 @@ $('fetchAllRatesBtn')
 
     }
 
-
     const btn =
       $('fetchAllRatesBtn');
 
-
     btn.disabled =
       true;
-
 
     let success = 0;
 
     let fail = 0;
 
-
     for(
       const dateStr of dates
     ){
-
-      /*
-        Always refresh existing rates as well,
-        so old incorrect/manual values can be
-        replaced by the API value.
-      */
 
       const result =
         await fetchRateForDate(
           dateStr,
           true
         );
-
 
       if(result)
         success++;
@@ -2296,13 +2558,10 @@ $('fetchAllRatesBtn')
 
     }
 
-
     btn.disabled =
       false;
 
-
     render();
-
 
     toast(
       `完成：${success} 日成功，${fail} 日失敗`
@@ -2324,7 +2583,6 @@ $('saveEntryBtn')
     const dateStr =
       $('entryDate').value;
 
-
     if(!dateStr){
 
       toast(
@@ -2335,7 +2593,6 @@ $('saveEntryBtn')
 
     }
 
-
     const elec =
       parseFloat(
         $('entryElec').value
@@ -2345,7 +2602,6 @@ $('saveEntryBtn')
       parseFloat(
         $('entryGas').value
       );
-
 
     if(
       isNaN(elec) &&
@@ -2360,8 +2616,9 @@ $('saveEntryBtn')
 
     }
 
-
-    data.entries[dateStr] = {
+    data.entries[
+      dateStr
+    ] = {
 
       elec:
         isNaN(elec)
@@ -2374,7 +2631,6 @@ $('saveEntryBtn')
           : gas
 
     };
-
 
     const mEU =
       parseFloat(
@@ -2396,10 +2652,10 @@ $('saveEntryBtn')
         $('manualGasStanding').value
       );
 
-
     const existingRate =
-      data.rates[dateStr];
-
+      data.rates[
+        dateStr
+      ];
 
     if(
       !isNaN(mEU) &&
@@ -2407,12 +2663,6 @@ $('saveEntryBtn')
       !isNaN(mES) &&
       !isNaN(mGS)
     ){
-
-      /*
-        If the values are unchanged from an
-        automatically fetched rate, keep source=auto.
-        Otherwise the user has manually changed them.
-      */
 
       const changed =
         existingRate &&
@@ -2436,8 +2686,9 @@ $('saveEntryBtn')
             Number(existingRate.gasStanding)
         );
 
-
-      data.rates[dateStr] = {
+      data.rates[
+        dateStr
+      ] = {
 
         elecUnit:mEU,
 
@@ -2472,17 +2723,14 @@ $('saveEntryBtn')
 
     }
 
-
     await saveData();
-
 
     toast(
       '已儲存 ' + dateStr + ' 嘅紀錄'
     );
 
-
-    editingDate = null;
-
+    editingDate =
+      null;
 
     render();
 
@@ -2494,14 +2742,15 @@ $('saveEntryBtn')
    GAS CONVERSION
 ========================================================= */
 
-function gasKwhFor(entry){
+function gasKwhFor(
+  entry
+){
 
   if(!entry)
     return 0;
 
   const s =
     data.settings;
-
 
   return s.gasUnit==='m3'
 
@@ -2514,10 +2763,10 @@ function gasKwhFor(entry){
 
 
 /* =========================================================
-   FUSE COST
+   FUSE DAILY ENERGY COST
 ========================================================= */
 
-function fuseCostForDate(
+function fuseEnergyCostForDate(
   dateStr,
   entry
 ){
@@ -2525,22 +2774,45 @@ function fuseCostForDate(
   const s =
     data.settings;
 
+  const elecKwh =
+    entry.elec || 0;
+
+  const gasKwh =
+    gasKwhFor(entry);
+
+  const elecPence =
+    s.fuseElecUnit *
+    elecKwh;
+
+  const gasPence =
+    s.fuseGasUnit *
+    gasKwh;
+
+  return (
+    elecPence +
+    gasPence
+  ) / 100;
+
+}
+
+
+/* =========================================================
+   FUSE DAILY STANDING COST
+========================================================= */
+
+function fuseStandingCostForDate(
+  dateStr
+){
+
+  const s =
+    data.settings;
 
   const dim =
     daysInMonth(
       dateStr
     );
 
-
-  const elecKwh =
-    entry.elec || 0;
-
-
-  const gasKwh =
-    gasKwhFor(entry);
-
-
-  const elecPence =
+  const pence =
 
     (
       s.fuseElecMonthly *
@@ -2554,12 +2826,6 @@ function fuseCostForDate(
 
     +
 
-    s.fuseElecUnit *
-    elecKwh;
-
-
-  const gasPence =
-
     (
       s.fuseGasMonthly *
       100 /
@@ -2568,17 +2834,111 @@ function fuseCostForDate(
 
     +
 
-    s.fuseGasStanding
+    s.fuseGasStanding;
+
+  return pence / 100;
+
+}
+
+
+/* =========================================================
+   FUSE DAILY COST
+========================================================= */
+
+function fuseCostForDate(
+  dateStr,
+  entry
+){
+
+  return (
+
+    fuseEnergyCostForDate(
+      dateStr,
+      entry
+    )
 
     +
 
-    s.fuseGasUnit *
+    fuseStandingCostForDate(
+      dateStr
+    )
+
+  );
+
+}
+
+
+/* =========================================================
+   TRACKER DAILY COST
+========================================================= */
+
+function trackerEnergyCostForDate(
+  dateStr,
+  entry
+){
+
+  const r =
+    data.rates[
+      dateStr
+    ];
+
+  if(
+    !r ||
+    r.elecUnit == null ||
+    r.gasUnit == null
+  ){
+
+    return null;
+
+  }
+
+  const elecKwh =
+    entry.elec || 0;
+
+  const gasKwh =
+    gasKwhFor(entry);
+
+  const pence =
+
+    r.elecUnit *
+    elecKwh
+
+    +
+
+    r.gasUnit *
     gasKwh;
 
+  return pence / 100;
+
+}
+
+
+function trackerStandingCostForDate(
+  dateStr
+){
+
+  const r =
+    data.rates[
+      dateStr
+    ];
+
+  if(
+    !r ||
+    r.elecStanding == null ||
+    r.gasStanding == null
+  ){
+
+    return null;
+
+  }
 
   return (
-    elecPence +
-    gasPence
+
+    Number(r.elecStanding)
+    +
+
+    Number(r.gasStanding)
+
   ) / 100;
 
 }
@@ -2593,51 +2953,244 @@ function trackerCostForDate(
   entry
 ){
 
-  const r =
-    data.rates[dateStr];
+  const energy =
+    trackerEnergyCostForDate(
+      dateStr,
+      entry
+    );
 
+  const standing =
+    trackerStandingCostForDate(
+      dateStr
+    );
 
   if(
-    !r ||
-    r.elecUnit == null ||
-    r.gasUnit == null ||
-    r.elecStanding == null ||
-    r.gasStanding == null
+    energy == null ||
+    standing == null
   ){
 
     return null;
 
   }
 
+  return energy + standing;
 
-  const elecKwh =
-    entry.elec || 0;
-
-
-  const gasKwh =
-    gasKwhFor(entry);
+}
 
 
-  const pence =
+/* =========================================================
+   FILTER EVENTS
+========================================================= */
 
-    r.elecStanding
+function setHistoryFilter(
+  filter
+){
 
-    +
+  historyFilter =
+    filter;
 
-    r.elecUnit *
-    elecKwh
+  $('filterAll')
+    .classList
+    .toggle(
+      'active',
+      filter==='all'
+    );
 
-    +
+  $('filterMonth')
+    .classList
+    .toggle(
+      'active',
+      filter==='month'
+    );
 
-    r.gasStanding
+  $('filterDay')
+    .classList
+    .toggle(
+      'active',
+      filter==='day'
+    );
 
-    +
+  $('monthPicker')
+    .classList
+    .toggle(
+      'show',
+      filter==='month'
+    );
 
-    r.gasUnit *
-    gasKwh;
+  $('dayPicker')
+    .classList
+    .toggle(
+      'show',
+      filter==='day'
+    );
+
+  render();
+
+}
 
 
-  return pence / 100;
+$('filterAll')
+.addEventListener(
+  'click',
+  ()=>{
+    setHistoryFilter(
+      'all'
+    );
+  }
+);
+
+
+$('filterMonth')
+.addEventListener(
+  'click',
+  ()=>{
+
+    if(
+      !$('historyMonth').value
+    ){
+
+      const dates =
+        Object.keys(
+          data.entries
+        ).sort();
+
+      if(dates.length){
+
+        $('historyMonth').value =
+          monthKey(
+            dates[dates.length-1]
+          );
+
+      }else{
+
+        const now =
+          new Date();
+
+        $('historyMonth').value =
+          `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+
+      }
+
+    }
+
+    setHistoryFilter(
+      'month'
+    );
+
+  }
+);
+
+
+$('filterDay')
+.addEventListener(
+  'click',
+  ()=>{
+
+    if(
+      !$('historyDay').value
+    ){
+
+      const dates =
+        Object.keys(
+          data.entries
+        ).sort();
+
+      if(dates.length){
+
+        $('historyDay').value =
+          dates[dates.length-1];
+
+      }else{
+
+        $('historyDay').value =
+          fmtDateStr(
+            new Date()
+          );
+
+      }
+
+    }
+
+    setHistoryFilter(
+      'day'
+    );
+
+  }
+);
+
+
+$('historyMonth')
+.addEventListener(
+  'change',
+  ()=>{
+    render();
+  }
+);
+
+
+$('historyDay')
+.addEventListener(
+  'change',
+  ()=>{
+    render();
+  }
+);
+
+
+/* =========================================================
+   GET FILTERED DATES
+========================================================= */
+
+function getFilteredDates(){
+
+  const dates =
+    Object.keys(
+      data.entries
+    ).sort();
+
+  if(
+    historyFilter === 'all'
+  ){
+
+    return dates;
+
+  }
+
+  if(
+    historyFilter === 'month'
+  ){
+
+    const month =
+      $('historyMonth').value;
+
+    if(!month)
+      return [];
+
+    return dates.filter(
+      d =>
+        monthKey(d) === month
+    );
+
+  }
+
+  if(
+    historyFilter === 'day'
+  ){
+
+    const day =
+      $('historyDay').value;
+
+    if(!day)
+      return [];
+
+    return dates.filter(
+      d =>
+        d === day
+    );
+
+  }
+
+  return dates;
 
 }
 
@@ -2646,35 +3199,34 @@ function trackerCostForDate(
    EDIT
 ========================================================= */
 
-function editEntry(dateStr){
+function editEntry(
+  dateStr
+){
 
   editingDate =
     dateStr;
 
-
   $('entryDate').value =
     dateStr;
 
-
-  setQuickActive(null);
-
+  setQuickActive(
+    null
+  );
 
   const e =
-    data.entries[dateStr];
-
+    data.entries[
+      dateStr
+    ];
 
   $('entryElec').value =
     e.elec;
 
-
   $('entryGas').value =
     e.gas;
-
 
   loadRateIntoForm(
     dateStr
   );
-
 
   window.scrollTo({
     top:0,
@@ -2708,59 +3260,43 @@ async function deleteEntry(
 
 
 /* =========================================================
-   RENDER
+   MONTH SUMMARY CALCULATION
 ========================================================= */
 
-function render(){
+function calculateMonth(
+  month
+){
 
   const dates =
     Object.keys(
       data.entries
-    ).sort();
+    )
+    .filter(
+      d =>
+        monthKey(d) === month
+    )
+    .sort();
 
+  let fuse =
+    0;
 
-  $('countTag').textContent =
-    dates.length + ' 日';
+  let tracker =
+    0;
 
+  let trackerAvailable =
+    true;
 
-  let totalFuse = 0;
+  let elecFuse =
+    0;
 
-  let totalTracker = 0;
+  let elecTracker =
+    0;
 
-  let cumPoints = [];
+  let gasFuse =
+    0;
 
-  let cum = 0;
-
-  let haveTracker =
-    false;
-
-
-  const sortedDesc =
-    [...dates]
-      .sort()
-      .reverse();
-
-
-  const listEl =
-    $('historyList');
-
-
-  if(
-    sortedDesc.length === 0
-  ){
-
-    listEl.innerHTML =
-      '<div class="empty">' +
-      '未有任何紀錄。喺上面表格輸入第一日嘅用量啦。' +
-      '</div>';
-
-  }else{
-
-    listEl.innerHTML =
-      '';
-
-  }
-
+  let gasTracker =
+    0;
 
   dates.forEach(
     dateStr => {
@@ -2770,6 +3306,716 @@ function render(){
           dateStr
         ];
 
+      const fuseEnergy =
+        fuseEnergyCostForDate(
+          dateStr,
+          entry
+        );
+
+      const fuseStanding =
+        fuseStandingCostForDate(
+          dateStr
+        );
+
+      const trackerEnergy =
+        trackerEnergyCostForDate(
+          dateStr,
+          entry
+        );
+
+      const trackerStanding =
+        trackerStandingCostForDate(
+          dateStr
+        );
+
+      fuse +=
+        fuseEnergy +
+        fuseStanding;
+
+      elecFuse +=
+        (
+          sNumber(
+            data.settings.fuseElecUnit
+          ) *
+          (entry.elec || 0)
+        ) / 100;
+
+      gasFuse +=
+        (
+          sNumber(
+            data.settings.fuseGasUnit
+          ) *
+          gasKwhFor(entry)
+        ) / 100;
+
+      if(
+        trackerEnergy == null ||
+        trackerStanding == null
+      ){
+
+        trackerAvailable =
+          false;
+
+      }else{
+
+        tracker +=
+          trackerEnergy +
+          trackerStanding;
+
+        elecTracker +=
+          trackerEnergyElec(
+            dateStr,
+            entry
+          );
+
+        gasTracker +=
+          trackerEnergyGas(
+            dateStr,
+            entry
+          );
+
+      }
+
+    }
+  );
+
+  /*
+    Add monthly Fuse fees / standing charges
+    only once in the monthly summary.
+  */
+
+  const firstDate =
+    dates[0];
+
+  if(firstDate){
+
+    /*
+      fuse currently already includes daily
+      standing charges. Monthly fee is also
+      distributed daily in fuseStandingCostForDate,
+      so no extra monthly fee is added here.
+    */
+
+  }
+
+  return {
+
+    dates,
+
+    fuse,
+
+    tracker:
+      trackerAvailable
+        ? tracker
+        : null,
+
+    elecFuse,
+
+    elecTracker,
+
+    gasFuse,
+
+    gasTracker,
+
+    trackerAvailable
+
+  };
+
+}
+
+
+function sNumber(
+  n
+){
+
+  return Number(n) || 0;
+
+}
+
+
+function trackerEnergyElec(
+  dateStr,
+  entry
+){
+
+  const r =
+    data.rates[
+      dateStr
+    ];
+
+  if(
+    !r ||
+    r.elecUnit == null
+  )
+    return 0;
+
+  return (
+    Number(r.elecUnit) *
+    (entry.elec || 0)
+  ) / 100;
+
+}
+
+
+function trackerEnergyGas(
+  dateStr,
+  entry
+){
+
+  const r =
+    data.rates[
+      dateStr
+    ];
+
+  if(
+    !r ||
+    r.gasUnit == null
+  )
+    return 0;
+
+  return (
+    Number(r.gasUnit) *
+    gasKwhFor(entry)
+  ) / 100;
+
+}
+
+
+/* =========================================================
+   RENDER
+========================================================= */
+
+function render(){
+
+  const allDates =
+    Object.keys(
+      data.entries
+    ).sort();
+
+  const dates =
+    getFilteredDates();
+
+  const listEl =
+    $('historyList');
+
+  const monthSummary =
+    $('monthSummary');
+
+  let totalFuse =
+    0;
+
+  let totalTracker =
+    0;
+
+  let haveTracker =
+    false;
+
+  let cumPoints = [];
+
+  let cum = 0;
+
+
+  /* -------------------------------------------------------
+     MONTH VIEW
+  ------------------------------------------------------- */
+
+  if(
+    historyFilter === 'month'
+  ){
+
+    $('historyTitle').textContent =
+      '每月紀錄';
+
+    const selectedMonth =
+      $('historyMonth').value;
+
+    if(
+      !selectedMonth
+    ){
+
+      listEl.innerHTML =
+        '<div class="empty">請選擇月份。</div>';
+
+      monthSummary.style.display =
+        'none';
+
+      $('countTag').textContent =
+        '0 日';
+
+      $('totalFuse').textContent =
+        '£0.00';
+
+      $('totalTracker').textContent =
+        '£—';
+
+      updateHero(
+        0,
+        false,
+        '請選擇月份'
+      );
+
+      drawSparkline([]);
+
+      return;
+
+    }
+
+
+    const monthData =
+      calculateMonth(
+        selectedMonth
+      );
+
+
+    const selectedDates =
+      monthData.dates;
+
+
+    $('countTag').textContent =
+      selectedDates.length +
+      ' 日';
+
+
+    monthSummary.style.display =
+      selectedDates.length
+        ? 'block'
+        : 'none';
+
+
+    if(
+      !selectedDates.length
+    ){
+
+      listEl.innerHTML =
+        `<div class="empty">
+          ${monthDisplay(selectedMonth)} 暫時未有紀錄。
+        </div>`;
+
+      $('monthElec').textContent =
+        '£0.00';
+
+      $('monthGas').textContent =
+        '£0.00';
+
+      $('totalFuse').textContent =
+        '£0.00';
+
+      $('totalTracker').textContent =
+        '£—';
+
+      updateHero(
+        0,
+        false,
+        monthDisplay(selectedMonth)
+      );
+
+      drawSparkline([]);
+
+      return;
+
+    }
+
+
+    $('monthElec').textContent =
+      '£' +
+      monthData.elecFuse.toFixed(2);
+
+    $('monthGas').textContent =
+      '£' +
+      monthData.gasFuse.toFixed(2);
+
+
+    /*
+      Build monthly cards for all months
+      when user has selected a month.
+    */
+
+    const fuse =
+      monthData.fuse;
+
+    const tracker =
+      monthData.tracker;
+
+    totalFuse =
+      fuse;
+
+    if(tracker != null){
+
+      totalTracker =
+        tracker;
+
+      haveTracker =
+        true;
+
+    }
+
+
+    const delta =
+      tracker != null
+        ? fuse - tracker
+        : null;
+
+
+    let deltaHtml =
+      '';
+
+    if(delta == null){
+
+      deltaHtml =
+        `<div class="month-delta">
+          —
+        </div>`;
+
+    }else{
+
+      const cls =
+        delta >= 0
+          ? 'good'
+          : 'bad';
+
+      deltaHtml =
+        `<div class="month-delta ${cls} mono">
+          ${delta>=0?'+':''}£${delta.toFixed(2)}
+        </div>`;
+
+    }
+
+
+    let trackerElec =
+      0;
+
+    let trackerGas =
+      0;
+
+
+    selectedDates.forEach(
+      dateStr => {
+
+        const entry =
+          data.entries[
+            dateStr
+          ];
+
+        trackerElec +=
+          trackerEnergyElec(
+            dateStr,
+            entry
+          );
+
+        trackerGas +=
+          trackerEnergyGas(
+            dateStr,
+            entry
+          );
+
+      }
+    );
+
+
+    const standingFuse =
+      fuse -
+      monthData.elecFuse -
+      monthData.gasFuse;
+
+
+    const standingTracker =
+      tracker != null
+        ? tracker -
+          trackerElec -
+          trackerGas
+        : null;
+
+
+    listEl.innerHTML =
+
+      `<div class="month-row-item">
+
+        <div class="month-row-head">
+
+          <div class="month-name">
+            ${monthDisplay(selectedMonth)}
+          </div>
+
+          ${deltaHtml}
+
+        </div>
+
+        <div class="month-detail">
+
+          <div class="month-detail-box">
+
+            <div class="small-label">
+              ⚡ Fuse 電
+            </div>
+
+            <div class="small-value">
+              £${monthData.elecFuse.toFixed(2)}
+            </div>
+
+          </div>
+
+
+          <div class="month-detail-box">
+
+            <div class="small-label">
+              ⚡ Tracker 電
+            </div>
+
+            <div class="small-value">
+              ${
+                tracker != null
+                  ? '£'+trackerElec.toFixed(2)
+                  : '—'
+              }
+            </div>
+
+          </div>
+
+
+          <div class="month-detail-box">
+
+            <div class="small-label">
+              🔥 Fuse Gas
+            </div>
+
+            <div class="small-value">
+              £${monthData.gasFuse.toFixed(2)}
+            </div>
+
+          </div>
+
+
+          <div class="month-detail-box">
+
+            <div class="small-label">
+              🔥 Tracker Gas
+            </div>
+
+            <div class="small-value">
+              ${
+                tracker != null
+                  ? '£'+trackerGas.toFixed(2)
+                  : '—'
+              }
+            </div>
+
+          </div>
+
+
+          <div class="month-detail-box">
+
+            <div class="small-label">
+              Fuse 總數
+            </div>
+
+            <div class="small-value">
+              £${fuse.toFixed(2)}
+            </div>
+
+          </div>
+
+
+          <div class="month-detail-box">
+
+            <div class="small-label">
+              Tracker 總數
+            </div>
+
+            <div class="small-value">
+              ${
+                tracker != null
+                  ? '£'+tracker.toFixed(2)
+                  : '—'
+              }
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="month-meta">
+          ${selectedDates.length} 日有紀錄
+          ${
+            tracker != null
+              ? ' · Tracker 價格完整'
+              : ' · 部分日子未有 Tracker 價格'
+          }
+        </div>
+
+      </div>`;
+
+
+    $('totalFuse').textContent =
+      '£' +
+      totalFuse.toFixed(2);
+
+    $('totalTracker').textContent =
+      haveTracker
+        ? '£' +
+          totalTracker.toFixed(2)
+        : '£—';
+
+
+    if(
+      tracker != null
+    ){
+
+      updateHero(
+        delta,
+        true,
+        monthDisplay(selectedMonth)
+      );
+
+    }else{
+
+      updateHero(
+        0,
+        false,
+        monthDisplay(selectedMonth)
+      );
+
+    }
+
+
+    /*
+      Sparkline uses daily cumulative
+      difference within selected month.
+    */
+
+    let monthCum =
+      0;
+
+    selectedDates.forEach(
+      dateStr => {
+
+        const entry =
+          data.entries[
+            dateStr
+          ];
+
+        const f =
+          fuseCostForDate(
+            dateStr,
+            entry
+          );
+
+        const t =
+          trackerCostForDate(
+            dateStr,
+            entry
+          );
+
+        if(t != null){
+
+          monthCum +=
+            f - t;
+
+          cumPoints.push(
+            monthCum
+          );
+
+        }
+
+      }
+    );
+
+    drawSparkline(
+      cumPoints
+    );
+
+    return;
+
+  }
+
+
+  /* -------------------------------------------------------
+     DAILY VIEW
+  ------------------------------------------------------- */
+
+  $('historyTitle').textContent =
+    historyFilter === 'day'
+      ? '每日紀錄'
+      : '歷史紀錄';
+
+
+  $('monthSummary').style.display =
+    'none';
+
+
+  /*
+    DAILY selected date
+  */
+
+  if(
+    historyFilter === 'day'
+  ){
+
+    const selectedDay =
+      $('historyDay').value;
+
+    if(!selectedDay){
+
+      listEl.innerHTML =
+        '<div class="empty">請選擇日期。</div>';
+
+      $('countTag').textContent =
+        '0 日';
+
+      $('totalFuse').textContent =
+        '£0.00';
+
+      $('totalTracker').textContent =
+        '£—';
+
+      updateHero(
+        0,
+        false,
+        '請選擇日期'
+      );
+
+      drawSparkline([]);
+
+      return;
+
+    }
+
+  }
+
+
+  if(
+    !dates.length
+  ){
+
+    listEl.innerHTML =
+      historyFilter === 'day'
+        ? '<div class="empty">呢日未有紀錄。</div>'
+        : '<div class="empty">未有任何紀錄。</div>';
+
+  }else{
+
+    listEl.innerHTML =
+      '';
+
+  }
+
+
+  $('countTag').textContent =
+    dates.length +
+    ' 日';
+
+
+  /*
+    Calculate totals
+  */
+
+  dates.forEach(
+    dateStr => {
+
+      const entry =
+        data.entries[
+          dateStr
+        ];
 
       const fuse =
         fuseCostForDate(
@@ -2777,17 +4023,14 @@ function render(){
           entry
         );
 
-
       const tracker =
         trackerCostForDate(
           dateStr,
           entry
         );
 
-
       totalFuse +=
         fuse;
-
 
       if(
         tracker != null
@@ -2802,150 +4045,169 @@ function render(){
         cum +=
           fuse - tracker;
 
+        cumPoints.push(
+          cum
+        );
+
       }
-
-
-      cumPoints.push(
-        cum
-      );
 
     }
   );
 
 
-  sortedDesc.forEach(
-    dateStr => {
+  /*
+    Render daily rows
+  */
 
-      const entry =
-        data.entries[
-          dateStr
-        ];
+  [...dates]
+    .sort()
+    .reverse()
+    .forEach(
+      dateStr => {
 
+        const entry =
+          data.entries[
+            dateStr
+          ];
 
-      const fuse =
-        fuseCostForDate(
-          dateStr,
-          entry
-        );
+        const fuse =
+          fuseCostForDate(
+            dateStr,
+            entry
+          );
 
+        const tracker =
+          trackerCostForDate(
+            dateStr,
+            entry
+          );
 
-      const tracker =
-        trackerCostForDate(
-          dateStr,
-          entry
-        );
-
-
-      const dd =
-        displayDate(
-          dateStr
-        );
-
-
-      const row =
-        document.createElement(
-          'div'
-        );
-
-
-      row.className =
-        'hrow';
-
-
-      let deltaHtml;
-
-
-      if(
-        tracker == null
-      ){
-
-        deltaHtml =
-
-          `<div class="delta" style="color:var(--muted)">
-            –
-            <span class="sub">
-              未有價錢
-            </span>
-          </div>`;
-
-      }else{
-
-        const delta =
-          fuse - tracker;
-
-
-        const cls =
-          delta >= 0
-            ? 'good'
-            : 'bad';
-
-
-        const label =
-          delta >= 0
-            ? 'Tracker平'
-            : 'Fuse平';
-
-
-        deltaHtml =
-
-          `<div class="delta ${cls} mono">
-            ${delta>=0?'+':''}£${delta.toFixed(2)}
-            <span class="sub">
-              ${label}
-            </span>
-          </div>`;
-
-      }
-
-
-      row.innerHTML =
-
-        `<div class="d mono">
-          ${dd.main}
-          <span class="yr">
-            ${dd.yr}
-          </span>
-        </div>
-
-        <div class="usage">
-          ⚡
-          <b>
-            ${(entry.elec||0).toFixed(1)}
-          </b>
-          kWh
-          ・
-          🔥
-          <b>
-            ${(entry.gas||0).toFixed(1)}
-          </b>
-          ${data.settings.gasUnit}
-        </div>
-
-        ${deltaHtml}`;
-
-
-      row.addEventListener(
-        'click',
-        ()=>{
-          editEntry(
+        const dd =
+          displayDate(
             dateStr
           );
+
+        const row =
+          document.createElement(
+            'div'
+          );
+
+        row.className =
+          'hrow';
+
+
+        let deltaHtml;
+
+
+        if(
+          tracker == null
+        ){
+
+          deltaHtml =
+
+            `<div class="delta"
+                  style="color:var(--muted)">
+
+              –
+
+              <span class="sub">
+                未有價錢
+              </span>
+
+            </div>`;
+
+        }else{
+
+          const delta =
+            fuse - tracker;
+
+          const cls =
+            delta >= 0
+              ? 'good'
+              : 'bad';
+
+          const label =
+            delta >= 0
+              ? 'Tracker平'
+              : 'Fuse平';
+
+          deltaHtml =
+
+            `<div class="delta ${cls} mono">
+
+              ${delta>=0?'+':''}£${delta.toFixed(2)}
+
+              <span class="sub">
+                ${label}
+              </span>
+
+            </div>`;
+
         }
-      );
 
 
-      listEl.appendChild(
-        row
-      );
+        row.innerHTML =
 
-    }
-  );
+          `<div class="d mono">
 
+            ${dd.main}
+
+            <span class="yr">
+              ${dd.yr}
+            </span>
+
+          </div>
+
+          <div class="usage">
+
+            ⚡
+
+            <b>
+              ${(entry.elec||0).toFixed(1)}
+            </b>
+
+            kWh
+
+            ・
+
+            🔥
+
+            <b>
+              ${(entry.gas||0).toFixed(1)}
+            </b>
+
+            ${data.settings.gasUnit}
+
+          </div>
+
+          ${deltaHtml}`;
+
+
+        row.addEventListener(
+          'click',
+          ()=>{
+            editEntry(
+              dateStr
+            );
+          }
+        );
+
+
+        listEl.appendChild(
+          row
+        );
+
+      }
+    );
+
+
+  /*
+    Totals
+  */
 
   $('totalFuse').textContent =
     '£' +
     totalFuse.toFixed(2);
-
 
   $('totalTracker').textContent =
     haveTracker
@@ -2954,33 +4216,22 @@ function render(){
       : '£—';
 
 
-  const heroFigure =
-    $('heroFigure');
-
-
-  const heroSub =
-    $('heroSub');
-
+  /*
+    Hero
+  */
 
   if(
     !haveTracker ||
     dates.length===0
   ){
 
-    heroFigure.textContent =
-      '£0.00';
-
-
-    heroFigure.className =
-      'hero-figure mono';
-
-
-    heroSub.textContent =
-      dates.length===0
-
-        ? '未有紀錄 — 喺下面輸入第一日嘅使用量開始。'
-
-        : '呢啲日子未有 Tracker 價錢，攞唔到比較。';
+    updateHero(
+      0,
+      false,
+      historyFilter === 'day'
+        ? $('historyDay').value
+        : '全部紀錄'
+    );
 
   }else{
 
@@ -2988,31 +4239,13 @@ function render(){
       totalFuse -
       totalTracker;
 
-
-    heroFigure.textContent =
-
-      (diff>=0?'+':'') +
-      '£' +
-      diff.toFixed(2);
-
-
-    heroFigure.className =
-
-      'hero-figure mono ' +
-      (
-        diff>=0
-          ? 'good'
-          : 'bad'
-      );
-
-
-    heroSub.textContent =
-
-      diff>=0
-
-        ? `如果成段時間都用緊 Tracker，會平 £${Math.abs(diff).toFixed(2)}`
-
-        : `Fuse 喺呢段時間平 £${Math.abs(diff).toFixed(2)}`;
+    updateHero(
+      diff,
+      true,
+      historyFilter === 'day'
+        ? $('historyDay').value
+        : '全部紀錄'
+    );
 
   }
 
@@ -3020,6 +4253,100 @@ function render(){
   drawSparkline(
     cumPoints
   );
+
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+function updateHero(
+  diff,
+  available,
+  context
+){
+
+  const heroFigure =
+    $('heroFigure');
+
+  const heroSub =
+    $('heroSub');
+
+  const heroLabel =
+    $('heroLabel');
+
+
+  if(
+    historyFilter === 'month'
+  ){
+
+    heroLabel.textContent =
+      '所選月份差額（Fuse − Tracker）';
+
+  }else if(
+    historyFilter === 'day'
+  ){
+
+    heroLabel.textContent =
+      '所選日期差額（Fuse − Tracker）';
+
+  }else{
+
+    heroLabel.textContent =
+      '總差額（Fuse − Tracker）';
+
+  }
+
+
+  if(!available){
+
+    heroFigure.textContent =
+      '£0.00';
+
+    heroFigure.className =
+      'hero-figure mono';
+
+    heroSub.textContent =
+      context
+        ? `${context} — 未有完整 Tracker 價格，暫時無法比較。`
+        : '未有完整 Tracker 價格，暫時無法比較。';
+
+    return;
+
+  }
+
+
+  heroFigure.textContent =
+    (diff>=0?'+':'') +
+    '£' +
+    diff.toFixed(2);
+
+
+  heroFigure.className =
+    'hero-figure mono ' +
+    (
+      diff>=0
+        ? 'good'
+        : 'bad'
+    );
+
+
+  if(diff >= 0){
+
+    heroSub.textContent =
+      context
+        ? `${context}：如果用 Tracker，會平 £${Math.abs(diff).toFixed(2)}`
+        : `Tracker 會平 £${Math.abs(diff).toFixed(2)}`;
+
+  }else{
+
+    heroSub.textContent =
+      context
+        ? `${context}：Fuse 會平 £${Math.abs(diff).toFixed(2)}`
+        : `Fuse 會平 £${Math.abs(diff).toFixed(2)}`;
+
+  }
 
 }
 
@@ -3035,7 +4362,6 @@ function drawSparkline(
   const svg =
     $('sparkline');
 
-
   if(
     points.length < 2
   ){
@@ -3047,13 +4373,14 @@ function drawSparkline(
 
   }
 
+  const w =
+    300;
 
-  const w = 300;
+  const h =
+    44;
 
-  const h = 44;
-
-  const pad = 4;
-
+  const pad =
+    4;
 
   const min =
     Math.min(
@@ -3061,22 +4388,18 @@ function drawSparkline(
       ...points
     );
 
-
   const max =
     Math.max(
       0,
       ...points
     );
 
-
   const range =
     (max-min) || 1;
-
 
   const stepX =
     (w-pad*2) /
     (points.length-1);
-
 
   const y =
     v =>
@@ -3086,7 +4409,6 @@ function drawSparkline(
         range
       ) *
       (h-pad*2);
-
 
   const pathD =
     points
@@ -3098,22 +4420,18 @@ function drawSparkline(
       )
       .join(' ');
 
-
   const zeroY =
     y(0).toFixed(1);
-
 
   const last =
     points[
       points.length-1
     ];
 
-
   const color =
     last>=0
       ? '#6fcf97'
       : '#eb5757';
-
 
   svg.innerHTML =
 
@@ -3156,12 +4474,13 @@ function drawSparkline(
 
 
   /*
-    If normal browser localStorage contains old data
-    and window.storage is unavailable, recover it.
+    Recover normal localStorage if necessary.
   */
 
   if(
-    Object.keys(data.entries).length === 0
+    Object.keys(
+      data.entries
+    ).length === 0
   ){
 
     try{
@@ -3208,21 +4527,61 @@ function drawSparkline(
   }
 
 
+  /*
+    Set entry form to yesterday.
+  */
+
   const d =
     new Date();
-
 
   d.setDate(
     d.getDate()-1
   );
 
-
   $('entryDate').value =
     fmtDateStr(d);
 
 
-  onDateChanged();
+  setQuickActive(
+    'yesterday'
+  );
 
+
+  /*
+    Set filter defaults.
+  */
+
+  const dates =
+    Object.keys(
+      data.entries
+    ).sort();
+
+
+  if(dates.length){
+
+    $('historyMonth').value =
+      monthKey(
+        dates[dates.length-1]
+      );
+
+    $('historyDay').value =
+      dates[dates.length-1];
+
+  }else{
+
+    const now =
+      new Date();
+
+    $('historyMonth').value =
+      `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+
+    $('historyDay').value =
+      fmtDateStr(now);
+
+  }
+
+
+  onDateChanged();
 
   render();
 
