@@ -463,7 +463,6 @@ hr{
 
       <hr>
 
-
       <label>
         Octopus GSP Region
       </label>
@@ -544,14 +543,11 @@ hr{
 
       </select>
 
-
       <hr>
-
 
       <h2>
         Fuse 電
       </h2>
-
 
       <label>
         每月月費 (£)
@@ -563,7 +559,6 @@ hr{
         step="0.01"
       >
 
-
       <label>
         Standing Charge (p/day)
       </label>
@@ -573,7 +568,6 @@ hr{
         id="fuseElecStanding"
         step="0.01"
       >
-
 
       <label>
         Unit Rate (p/kWh)
@@ -585,14 +579,11 @@ hr{
         step="0.01"
       >
 
-
       <hr>
-
 
       <h2>
         Fuse Gas
       </h2>
-
 
       <label>
         每月月費 (£)
@@ -604,7 +595,6 @@ hr{
         step="0.01"
       >
 
-
       <label>
         Standing Charge (p/day)
       </label>
@@ -615,7 +605,6 @@ hr{
         step="0.01"
       >
 
-
       <label>
         Unit Rate (p/kWh)
       </label>
@@ -625,7 +614,6 @@ hr{
         id="fuseGasUnit"
         step="0.01"
       >
-
 
       <label>
         Gas 單位
@@ -643,7 +631,6 @@ hr{
 
       </select>
 
-
       <label>
         m³ → kWh conversion factor
       </label>
@@ -654,7 +641,6 @@ hr{
         step="0.01"
       >
 
-
       <button
         id="saveSettingsBtn"
         class="primary"
@@ -662,7 +648,6 @@ hr{
       >
         儲存設定
       </button>
-
 
       <div
         id="settingsStatus"
@@ -682,7 +667,6 @@ hr{
       輸入電錶紀錄
     </h2>
 
-
     <div class="quick">
 
       <button id="todayBtn">
@@ -695,7 +679,6 @@ hr{
 
     </div>
 
-
     <label>
       紀錄日期
     </label>
@@ -705,13 +688,11 @@ hr{
       id="entryDate"
     >
 
-
     <div
       id="existingInfo"
       class="small"
       style="margin-top:8px"
     ></div>
-
 
     <label>
       Electricity 使用量 (kWh)
@@ -724,7 +705,6 @@ hr{
       min="0"
     >
 
-
     <label>
       Gas 使用量
     </label>
@@ -736,14 +716,11 @@ hr{
       min="0"
     >
 
-
     <hr>
-
 
     <h2>
       Tracker 價格
     </h2>
-
 
     <div
       id="trackerStatus"
@@ -752,7 +729,6 @@ hr{
       請選擇日期。<br>
       揀日期唔會自動查 Tracker 價錢。
     </div>
-
 
     <label>
       Electricity Unit Rate (p/kWh)
@@ -764,7 +740,6 @@ hr{
       step="0.001"
     >
 
-
     <label>
       Electricity Standing Charge (p/day)
     </label>
@@ -774,7 +749,6 @@ hr{
       id="trackerElecStanding"
       step="0.001"
     >
-
 
     <label>
       Gas Unit Rate (p/kWh)
@@ -786,7 +760,6 @@ hr{
       step="0.001"
     >
 
-
     <label>
       Gas Standing Charge (p/day)
     </label>
@@ -797,7 +770,6 @@ hr{
       step="0.001"
     >
 
-
     <button
       id="fetchRateBtn"
       class="primary"
@@ -806,14 +778,12 @@ hr{
       重新查詢 Tracker 價錢
     </button>
 
-
     <button
       id="fetchAllRatesBtn"
       style="margin-top:8px"
     >
       自動更新全部歷史 Tracker 價格
     </button>
-
 
     <button
       id="saveEntryBtn"
@@ -823,7 +793,6 @@ hr{
       儲存呢日紀錄
     </button>
 
-
     <button
       id="deleteEntryBtn"
       class="danger"
@@ -832,13 +801,9 @@ hr{
       🗑️ 刪除呢日紀錄
     </button>
 
-
-    <div
-      class="small delete-note"
-    >
-      刪除只會移除呢日嘅電錶紀錄，Tracker 價格會保留
+    <div class="small delete-note">
+      刪除只會移除呢日電錶紀錄，Tracker 價格會保留
     </div>
-
 
     <div
       id="entryStatus"
@@ -871,7 +836,6 @@ hr{
 
 const STORE_KEY = "octo-tracker-data";
 
-
 let data = {
 
   settings:{
@@ -896,7 +860,6 @@ let data = {
   rates:{}
 
 };
-
 
 let currentView = "all";
 
@@ -2073,9 +2036,8 @@ async function saveEntry(){
 
 /* =========================================================
    DELETE ENTRY
-   ★ 修正：
-   只刪除電錶紀錄
-   Tracker 價格資料完全保留
+   ★ 只刪除電錶紀錄
+   ★ 絕對不刪除 Tracker rate
 ========================================================= */
 
 async function deleteEntry(){
@@ -2100,7 +2062,7 @@ async function deleteEntry(){
   if(!data.entries[dateStr]){
 
     $("entryStatus").textContent =
-      "呢日本身冇儲存紀錄。";
+      "呢日本身冇儲存電錶紀錄。";
 
     $("entryStatus").className =
       "small warning";
@@ -2113,8 +2075,8 @@ async function deleteEntry(){
   const confirmed =
     confirm(
       `確定要刪除 ${formatDate(dateStr)} 嘅電錶紀錄？\n\n` +
-      `只會刪除你輸入嘅 Electricity / Gas 使用量。\n` +
-      `呢日嘅 Tracker 價格會保留。`
+      `只會刪除呢日 Electricity 同 Gas 使用量。\n` +
+      `Tracker Unit Rate 同 Standard Charge 會保留。`
     );
 
 
@@ -2124,13 +2086,14 @@ async function deleteEntry(){
 
 
   /*
-    ★ 只刪除電錶紀錄。
+    ★★★ 最重要 ★★★
 
-    絕對唔可以刪：
-      delete data.rates[dateStr];
+    只刪除 data.entries
 
-    Tracker rate 要保留，
-    方便日後重新輸入同一日資料時繼續使用。
+    絕對唔好：
+    delete data.rates[dateStr];
+
+    因為 Tracker rate 要保留。
   */
 
   delete data.entries[dateStr];
@@ -2140,9 +2103,9 @@ async function deleteEntry(){
 
 
   /*
-    清空電錶輸入欄。
-    Tracker 價格欄唔清除，
-    因為該日 Tracker rate 仍然存在。
+    清除電錶輸入欄。
+
+    Tracker 四個價格欄位唔會清除。
   */
 
   $("entryElec").value =
@@ -2154,13 +2117,19 @@ async function deleteEntry(){
 
   $("existingInfo").innerHTML =
     `<span class="muted">
-      呢日電錶紀錄已刪除，Tracker 價格仍然保留。
+      ${formatDate(dateStr)} 電錶紀錄已刪除。
+      Tracker 價格資料仍然保留。
     </span>`;
 
 
   /*
-    重新載入 Tracker rate，
-    確保畫面仍然顯示保留咗嘅價格。
+    重新載入原本儲存嘅 Tracker rate。
+
+    包括：
+    - Electricity Unit Rate
+    - Electricity Standard Charge
+    - Gas Unit Rate
+    - Gas Standard Charge
   */
 
   loadRateIntoForm(
