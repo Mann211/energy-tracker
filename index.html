@@ -836,7 +836,7 @@ hr{
     <div
       class="small delete-note"
     >
-      刪除會連同呢日嘅 Tracker 價格一齊移除
+      刪除只會移除呢日嘅電錶紀錄，Tracker 價格會保留
     </div>
 
 
@@ -1168,11 +1168,6 @@ async function loadData(){
 
   }
 
-
-  /*
-    如果 window.storage 真係冇資料，
-    再嘗試 localStorage。
-  */
 
   if(!loadedFromWindowStorage){
 
@@ -1904,7 +1899,6 @@ function loadEntryIntoForm(
 
 /* =========================================================
    DATE CHANGE
-   揀日期唔會自動查 Tracker
 ========================================================= */
 
 function onDateChanged(){
@@ -1917,16 +1911,6 @@ function onDateChanged(){
     return;
   }
 
-
-  /*
-    非常重要：
-
-    揀日期只會載入：
-    1. 已有電錶紀錄
-    2. 已儲存 Tracker 價格
-
-    唔會自動 call API。
-  */
 
   loadEntryIntoForm(
     dateStr
@@ -1986,22 +1970,6 @@ async function saveEntry(){
   }
 
 
-  /*
-    0 係有效數據。
-
-    例如：
-    Electricity = 0
-    Gas = 0
-
-    代表：
-    「呢日確實有紀錄，而且使用量係 0」
-
-    所以會照計 Standing Charge。
-
-    如果係入錯資料而唔要呢日，
-    應該使用「刪除呢日紀錄」。
-  */
-
   data.entries[dateStr] = {
 
     elec,
@@ -2012,14 +1980,6 @@ async function saveEntry(){
 
   };
 
-
-  /*
-    如果 Tracker 四個欄位都有數字，
-    就儲存 Tracker rate。
-
-    如果冇輸入，
-    就保留原本 rate。
-  */
 
   const te =
     num(
@@ -2113,6 +2073,9 @@ async function saveEntry(){
 
 /* =========================================================
    DELETE ENTRY
+   ★ 修正：
+   只刪除電錶紀錄
+   Tracker 價格資料完全保留
 ========================================================= */
 
 async function deleteEntry(){
@@ -2149,8 +2112,9 @@ async function deleteEntry(){
 
   const confirmed =
     confirm(
-      `確定要刪除 ${formatDate(dateStr)} 嘅所有紀錄？\n\n` +
-      `電錶數據同 Tracker 價格都會刪除。`
+      `確定要刪除 ${formatDate(dateStr)} 嘅電錶紀錄？\n\n` +
+      `只會刪除你輸入嘅 Electricity / Gas 使用量。\n` +
+      `呢日嘅 Tracker 價格會保留。`
     );
 
 
@@ -2160,21 +2124,25 @@ async function deleteEntry(){
 
 
   /*
-    同時刪除：
-    1. 電錶紀錄
-    2. Tracker 價格
+    ★ 只刪除電錶紀錄。
+
+    絕對唔可以刪：
+      delete data.rates[dateStr];
+
+    Tracker rate 要保留，
+    方便日後重新輸入同一日資料時繼續使用。
   */
 
   delete data.entries[dateStr];
-
-  delete data.rates[dateStr];
 
 
   await saveData();
 
 
   /*
-    清空輸入欄
+    清空電錶輸入欄。
+    Tracker 價格欄唔清除，
+    因為該日 Tracker rate 仍然存在。
   */
 
   $("entryElec").value =
@@ -2183,36 +2151,25 @@ async function deleteEntry(){
   $("entryGas").value =
     "";
 
-  $("trackerElecUnit").value =
-    "";
-
-  $("trackerElecStanding").value =
-    "";
-
-  $("trackerGasUnit").value =
-    "";
-
-  $("trackerGasStanding").value =
-    "";
-
 
   $("existingInfo").innerHTML =
     `<span class="muted">
-      呢日紀錄已刪除，可以重新輸入。
+      呢日電錶紀錄已刪除，Tracker 價格仍然保留。
     </span>`;
 
 
-  $("trackerStatus").className =
-    "status warn";
+  /*
+    重新載入 Tracker rate，
+    確保畫面仍然顯示保留咗嘅價格。
+  */
 
-
-  $("trackerStatus").innerHTML =
-    "呢日 Tracker 價格亦已刪除。";
+  loadRateIntoForm(
+    dateStr
+  );
 
 
   $("entryStatus").textContent =
-    `${formatDate(dateStr)} 已刪除 ✓`;
-
+    `${formatDate(dateStr)} 電錶紀錄已刪除 ✓`;
 
   $("entryStatus").className =
     "small success";
@@ -2469,14 +2426,6 @@ function calculateMonth(
 
   }
 
-
-  /*
-    每月月費只按：
-    「實際有輸入紀錄嘅日數」
-    去分攤。
-
-    未有紀錄嘅日子唔會當成使用量 0。
-  */
 
   const s =
     data.settings;
@@ -3241,11 +3190,6 @@ function render(){
     html;
 
 
-  /*
-    撳任何一日紀錄，
-    就會將嗰日載入上面輸入區。
-  */
-
   history
     .querySelectorAll(
       ".entry-row"
@@ -3333,11 +3277,6 @@ async function fetchAllRates(){
   for(
     const date of dates
   ){
-
-    /*
-      已經有 rate 就唔重新查，
-      避免無必要改動舊資料。
-    */
 
     if(
       data.rates[date]
@@ -3598,18 +3537,6 @@ async function init(){
     )
       .sort();
 
-
-  /*
-    有舊資料：
-    預設去最新一日。
-
-    冇資料：
-    預設昨日。
-
-    注意：
-    呢度只係選日期，
-    絕對唔會自動查 Tracker。
-  */
 
   const defaultDate =
     dates.length
