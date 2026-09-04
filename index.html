@@ -209,6 +209,10 @@ hr{
   justify-content:space-between;
 }
 .rate-value{font-weight:700}
+.tz-note{
+  text-align:center;
+  margin-top:6px;
+}
 </style>
 </head>
 <body>
@@ -360,6 +364,9 @@ hr{
     <button id="todayBtn">今日</button>
     <button id="yesterdayBtn">昨日</button>
   </div>
+  <div class="small tz-note">
+    「今日 / 昨日」按日曆日計算 (Europe/London)，唔係你部電話嘅本地時區。
+  </div>
   <label>📅 紀錄日期</label>
   <input
     type="date"
@@ -506,21 +513,42 @@ const TRACKER_VERSIONS = [
   {code:"SILVER-23-12-06",from:"2023-12-06",to:"2024-04-02"},
   {code:"SILVER-FLEX-22-11-25",from:"2022-11-25",to:"2023-12-05"}
 ];
+/*
+  ★ FIX: 呢個app處理緊嘅係英國 Octopus Tracker 價格，
+  但用戶部機可能喺任何時區（例如香港 UTC+8）。
+  所以「今日」呢個概念，一律要用英國日曆日 (Europe/London)
+  計算，唔可以用瀏覽器本地時間 new Date()。
+  唔係嘅話，喺英國日界（BST期間即係香港朝早7-8點左右）
+  前後開app，「今日」會早或遲成一日，
+  導致攞錯 Tracker rate（呢個就係你電/gas數同官網對唔上嘅主因）。
+*/
+const UK_TZ = "Europe/London";
+function ukDateParts(date){
+  const fmt = new Intl.DateTimeFormat("en-CA",{
+    timeZone:UK_TZ,
+    year:"numeric",
+    month:"2-digit",
+    day:"2-digit"
+  });
+  // en-CA formats as YYYY-MM-DD
+  return fmt.format(date);
+}
+function ukTodayString(){
+  return ukDateParts(new Date());
+}
+function ukYesterdayString(){
+  const d = new Date();
+  d.setUTCDate(d.getUTCDate()-1);
+  return ukDateParts(d);
+}
 function $(id){
   return document.getElementById(id);
 }
 function todayString(){
-  const d = new Date();
-  return d.getFullYear() + "-" +
-    String(d.getMonth()+1).padStart(2,"0") + "-" +
-    String(d.getDate()).padStart(2,"0");
+  return ukTodayString();
 }
 function yesterdayString(){
-  const d = new Date();
-  d.setDate(d.getDate()-1);
-  return d.getFullYear() + "-" +
-    String(d.getMonth()+1).padStart(2,"0") + "-" +
-    String(d.getDate()).padStart(2,"0");
+  return ukYesterdayString();
 }
 function formatDate(dateStr){
   if(!dateStr) return "";
@@ -554,8 +582,21 @@ function daysInMonth(month){
   return new Date(y,m,0).getDate();
 }
 function dateOnly(value){
+  /*
+    ★ FIX: value 係 Octopus API 返嚟嘅 ISO 時間戳，
+    通常係 UTC (例如 "2026-09-03T23:00:00Z" 代表
+    英國 BST 9月4號 00:00)。
+    以前直接 slice(0,10) 會攞到UTC嘅日曆日，
+    喺BST期間（英國夏令時間）會錯一日。
+    而家改用 Europe/London 時區去攞返正確嘅
+    英國日曆日。
+  */
   if(!value) return null;
-  return String(value).slice(0,10);
+  const d = new Date(value);
+  if(Number.isNaN(d.getTime())){
+    return String(value).slice(0,10);
+  }
+  return ukDateParts(d);
 }
 function rateMatchesDate(rate,dateStr){
   if(!rate || !rate.valid_from){
@@ -826,28 +867,27 @@ function findRateForDate(
   if(matched){
     return matched;
   }
-  const target =
-    new Date(
-      dateStr + "T12:00:00"
-    ).getTime();
+  /*
+    ★ FIX: fallback 比較都要用英國日曆日，
+    唔可以直接用 target 本地時間嘅 timestamp
+    同 UTC 嘅 valid_from/valid_to timestamp 直接比較，
+    否則一樣會錯日。呢度改用 UK 日曆日 (YYYY-MM-DD)
+    嚟做字串比較，同主邏輯一致。
+  */
   for(
     const r of results.results
   ){
     if(!r.valid_from){
       continue;
     }
-    const from =
-      new Date(r.valid_from).getTime();
-    const to =
-      r.valid_to
-        ? new Date(r.valid_to).getTime()
-        : Infinity;
-    if(
-      target >= from &&
-      target < to
-    ){
-      return r;
-    }
+    const from = dateOnly(r.valid_from);
+    const to = r.valid_to
+      ? dateOnly(r.valid_to)
+      : null;
+    if(!from) continue;
+    if(dateStr < from) continue;
+    if(to && dateStr >= to) continue;
+    return r;
   }
   return null;
 }
@@ -1974,7 +2014,7 @@ async function init(){
   const defaultDate =
     dates.length
       ? dates[dates.length - 1]
-      : yesterdayString();
+      : ukYesterdayString();
   $("entryDate").value =
     defaultDate;
   $("historyDay").value =
