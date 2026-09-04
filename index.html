@@ -2,1704 +2,1996 @@
 <html lang="zh-HK">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>電錶紀錄 · Fuse vs Tracker</title>
-
 <style>
 *{box-sizing:border-box}
 body{
   margin:0;
-  padding:16px;
-  background:#f4f5f7;
-  color:#222;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  background:#0d1117;
+  color:#f5f7fa;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 }
-.container{max-width:900px;margin:auto}
-h1{font-size:24px;margin:0 0 5px}
-h2{font-size:18px;margin:0 0 12px}
-.small{font-size:13px;color:#777}
+.container{
+  width:min(520px,100%);
+  margin:auto;
+  padding:18px 14px 50px;
+}
+h1{margin:0;font-size:25px}
+h2{font-size:17px;margin:0 0 12px}
+p{margin:5px 0}
 .card{
-  background:white;
+  background:#151b23;
+  border:1px solid #252d38;
   border-radius:16px;
   padding:16px;
   margin-bottom:14px;
-  box-shadow:0 2px 10px #0000000d;
 }
-.grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
+.hero{
+  background:linear-gradient(145deg,#18212d,#11161d);
 }
-@media(max-width:650px){
-  .grid{grid-template-columns:1fr}
+.hero-label{
+  color:#9aa5b1;
+  font-size:13px;
+}
+.hero-value{
+  font-size:36px;
+  font-weight:800;
+  margin:4px 0;
+}
+.hero-sub{
+  color:#9aa5b1;
+  font-size:13px;
 }
 label{
   display:block;
   font-size:13px;
-  color:#666;
-  margin-bottom:5px;
+  color:#aeb8c3;
+  margin:10px 0 5px;
 }
-input,select,button{
+input,
+select,
+button{
   width:100%;
-  min-height:42px;
-  border:1px solid #ddd;
   border-radius:10px;
-  padding:9px 11px;
+  border:1px solid #303947;
+  background:#0f141b;
+  color:#fff;
+  padding:11px 12px;
   font-size:15px;
-  background:white;
 }
 button{
-  cursor:pointer;
-  background:#222;
-  color:white;
-  border:0;
-}
-button.secondary{
-  background:#eee;
-  color:#222;
-}
-button.danger{
-  background:#c62828;
-}
-.row{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-}
-.row>*{flex:1;min-width:130px}
-
-.tabs{
-  display:flex;
-  gap:6px;
-  margin-bottom:12px;
-}
-.tabs button{
-  background:#eee;
-  color:#333;
-}
-.tabs button.active{
-  background:#222;
-  color:white;
-}
-
-.status{
-  padding:10px 12px;
-  border-radius:10px;
-  background:#f0f1f3;
-  font-size:14px;
-  margin-top:10px;
-}
-.status.ok{background:#eaf7ed;color:#17652a}
-.status.error{background:#fff0f0;color:#a30000}
-.status.loading{background:#fff8df;color:#765b00}
-
-.ratebox{
-  background:#f7f8fa;
-  border-radius:12px;
-  padding:12px;
-}
-.ratebox h3{
-  margin:0 0 8px;
-  font-size:15px;
-}
-.rate{
-  font-size:20px;
-  font-weight:700;
-}
-.compare{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-@media(max-width:650px){
-  .compare{grid-template-columns:1fr}
-}
-.result{
-  border:1px solid #eee;
-  border-radius:12px;
-  padding:12px;
-}
-.result h3{
-  margin:0 0 8px;
-  font-size:16px;
-}
-.total{
-  font-size:24px;
-  font-weight:700;
-}
-.cheaper{
-  background:#eaf7ed;
-  border-radius:10px;
-  padding:10px;
-  margin-top:10px;
-}
-table{
-  width:100%;
-  border-collapse:collapse;
-  font-size:13px;
-}
-th,td{
-  padding:8px 5px;
-  border-bottom:1px solid #eee;
-  text-align:left;
-}
-th{color:#666}
-details summary{
+  background:#273242;
   cursor:pointer;
   font-weight:600;
 }
-.muted{color:#888}
+button:hover{background:#344153}
+button.primary{
+  background:#2d6cdf;
+  border-color:#2d6cdf;
+}
+button.green{
+  background:#237a4b;
+  border-color:#237a4b;
+}
+button.danger{
+  background:#692d35;
+  border-color:#692d35;
+}
+button:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+}
+.small{
+  font-size:12px;
+  color:#8995a3;
+}
+.muted{color:#8995a3}
+.status{
+  border-radius:10px;
+  padding:10px 12px;
+  background:#10161e;
+  font-size:13px;
+  line-height:1.5;
+}
+.status.ok{border:1px solid #276943}
+.status.warn{border:1px solid #745d24}
+.status.error{border:1px solid #7a3030}
+.tabs{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:6px;
+  margin-bottom:12px;
+}
+.tab{
+  padding:9px;
+  background:#10161e;
+  text-align:center;
+  border-radius:9px;
+  cursor:pointer;
+  color:#9da8b4;
+  font-size:14px;
+}
+.tab.active{
+  background:#2d6cdf;
+  color:#fff;
+}
+.quick{
+  display:flex;
+  gap:7px;
+  margin-bottom:8px;
+}
+.quick button{
+  flex:1;
+  padding:8px;
+  font-size:13px;
+}
+.row{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:center;
+}
+.entry-row{
+  padding:12px 0;
+  border-bottom:1px solid #252d38;
+}
+.entry-row:last-child{border-bottom:0}
+.entry-date{font-weight:700}
+.cost{text-align:right}
+.fuse{color:#6fb4ff}
+.tracker{color:#79d69a}
+.diff{font-weight:700}
+.month-title{
+  font-size:15px;
+  font-weight:700;
+  margin-bottom:10px;
+}
+.total-box{
+  background:#10161e;
+  border-radius:12px;
+  padding:12px;
+  margin-top:10px;
+}
+.total-line{
+  display:flex;
+  justify-content:space-between;
+  padding:4px 0;
+}
 hr{
   border:0;
-  border-top:1px solid #eee;
-  margin:15px 0;
+  border-top:1px solid #252d38;
+  margin:14px 0;
 }
+.hidden{display:none!important}
+.badge{
+  display:inline-block;
+  font-size:11px;
+  padding:3px 7px;
+  border-radius:99px;
+  background:#26313e;
+  color:#b9c3ce;
+}
+.badge.auto{
+  background:#183a29;
+  color:#79d69a;
+}
+.badge.manual{
+  background:#3b3019;
+  color:#e6c875;
+}
+.success{color:#76d49b}
+.warning{color:#e5c66c}
+.error-text{color:#ef7777}
+.settings-header{
+  cursor:pointer;
+  user-select:none;
+}
+.settings-arrow{
+  font-size:22px;
+  color:#8995a3;
+  line-height:1;
+}
+.delete-note{
+  text-align:center;
+  margin-top:6px;
+}
+.rate-box{
+  background:#10161e;
+  border-radius:12px;
+  padding:11px;
+  margin-top:10px;
+  font-size:12px;
+  line-height:1.7;
+}
+.rate-line{
+  display:flex;
+  justify-content:space-between;
+}
+.rate-value{font-weight:700}
 </style>
 </head>
-
 <body>
 <div class="container">
-
-<div class="card">
-  <h1>⚡ 電錶紀錄 · Fuse vs Tracker</h1>
-  <div class="small">
-    輸入實際用量，再按日期查詢當日 Octopus Tracker 價格。
+<div class="card hero">
+  <div class="hero-label">
+    Fuse · Octopus Tracker
   </div>
+  <h1>電錶紀錄同比較</h1>
+  <div style="margin-top:16px">
+    <div class="hero-label">
+      Fuse − Tracker
+    </div>
+    <div id="heroDiff" class="hero-value">
+      —
+    </div>
+    <div id="heroSub" class="hero-sub">
+      等待資料
+    </div>
+  </div>
+  <svg
+    viewBox="0 0 500 55"
+    preserveAspectRatio="none"
+    style="width:100%;height:55px;margin-top:8px"
+  >
+    <polyline
+      id="sparkLine"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      points=""
+    />
+  </svg>
 </div>
-
-<!-- 日期 -->
 <div class="card">
-  <h2>📅 選擇日期</h2>
-
-  <div class="grid">
-    <div>
-      <label>日期</label>
-      <input type="date" id="date">
-    </div>
-
-    <div>
-      <label>Gas 單位</label>
-      <select id="gasUnit">
-        <option value="kwh">kWh</option>
-        <option value="m3">m³</option>
-      </select>
-    </div>
-  </div>
-
-  <div id="dateStatus" class="status">
-    請選擇日期
-  </div>
-</div>
-
-<!-- 用量 -->
-<div class="card">
-  <h2>🧾 當日實際用量</h2>
-
-  <div class="grid">
-    <div>
-      <label>Electricity 用量 kWh</label>
-      <input type="number" id="elecUsage" min="0" step="0.01" placeholder="例如 8.5">
-    </div>
-
-    <div>
-      <label>Gas 用量</label>
-      <input type="number" id="gasUsage" min="0" step="0.01" placeholder="例如 20">
-    </div>
-  </div>
-
-  <div class="row" style="margin-top:10px">
-    <button onclick="saveEntry()">💾 儲存當日用量</button>
-    <button class="secondary" onclick="deleteEntry()">🗑️ 刪除當日用量</button>
-  </div>
-
-  <div id="entryStatus" class="status">
-    尚未輸入
-  </div>
-</div>
-
-<!-- Tracker -->
-<div class="card">
-  <h2>📈 Tracker 價格</h2>
-
-  <div class="compare">
-
-    <div class="ratebox">
-      <h3>⚡ Electricity</h3>
-
-      <label>Unit Rate (p/kWh)</label>
-      <input type="number" id="trackerElecUnit" step="0.001">
-
-      <label style="margin-top:8px">Standing Charge (p/day)</label>
-      <input type="number" id="trackerElecStanding" step="0.001">
-    </div>
-
-    <div class="ratebox">
-      <h3>🔥 Gas</h3>
-
-      <label>Unit Rate (p/kWh)</label>
-      <input type="number" id="trackerGasUnit" step="0.001">
-
-      <label style="margin-top:8px">Standing Charge (p/day)</label>
-      <input type="number" id="trackerGasStanding" step="0.001">
-    </div>
-
-  </div>
-
-  <div class="row" style="margin-top:10px">
-    <button onclick="refreshRate()">🔄 重新查詢當日價格</button>
-  </div>
-
-  <div id="rateStatus" class="status">
-    尚未查詢
-  </div>
-</div>
-
-<!-- 比較 -->
-<div class="card">
-  <h2>💷 今日費用比較</h2>
-
-  <div class="compare">
-
-    <div class="result">
-      <h3>Octopus Tracker</h3>
-
-      <div class="small">Electricity</div>
-      <div id="trackerElecCost" class="total">£0.00</div>
-
-      <div class="small" style="margin-top:8px">Gas</div>
-      <div id="trackerGasCost" class="total">£0.00</div>
-
-      <hr>
-
-      <div class="small">合計</div>
-      <div id="trackerTotal" class="total">£0.00</div>
-    </div>
-
-    <div class="result">
-      <h3>Fuse</h3>
-
-      <div class="small">Electricity</div>
-      <div id="fuseElecCost" class="total">£0.00</div>
-
-      <div class="small" style="margin-top:8px">Gas</div>
-      <div id="fuseGasCost" class="total">£0.00</div>
-
-      <hr>
-
-      <div class="small">合計</div>
-      <div id="fuseTotal" class="total">£0.00</div>
-    </div>
-
-  </div>
-
-  <div id="cheaper" class="cheaper">
-    等待用量及價格資料……
-  </div>
-</div>
-
-<!-- 歷史 -->
-<div class="card">
-  <h2>📊 紀錄</h2>
-
+  <h2>查看資料</h2>
   <div class="tabs">
-    <button id="tabDay" onclick="setView('day')">每日</button>
-    <button id="tabMonth" onclick="setView('month')">每月</button>
-    <button id="tabAll" onclick="setView('all')">全部</button>
+    <div class="tab active" data-view="all">
+      全部
+    </div>
+    <div class="tab" data-view="month">
+      每月
+    </div>
+    <div class="tab" data-view="day">
+      每日
+    </div>
   </div>
-
+  <div id="monthFilter" class="hidden">
+    <label>選擇月份</label>
+    <input
+      type="month"
+      id="historyMonth"
+    >
+  </div>
+  <div id="dayFilter" class="hidden">
+    <label>選擇日期</label>
+    <input
+      type="date"
+      id="historyDay"
+    >
+  </div>
+  <div
+    id="filterInfo"
+    class="small"
+    style="margin-top:8px"
+  ></div>
+</div>
+<div class="card">
+  <div id="settingsHeader" class="row settings-header">
+    <div>
+      <h2 style="margin:0">
+        ⚙️ 設定
+      </h2>
+      <div class="small">
+        Fuse 費率、GSP Region、Gas 單位等
+      </div>
+    </div>
+    <div id="settingsArrow" class="settings-arrow">
+      ＋
+    </div>
+  </div>
+  <div id="settingsContent" class="hidden">
+    <hr>
+    <label>Octopus GSP Region</label>
+    <select id="gspRegion">
+      <option value="_A">_A · Eastern England</option>
+      <option value="_B">_B · East Midlands</option>
+      <option value="_C">_C · East Midlands / East Anglia</option>
+      <option value="_D">_D · Merseyside / North Wales</option>
+      <option value="_E">_E · West Midlands</option>
+      <option value="_F">_F · North East England</option>
+      <option value="_G">_G · North West England</option>
+      <option value="_H">_H · Southern England</option>
+      <option value="_J">_J · South East England</option>
+      <option value="_K">_K · South Wales</option>
+      <option value="_L">_L · South West England</option>
+      <option value="_M">_M · Yorkshire</option>
+      <option value="_N">_N · South East England</option>
+      <option value="_P">_P · North Scotland</option>
+      <option value="_Q">_Q · South Scotland</option>
+      <option value="_S">_S · Southern Scotland</option>
+      <option value="_T">_T · North Wales / Cheshire</option>
+      <option value="_V">_V · South West Scotland</option>
+    </select>
+    <hr>
+    <h2>Fuse 電</h2>
+    <label>每月月費 (£)</label>
+    <input type="number" id="fuseElecMonthly" step="0.01">
+    <label>Standing Charge (p/day)</label>
+    <input type="number" id="fuseElecStanding" step="0.01">
+    <label>Unit Rate (p/kWh)</label>
+    <input type="number" id="fuseElecUnit" step="0.01">
+    <hr>
+    <h2>Fuse Gas</h2>
+    <label>每月月費 (£)</label>
+    <input type="number" id="fuseGasMonthly" step="0.01">
+    <label>Standing Charge (p/day)</label>
+    <input type="number" id="fuseGasStanding" step="0.01">
+    <label>Unit Rate (p/kWh)</label>
+    <input type="number" id="fuseGasUnit" step="0.01">
+    <label>Gas 單位</label>
+    <select id="gasUnit">
+      <option value="kwh">kWh</option>
+      <option value="m3">m³</option>
+    </select>
+    <label>m³ → kWh conversion factor</label>
+    <input
+      type="number"
+      id="gasFactor"
+      step="0.01"
+    >
+    <button
+      id="saveSettingsBtn"
+      class="primary"
+      style="margin-top:12px"
+    >
+      儲存設定
+    </button>
+    <div
+      id="settingsStatus"
+      class="small"
+      style="margin-top:8px"
+    ></div>
+  </div>
+</div>
+<div class="card">
+  <h2>輸入電錶紀錄</h2>
+  <div class="quick">
+    <button id="todayBtn">今日</button>
+    <button id="yesterdayBtn">昨日</button>
+  </div>
+  <label>📅 紀錄日期</label>
+  <input
+    type="date"
+    id="entryDate"
+  >
+  <div
+    id="existingInfo"
+    class="small"
+    style="margin-top:8px"
+  ></div>
+  <label>Electricity 使用量 (kWh)</label>
+  <input
+    type="number"
+    id="entryElec"
+    step="0.01"
+    min="0"
+  >
+  <label>Gas 使用量</label>
+  <input
+    type="number"
+    id="entryGas"
+    step="0.01"
+    min="0"
+  >
+  <hr>
+  <h2>Tracker 價格</h2>
+  <div
+    id="trackerStatus"
+    class="status warn"
+  >
+    揀日期後會自動查詢 Tracker 價格。
+  </div>
+  <label>Electricity Unit Rate (p/kWh)</label>
+  <input
+    type="number"
+    id="trackerElecUnit"
+    step="0.001"
+  >
+  <label>Electricity Standard Charge (p/day)</label>
+  <input
+    type="number"
+    id="trackerElecStanding"
+    step="0.001"
+  >
+  <label>Gas Unit Rate (p/kWh)</label>
+  <input
+    type="number"
+    id="trackerGasUnit"
+    step="0.001"
+  >
+  <label>Gas Standard Charge (p/day)</label>
+  <input
+    type="number"
+    id="trackerGasStanding"
+    step="0.001"
+  >
+  <div id="rateDisplay" class="rate-box hidden">
+    <div class="rate-line">
+      <span>⚡ Electricity Unit</span>
+      <span id="showElecUnit" class="rate-value">—</span>
+    </div>
+    <div class="rate-line">
+      <span>⚡ Electricity Standard</span>
+      <span id="showElecStanding" class="rate-value">—</span>
+    </div>
+    <div class="rate-line">
+      <span>🔥 Gas Unit</span>
+      <span id="showGasUnit" class="rate-value">—</span>
+    </div>
+    <div class="rate-line">
+      <span>🔥 Gas Standard</span>
+      <span id="showGasStanding" class="rate-value">—</span>
+    </div>
+  </div>
+  <button
+    id="fetchRateBtn"
+    class="primary"
+    style="margin-top:10px"
+  >
+    🔄 重新查詢 Tracker 價錢
+  </button>
+  <button
+    id="fetchAllRatesBtn"
+    style="margin-top:8px"
+  >
+    自動更新全部歷史 Tracker 價格
+  </button>
+  <button
+    id="saveEntryBtn"
+    class="green"
+    style="margin-top:10px"
+  >
+    儲存呢日紀錄
+  </button>
+  <button
+    id="deleteEntryBtn"
+    class="danger"
+    style="margin-top:8px"
+  >
+    🗑️ 刪除呢日紀錄
+  </button>
+  <div class="small delete-note">
+    刪除只會移除你輸入嘅 Electricity / Gas Record。
+    Tracker 價格永遠保留。
+  </div>
+  <div
+    id="entryStatus"
+    class="small"
+    style="margin-top:8px"
+  ></div>
+</div>
+<div class="card">
+  <h2>紀錄</h2>
   <div id="history"></div>
 </div>
-
-<!-- 設定 -->
-<div class="card">
-  <details>
-    <summary>⚙️ Fuse 設定</summary>
-
-    <div style="margin-top:15px">
-
-      <h3>Electricity</h3>
-
-      <div class="grid">
-        <div>
-          <label>Unit Rate p/kWh</label>
-          <input type="number" id="fuseElecUnit" step="0.001">
-        </div>
-
-        <div>
-          <label>Standing Charge p/day</label>
-          <input type="number" id="fuseElecStanding" step="0.001">
-        </div>
-
-        <div>
-          <label>Monthly Charge £</label>
-          <input type="number" id="fuseElecMonthly" step="0.01">
-        </div>
-      </div>
-
-      <h3>Gas</h3>
-
-      <div class="grid">
-        <div>
-          <label>Unit Rate p/kWh</label>
-          <input type="number" id="fuseGasUnit" step="0.001">
-        </div>
-
-        <div>
-          <label>Standing Charge p/day</label>
-          <input type="number" id="fuseGasStanding" step="0.001">
-        </div>
-
-        <div>
-          <label>Monthly Charge £</label>
-          <input type="number" id="fuseGasMonthly" step="0.01">
-        </div>
-
-        <div>
-          <label>Gas conversion factor</label>
-          <input type="number" id="gasFactor" step="0.001">
-        </div>
-      </div>
-
-      <button onclick="saveSettings()" style="margin-top:10px">
-        💾 儲存設定
-      </button>
-
-      <hr>
-
-      <button class="secondary" onclick="refreshAll()">
-        🔄 自動更新全部歷史 Tracker 價格
-      </button>
-
-      <div id="allStatus" class="status"></div>
-
-    </div>
-  </details>
 </div>
-
-</div>
-
 <script>
-/* =========================================================
-   DATA
-========================================================= */
-
 const STORE_KEY = "octo-tracker-data";
-
-const DEFAULT = {
+let data = {
   settings:{
-    fuseElecUnit:23.24,
-    fuseElecStanding:41.44,
+    gspRegion:"_B",
     fuseElecMonthly:0,
-
-    fuseGasUnit:7.55,
-    fuseGasStanding:10.83,
+    fuseElecStanding:41.44,
+    fuseElecUnit:23.24,
     fuseGasMonthly:0,
-
+    fuseGasStanding:10.83,
+    fuseGasUnit:7.55,
     gasUnit:"kwh",
     gasFactor:11.1
   },
-
   entries:{},
   rates:{}
 };
-
-let data = loadData();
-let currentView = "day";
-
-
-/* =========================================================
-   OCTOPUS TRACKER PRODUCTS
-========================================================= */
-
+let currentView = "all";
 const TRACKER_VERSIONS = [
-  {
-    code:"SILVER-26-04-01",
-    from:"2026-04-01",
-    to:null
-  },
-  {
-    code:"SILVER-25-09-02",
-    from:"2025-09-02",
-    to:"2026-03-31"
-  },
-  {
-    code:"SILVER-25-04-15",
-    from:"2025-04-15",
-    to:"2025-09-01"
-  },
-  {
-    code:"SILVER-25-04-11",
-    from:"2025-04-11",
-    to:"2025-04-14"
-  },
-  {
-    code:"SILVER-24-12-31",
-    from:"2024-12-31",
-    to:"2025-04-10"
-  },
-  {
-    code:"SILVER-24-10-01",
-    from:"2024-10-01",
-    to:"2024-12-30"
-  },
-  {
-    code:"SILVER-24-07-01",
-    from:"2024-07-01",
-    to:"2024-09-30"
-  },
-  {
-    code:"SILVER-24-04-03",
-    from:"2024-04-03",
-    to:"2024-06-30"
-  },
-  {
-    code:"SILVER-23-12-06",
-    from:"2023-12-06",
-    to:"2024-04-02"
-  },
-  {
-    code:"SILVER-FLEX-22-11-25",
-    from:"2022-11-25",
-    to:"2023-12-05"
-  }
+  {code:"SILVER-26-04-01",from:"2026-04-01",to:null},
+  {code:"SILVER-25-09-02",from:"2025-09-02",to:"2026-03-31"},
+  {code:"SILVER-25-04-15",from:"2025-04-15",to:"2025-09-01"},
+  {code:"SILVER-25-04-11",from:"2025-04-11",to:"2025-04-14"},
+  {code:"SILVER-24-12-31",from:"2024-12-31",to:"2025-04-10"},
+  {code:"SILVER-24-10-01",from:"2024-10-01",to:"2024-12-30"},
+  {code:"SILVER-24-07-01",from:"2024-07-01",to:"2024-09-30"},
+  {code:"SILVER-24-04-03",from:"2024-04-03",to:"2024-06-30"},
+  {code:"SILVER-23-12-06",from:"2023-12-06",to:"2024-04-02"},
+  {code:"SILVER-FLEX-22-11-25",from:"2022-11-25",to:"2023-12-05"}
 ];
-
-const REGION = "_B";
-const CHECKED_VERSION = 4;
-
-
+function $(id){
+  return document.getElementById(id);
+}
+function todayString(){
+  const d = new Date();
+  return d.getFullYear() + "-" +
+    String(d.getMonth()+1).padStart(2,"0") + "-" +
+    String(d.getDate()).padStart(2,"0");
+}
+function yesterdayString(){
+  const d = new Date();
+  d.setDate(d.getDate()-1);
+  return d.getFullYear() + "-" +
+    String(d.getMonth()+1).padStart(2,"0") + "-" +
+    String(d.getDate()).padStart(2,"0");
+}
+function formatDate(dateStr){
+  if(!dateStr) return "";
+  const d = new Date(dateStr + "T12:00:00");
+  return d.toLocaleDateString(
+    "zh-HK",
+    {
+      year:"numeric",
+      month:"long",
+      day:"numeric"
+    }
+  );
+}
+function formatMoney(n){
+  if(
+    n === null ||
+    n === undefined ||
+    !Number.isFinite(n)
+  ){
+    return "—";
+  }
+  return "£" + n.toFixed(2);
+}
+function num(v){
+  const n = Number(v);
+  return Number.isFinite(n) ? n : null;
+}
+function daysInMonth(month){
+  const [y,m] =
+    month.split("-").map(Number);
+  return new Date(y,m,0).getDate();
+}
+function dateOnly(value){
+  if(!value) return null;
+  return String(value).slice(0,10);
+}
+function rateMatchesDate(rate,dateStr){
+  if(!rate || !rate.valid_from){
+    return false;
+  }
+  const from = dateOnly(rate.valid_from);
+  const to = rate.valid_to
+    ? dateOnly(rate.valid_to)
+    : null;
+  if(!from) return false;
+  if(dateStr < from) return false;
+  if(to && dateStr >= to) return false;
+  return true;
+}
 /* =========================================================
    STORAGE
 ========================================================= */
-
-function loadData(){
+async function loadData(){
+  let loaded = false;
   try{
-    const raw = localStorage.getItem(STORE_KEY);
-
-    if(!raw){
-      return structuredClone(DEFAULT);
+    if(
+      window.storage &&
+      window.storage.get
+    ){
+      const saved =
+        await window.storage.get(STORE_KEY);
+      if(saved){
+        let parsed = null;
+        if(typeof saved === "string"){
+          parsed = JSON.parse(saved);
+        }else if(saved.value){
+          parsed =
+            typeof saved.value === "string"
+              ? JSON.parse(saved.value)
+              : saved.value;
+        }
+        if(
+          parsed &&
+          typeof parsed === "object"
+        ){
+          data = {
+            settings:{
+              ...data.settings,
+              ...(parsed.settings || {})
+            },
+            entries:{
+              ...(parsed.entries || {})
+            },
+            rates:{
+              ...(parsed.rates || {})
+            }
+          };
+          loaded = true;
+        }
+      }
     }
-
-    const saved = JSON.parse(raw);
-
-    return {
-      settings:{
-        ...DEFAULT.settings,
-        ...(saved.settings || {})
-      },
-      entries:saved.entries || {},
-      rates:saved.rates || {}
-    };
-
   }catch(e){
-    console.error(e);
-    return structuredClone(DEFAULT);
+    console.warn(
+      "window.storage load failed",
+      e
+    );
   }
-}
-
-function saveData(){
-  localStorage.setItem(STORE_KEY,JSON.stringify(data));
-}
-
-
-/* =========================================================
-   HELPERS
-========================================================= */
-
-function n(v){
-  const x = Number(v);
-  return Number.isFinite(x) ? x : null;
-}
-
-function money(v){
-  return "£" + Number(v || 0).toFixed(2);
-}
-
-function dateText(d){
-  if(!d) return "";
-  return new Date(d+"T12:00:00").toLocaleDateString(
-    "en-GB",
-    {
-      day:"2-digit",
-      month:"2-digit",
-      year:"numeric"
-    }
-  );
-}
-
-function getVersion(date){
-  return TRACKER_VERSIONS.find(v=>{
-    return date >= v.from && (!v.to || date <= v.to);
-  }) || null;
-}
-
-function tariff(type,product,region){
-  return `${type}-1R-${product}-${region.replace("_","")}`;
-}
-
-
-/* =========================================================
-   FIND RATE FROM OCTOPUS API
-========================================================= */
-
-function findRate(list,date){
-
-  if(!Array.isArray(list)) return null;
-
-  /*
-   Octopus API records contain valid_from / valid_to.
-   Match the selected date against those periods.
-  */
-
-  const exact = list.find(x=>{
-
-    if(!x.valid_from) return false;
-
-    const from = x.valid_from.slice(0,10);
-
-    let to = x.valid_to
-      ? x.valid_to.slice(0,10)
-      : null;
-
-    return date >= from && (!to || date < to);
-  });
-
-  if(exact) return exact;
-
-  /*
-   Some API responses use timestamps.
-   Try local noon as a second method.
-  */
-
-  const target = new Date(date+"T12:00:00").getTime();
-
-  let best = null;
-
-  for(const x of list){
-
-    if(!x.valid_from) continue;
-
-    const from = new Date(x.valid_from).getTime();
-    const to = x.valid_to
-      ? new Date(x.valid_to).getTime()
-      : Infinity;
-
-    if(target >= from && target < to){
-      best = x;
-      break;
-    }
-  }
-
-  return best;
-}
-
-
-/* =========================================================
-   FETCH TRACKER RATE
-========================================================= */
-
-async function fetchRate(date){
-
-  const version = getVersion(date);
-
-  if(!version){
-    throw new Error("搵唔到適用於呢個日期嘅 Tracker tariff");
-  }
-
-  const product = version.code;
-
-  const elecTariff = tariff(
-    "electricity",
-    product,
-    REGION
-  );
-
-  const gasTariff = tariff(
-    "gas",
-    product,
-    REGION
-  );
-
-  /*
-   IMPORTANT:
-   使用之前正常運作嗰套 Octopus public API。
-   唔使用 /api/v1/tracker/... endpoint。
-  */
-
-  const urls = {
-
-    elecUnit:
-      `https://api.octopus.energy/v1/products/${product}/electricity-tariffs/${elecTariff}/standard-unit-rates/`,
-
-    elecStanding:
-      `https://api.octopus.energy/v1/products/${product}/electricity-tariffs/${elecTariff}/standing-charges/`,
-
-    gasUnit:
-      `https://api.octopus.energy/v1/products/${product}/gas-tariffs/${gasTariff}/standard-unit-rates/`,
-
-    gasStanding:
-      `https://api.octopus.energy/v1/products/${product}/gas-tariffs/${gasTariff}/standing-charges/`
-  };
-
-  const responses = await Promise.all([
-    fetch(urls.elecUnit),
-    fetch(urls.elecStanding),
-    fetch(urls.gasUnit),
-    fetch(urls.gasStanding)
-  ]);
-
-  for(const r of responses){
-    if(!r.ok){
-      throw new Error(
-        `Octopus API ${r.status} ${r.statusText}`
+  if(!loaded){
+    try{
+      const local =
+        localStorage.getItem(STORE_KEY);
+      if(local){
+        const parsed =
+          JSON.parse(local);
+        data = {
+          settings:{
+            ...data.settings,
+            ...(parsed.settings || {})
+          },
+          entries:{
+            ...(parsed.entries || {})
+          },
+          rates:{
+            ...(parsed.rates || {})
+          }
+        };
+        loaded = true;
+      }
+    }catch(e){
+      console.warn(
+        "localStorage load failed",
+        e
       );
     }
   }
-
-  const [
-    elecUnitData,
-    elecStandingData,
-    gasUnitData,
-    gasStandingData
-  ] = await Promise.all(
-    responses.map(r=>r.json())
-  );
-
-  const eu = findRate(
-    elecUnitData.results,
-    date
-  );
-
-  const es = findRate(
-    elecStandingData.results,
-    date
-  );
-
-  const gu = findRate(
-    gasUnitData.results,
-    date
-  );
-
-  const gs = findRate(
-    gasStandingData.results,
-    date
-  );
-
-  if(!eu || !es || !gu || !gs){
-
-    console.log({
-      date,
-      product,
-      eu,
-      es,
-      gu,
-      gs
-    });
-
-    throw new Error(
-      "API 有回覆，但搵唔到呢一日完整價格"
+}
+async function saveData(){
+  const text =
+    JSON.stringify(data);
+  try{
+    if(
+      window.storage &&
+      window.storage.set
+    ){
+      await window.storage.set(
+        STORE_KEY,
+        text
+      );
+    }
+  }catch(e){
+    console.warn(
+      "window.storage save failed",
+      e
     );
   }
-
-  const rate = {
-
-    elecUnit:n(eu.value),
-    elecStanding:n(es.value),
-
-    gasUnit:n(gu.value),
-    gasStanding:n(gs.value),
-
-    product:product,
-    region:REGION,
-
-    source:"Octopus standard-unit-rates",
-
-    updatedAt:new Date().toISOString(),
-
-    checkedVersion:CHECKED_VERSION
-  };
-
-  /*
-   IMPORTANT:
-   只更新 rates。
-   絕對唔碰 entries。
-  */
-
-  data.rates[date] = {
-    ...(data.rates[date] || {}),
-    ...rate
-  };
-
-  saveData();
-
-  return rate;
-}
-
-
-/* =========================================================
-   ENSURE RATE
-========================================================= */
-
-async function ensureRate(date){
-
-  const old = data.rates[date];
-
-  if(
-    old &&
-    n(old.elecUnit)!==null &&
-    n(old.elecStanding)!==null &&
-    n(old.gasUnit)!==null &&
-    n(old.gasStanding)!==null &&
-    old.checkedVersion === CHECKED_VERSION
-  ){
-    return old;
-  }
-
-  return await fetchRate(date);
-}
-
-
-/* =========================================================
-   LOAD DATE
-========================================================= */
-
-async function loadDate(){
-
-  const date = document.getElementById("date").value;
-
-  if(!date) return;
-
-  const dateStatus =
-    document.getElementById("dateStatus");
-
-  const rateStatus =
-    document.getElementById("rateStatus");
-
-  const entryStatus =
-    document.getElementById("entryStatus");
-
-  dateStatus.className = "status loading";
-  dateStatus.textContent =
-    "正在載入 "+dateText(date)+"……";
-
-  rateStatus.className = "status loading";
-  rateStatus.textContent =
-    "正在查詢 Tracker 價格……";
-
-  loadEntry(date);
-
   try{
-
-    const rate = await ensureRate(date);
-
-    showRate(rate);
-
-    dateStatus.className = "status ok";
-    dateStatus.textContent =
-      `已選擇 ${dateText(date)}`;
-
-    rateStatus.className = "status ok";
-
-    rateStatus.textContent =
-      `Tracker：Electricity ${Number(rate.elecUnit).toFixed(3)}p/kWh · Gas ${Number(rate.gasUnit).toFixed(3)}p/kWh`;
-
-    renderComparison();
-
-  }catch(err){
-
-    console.error(err);
-
-    dateStatus.className = "status error";
-    dateStatus.textContent =
-      `已選擇 ${dateText(date)}`;
-
-    rateStatus.className = "status error";
-    rateStatus.textContent =
-      "❌ 數據查詢失敗：" + err.message;
-
-    /*
-     唔清空之前已保存價格。
-     如果該日之前有 rate，仍然顯示。
-    */
-
-    const old = data.rates[date];
-
-    if(old){
-      showRate(old);
-      renderComparison();
-    }
-
+    localStorage.setItem(
+      STORE_KEY,
+      text
+    );
+  }catch(e){
+    console.warn(
+      "localStorage save failed",
+      e
+    );
   }
 }
-
-
-/* =========================================================
-   SHOW RATE
-========================================================= */
-
-function showRate(rate){
-
-  document.getElementById("trackerElecUnit").value =
-    rate.elecUnit ?? "";
-
-  document.getElementById("trackerElecStanding").value =
-    rate.elecStanding ?? "";
-
-  document.getElementById("trackerGasUnit").value =
-    rate.gasUnit ?? "";
-
-  document.getElementById("trackerGasStanding").value =
-    rate.gasStanding ?? "";
-}
-
-
-/* =========================================================
-   ENTRY
-========================================================= */
-
-function loadEntry(date){
-
-  const e = data.entries[date];
-
-  const elec =
-    document.getElementById("elecUsage");
-
-  const gas =
-    document.getElementById("gasUsage");
-
-  const status =
-    document.getElementById("entryStatus");
-
-  if(!e){
-
-    elec.value = "";
-    gas.value = "";
-
-    status.className = "status";
-    status.textContent =
-      "呢日未有用量紀錄";
-
-    renderComparison();
-
-    return;
-  }
-
-  /*
-   0 是有效數值，所以唔可以用 if(!e.elec)
-  */
-
-  elec.value =
-    e.elecUsage ?? "";
-
-  gas.value =
-    e.gasUsage ?? "";
-
-  status.className = "status ok";
-  status.textContent =
-    `已有 ${dateText(date)} 用量紀錄`;
-
-  renderComparison();
-}
-
-
-/* =========================================================
-   SAVE ENTRY
-========================================================= */
-
-function saveEntry(){
-
-  const date =
-    document.getElementById("date").value;
-
-  if(!date){
-    alert("請先選擇日期");
-    return;
-  }
-
-  const elec =
-    document.getElementById("elecUsage").value;
-
-  const gas =
-    document.getElementById("gasUsage").value;
-
-  /*
-   空白 = 沒有輸入
-   0 = 合法輸入
-  */
-
-  if(elec === "" && gas === ""){
-    alert("請輸入 Electricity 或 Gas 用量");
-    return;
-  }
-
-  data.entries[date] = {
-
-    elecUsage:
-      elec === "" ? null : n(elec),
-
-    gasUsage:
-      gas === "" ? null : n(gas),
-
-    gasUnit:
-      document.getElementById("gasUnit").value,
-
-    updatedAt:
-      new Date().toISOString()
-  };
-
-  saveData();
-
-  const status =
-    document.getElementById("entryStatus");
-
-  status.className = "status ok";
-  status.textContent =
-    `已儲存 ${dateText(date)} 用量`;
-
-  renderComparison();
-  renderHistory();
-}
-
-
-/* =========================================================
-   DELETE ENTRY
-========================================================= */
-
-function deleteEntry(){
-
-  const date =
-    document.getElementById("date").value;
-
-  if(!date){
-    alert("請先選擇日期");
-    return;
-  }
-
-  /*
-   ★★★★★ 最重要 ★★★★★
-
-   只刪除 entries。
-
-   絕對唔刪：
-   data.rates[date]
-
-   所以 Tracker 價格會保留。
-  */
-
-  delete data.entries[date];
-
-  saveData();
-
-  document.getElementById("elecUsage").value = "";
-  document.getElementById("gasUsage").value = "";
-
-  const status =
-    document.getElementById("entryStatus");
-
-  status.className = "status";
-  status.textContent =
-    `已刪除 ${dateText(date)} 用量；Tracker 價格仍然保留。`;
-
-  renderComparison();
-  renderHistory();
-}
-
-
-/* =========================================================
-   MANUAL TRACKER EDIT
-========================================================= */
-
-function saveManualRate(){
-
-  const date =
-    document.getElementById("date").value;
-
-  if(!date) return;
-
-  data.rates[date] = {
-
-    ...(data.rates[date] || {}),
-
-    elecUnit:
-      n(document.getElementById("trackerElecUnit").value),
-
-    elecStanding:
-      n(document.getElementById("trackerElecStanding").value),
-
-    gasUnit:
-      n(document.getElementById("trackerGasUnit").value),
-
-    gasStanding:
-      n(document.getElementById("trackerGasStanding").value),
-
-    source:"manual",
-
-    updatedAt:
-      new Date().toISOString(),
-
-    checkedVersion:CHECKED_VERSION
-  };
-
-  saveData();
-
-  renderComparison();
-  renderHistory();
-}
-
-
-/* =========================================================
-   REFRESH RATE
-========================================================= */
-
-async function refreshRate(){
-
-  const date =
-    document.getElementById("date").value;
-
-  if(!date){
-    alert("請先選擇日期");
-    return;
-  }
-
-  const status =
-    document.getElementById("rateStatus");
-
-  status.className = "status loading";
-  status.textContent =
-    "正在重新查詢 "+dateText(date)+"……";
-
-  /*
-   只刪除 RATE。
-   entries 完全不碰。
-  */
-
-  delete data.rates[date];
-  saveData();
-
-  try{
-
-    const rate =
-      await fetchRate(date);
-
-    showRate(rate);
-
-    status.className = "status ok";
-    status.textContent =
-      `已更新 ${dateText(date)} Tracker 價格`;
-
-    renderComparison();
-    renderHistory();
-
-  }catch(err){
-
-    console.error(err);
-
-    status.className = "status error";
-    status.textContent =
-      "❌ 數據查詢失敗：" + err.message;
-
-  }
-}
-
-
-/* =========================================================
-   COMPARISON
-========================================================= */
-
-function renderComparison(){
-
-  const date =
-    document.getElementById("date").value;
-
-  if(!date) return;
-
-  const entry =
-    data.entries[date];
-
-  const rate =
-    data.rates[date];
-
-  /*
-   明確取得 DOM，避免依賴 browser global ID。
-  */
-
-  const trackerElecCost =
-    document.getElementById("trackerElecCost");
-
-  const trackerGasCost =
-    document.getElementById("trackerGasCost");
-
-  const trackerTotal =
-    document.getElementById("trackerTotal");
-
-  const fuseElecCost =
-    document.getElementById("fuseElecCost");
-
-  const fuseGasCost =
-    document.getElementById("fuseGasCost");
-
-  const fuseTotal =
-    document.getElementById("fuseTotal");
-
-  const cheaper =
-    document.getElementById("cheaper");
-
-  if(!entry){
-
-    trackerElecCost.textContent="£0.00";
-    trackerGasCost.textContent="£0.00";
-    trackerTotal.textContent="£0.00";
-
-    fuseElecCost.textContent="£0.00";
-    fuseGasCost.textContent="£0.00";
-    fuseTotal.textContent="£0.00";
-
-    cheaper.textContent =
-      "呢日未有用量紀錄。";
-
-    return;
-  }
-
-  if(!rate){
-
-    cheaper.textContent =
-      "呢日有用量，但尚未有 Tracker 價格。";
-
-    return;
-  }
-
-  const eu =
-    n(entry.elecUsage);
-
-  const guRaw =
-    n(entry.gasUsage);
-
-  const gasUnit =
-    entry.gasUnit ||
-    data.settings.gasUnit;
-
-  /*
-   Gas 如果用 m³，轉成 kWh。
-  */
-
-  let gu = guRaw;
-
-  if(
-    guRaw !== null &&
-    gasUnit === "m3"
-  ){
-    gu =
-      guRaw *
-      Number(data.settings.gasFactor || 11.1);
-  }
-
-  /*
-   Standing charge：
-   有紀錄先計。
-   即使用量係 0，仍然會計 standing charge。
-  */
-
-  let te = 0;
-  let tg = 0;
-
-  if(eu !== null){
-    te =
-      eu * Number(rate.elecUnit || 0) / 100
-      +
-      Number(rate.elecStanding || 0) / 100;
-  }
-
-  if(gu !== null){
-    tg =
-      gu * Number(rate.gasUnit || 0) / 100
-      +
-      Number(rate.gasStanding || 0) / 100;
-  }
-
-  const fe =
-    eu === null
-    ? 0
-    :
-    eu * Number(data.settings.fuseElecUnit || 0) / 100
-    +
-    Number(data.settings.fuseElecStanding || 0) / 100;
-
-  const fg =
-    gu === null
-    ? 0
-    :
-    gu * Number(data.settings.fuseGasUnit || 0) / 100
-    +
-    Number(data.settings.fuseGasStanding || 0) / 100;
-
-  const tt = te + tg;
-  const ft = fe + fg;
-
-  trackerElecCost.textContent = money(te);
-  trackerGasCost.textContent = money(tg);
-  trackerTotal.textContent = money(tt);
-
-  fuseElecCost.textContent = money(fe);
-  fuseGasCost.textContent = money(fg);
-  fuseTotal.textContent = money(ft);
-
-  if(tt < ft){
-
-    cheaper.innerHTML =
-      `✅ Tracker 今日平約 <b>${money(ft-tt)}</b>`;
-
-  }else if(ft < tt){
-
-    cheaper.innerHTML =
-      `💰 Fuse 今日平約 <b>${money(tt-ft)}</b>`;
-
-  }else{
-
-    cheaper.textContent =
-      "兩者今日費用相同。";
-  }
-}
-
-
 /* =========================================================
    SETTINGS
 ========================================================= */
-
-function loadSettings(){
-
+function loadSettingsIntoForm(){
   const s = data.settings;
-
-  document.getElementById("fuseElecUnit").value =
-    s.fuseElecUnit;
-
-  document.getElementById("fuseElecStanding").value =
-    s.fuseElecStanding;
-
-  document.getElementById("fuseElecMonthly").value =
-    s.fuseElecMonthly;
-
-  document.getElementById("fuseGasUnit").value =
-    s.fuseGasUnit;
-
-  document.getElementById("fuseGasStanding").value =
-    s.fuseGasStanding;
-
-  document.getElementById("fuseGasMonthly").value =
-    s.fuseGasMonthly;
-
-  document.getElementById("gasFactor").value =
-    s.gasFactor;
-
-  document.getElementById("gasUnit").value =
-    s.gasUnit;
+  $("gspRegion").value =
+    s.gspRegion || "_B";
+  $("fuseElecMonthly").value =
+    s.fuseElecMonthly ?? 0;
+  $("fuseElecStanding").value =
+    s.fuseElecStanding ?? 41.44;
+  $("fuseElecUnit").value =
+    s.fuseElecUnit ?? 23.24;
+  $("fuseGasMonthly").value =
+    s.fuseGasMonthly ?? 0;
+  $("fuseGasStanding").value =
+    s.fuseGasStanding ?? 10.83;
+  $("fuseGasUnit").value =
+    s.fuseGasUnit ?? 7.55;
+  $("gasUnit").value =
+    s.gasUnit || "kwh";
+  $("gasFactor").value =
+    s.gasFactor ?? 11.1;
 }
-
-function saveSettings(){
-
+async function saveSettings(){
   data.settings = {
-
-    fuseElecUnit:
-      n(document.getElementById("fuseElecUnit").value),
-
-    fuseElecStanding:
-      n(document.getElementById("fuseElecStanding").value),
-
+    gspRegion:
+      $("gspRegion").value,
     fuseElecMonthly:
-      n(document.getElementById("fuseElecMonthly").value),
-
-    fuseGasUnit:
-      n(document.getElementById("fuseGasUnit").value),
-
-    fuseGasStanding:
-      n(document.getElementById("fuseGasStanding").value),
-
+      num($("fuseElecMonthly").value) ?? 0,
+    fuseElecStanding:
+      num($("fuseElecStanding").value) ?? 0,
+    fuseElecUnit:
+      num($("fuseElecUnit").value) ?? 0,
     fuseGasMonthly:
-      n(document.getElementById("fuseGasMonthly").value),
-
+      num($("fuseGasMonthly").value) ?? 0,
+    fuseGasStanding:
+      num($("fuseGasStanding").value) ?? 0,
+    fuseGasUnit:
+      num($("fuseGasUnit").value) ?? 0,
     gasUnit:
-      document.getElementById("gasUnit").value,
-
+      $("gasUnit").value,
     gasFactor:
-      n(document.getElementById("gasFactor").value)
+      num($("gasFactor").value) ?? 11.1
   };
-
-  saveData();
-
-  renderComparison();
-  renderHistory();
-
-  alert("設定已儲存");
+  await saveData();
+  $("settingsStatus").textContent =
+    "設定已儲存 ✓";
+  $("settingsStatus").className =
+    "small success";
+  render();
 }
-
-
 /* =========================================================
-   HISTORY
+   TRACKER VERSION
 ========================================================= */
-
-function setView(view){
-
-  currentView = view;
-
-  document.getElementById("tabDay")
-    .classList.toggle("active",view==="day");
-
-  document.getElementById("tabMonth")
-    .classList.toggle("active",view==="month");
-
-  document.getElementById("tabAll")
-    .classList.toggle("active",view==="all");
-
-  renderHistory();
+function getTrackerVersion(dateStr){
+  return TRACKER_VERSIONS.find(v=>{
+    if(dateStr < v.from){
+      return false;
+    }
+    if(
+      v.to &&
+      dateStr > v.to
+    ){
+      return false;
+    }
+    return true;
+  }) || null;
 }
-
-
-function renderHistory(){
-
-  const box =
-    document.getElementById("history");
-
+/* =========================================================
+   OCTOPUS API
+========================================================= */
+function buildTariffCode(
+  productCode,
+  region,
+  fuel
+){
+  const regionCode =
+    String(region || "_B")
+      .replace("_","");
+  if(fuel === "elec"){
+    return `E-1R-${productCode}-${regionCode}`;
+  }
+  return `G-1R-${productCode}-${regionCode}`;
+}
+async function fetchProductTariff(
+  productCode,
+  region,
+  fuel,
+  type
+){
+  const tariffCode =
+    buildTariffCode(
+      productCode,
+      region,
+      fuel
+    );
+  const fuelPath =
+    fuel === "elec"
+      ? "electricity-tariffs"
+      : "gas-tariffs";
+  const endpoint =
+    type === "standing"
+      ? "standing-charges"
+      : "standard-unit-rates";
+  const url =
+    "https://api.octopus.energy/v1/products/" +
+    encodeURIComponent(productCode) +
+    "/" +
+    fuelPath +
+    "/" +
+    encodeURIComponent(tariffCode) +
+    "/" +
+    endpoint +
+    "/";
+  const res =
+    await fetch(url);
+  if(!res.ok){
+    throw new Error(
+      `Octopus API ${res.status} · ${fuel} · ${type}`
+    );
+  }
+  return await res.json();
+}
+/* =========================================================
+   FIND RATE
+========================================================= */
+function findRateForDate(
+  results,
+  dateStr
+){
+  if(
+    !results ||
+    !Array.isArray(results.results)
+  ){
+    return null;
+  }
+  const matched =
+    results.results.find(
+      r =>
+        rateMatchesDate(
+          r,
+          dateStr
+        )
+    );
+  if(matched){
+    return matched;
+  }
+  const target =
+    new Date(
+      dateStr + "T12:00:00"
+    ).getTime();
+  for(
+    const r of results.results
+  ){
+    if(!r.valid_from){
+      continue;
+    }
+    const from =
+      new Date(r.valid_from).getTime();
+    const to =
+      r.valid_to
+        ? new Date(r.valid_to).getTime()
+        : Infinity;
+    if(
+      target >= from &&
+      target < to
+    ){
+      return r;
+    }
+  }
+  return null;
+}
+function hasCompleteRate(rate){
+  return !!(
+    rate &&
+    rate.elecUnit != null &&
+    rate.elecStanding != null &&
+    rate.gasUnit != null &&
+    rate.gasStanding != null
+  );
+}
+/* =========================================================
+   RATE
+========================================================= */
+async function ensureRateForDate(dateStr){
+  if(!dateStr){
+    return;
+  }
+  const existing =
+    data.rates[dateStr];
+  if(hasCompleteRate(existing)){
+    loadRateIntoForm(dateStr);
+    return;
+  }
+  await fetchRateForDate(
+    dateStr,
+    true
+  );
+}
+async function fetchRateForDate(
+  dateStr,
+  silent=false
+){
+  const version =
+    getTrackerVersion(dateStr);
+  if(!version){
+    $("trackerStatus").className =
+      "status error";
+    $("trackerStatus").innerHTML =
+      "呢日沒有對應 Tracker tariff version。";
+    return false;
+  }
+  const region =
+    data.settings.gspRegion || "_B";
+  $("trackerStatus").className =
+    "status warn";
+  $("trackerStatus").innerHTML =
+    `正在自動查詢 ${formatDate(dateStr)} Tracker 價格…<br>
+     <span class="small">
+       Electricity + Gas Unit Rate + Standard Charge
+     </span>`;
+  $("fetchRateBtn").disabled = true;
+  try{
+    const [
+      elecUnitResults,
+      elecStandingResults,
+      gasUnitResults,
+      gasStandingResults
+    ] =
+      await Promise.all([
+        fetchProductTariff(
+          version.code,
+          region,
+          "elec",
+          "unit"
+        ),
+        fetchProductTariff(
+          version.code,
+          region,
+          "elec",
+          "standing"
+        ),
+        fetchProductTariff(
+          version.code,
+          region,
+          "gas",
+          "unit"
+        ),
+        fetchProductTariff(
+          version.code,
+          region,
+          "gas",
+          "standing"
+        )
+      ]);
+    const elecUnit =
+      findRateForDate(
+        elecUnitResults,
+        dateStr
+      );
+    const elecStanding =
+      findRateForDate(
+        elecStandingResults,
+        dateStr
+      );
+    const gasUnit =
+      findRateForDate(
+        gasUnitResults,
+        dateStr
+      );
+    const gasStanding =
+      findRateForDate(
+        gasStandingResults,
+        dateStr
+      );
+    if(!elecUnit){
+      throw new Error(
+        "搵唔到 Electricity Unit Rate"
+      );
+    }
+    if(!elecStanding){
+      throw new Error(
+        "搵唔到 Electricity Standard Charge"
+      );
+    }
+    if(!gasUnit){
+      throw new Error(
+        "搵唔到 Gas Unit Rate"
+      );
+    }
+    if(!gasStanding){
+      throw new Error(
+        "搵唔到 Gas Standard Charge"
+      );
+    }
+    const elecUnitValue =
+      num(elecUnit.value_inc_vat);
+    const elecStandingValue =
+      num(elecStanding.value_inc_vat);
+    const gasUnitValue =
+      num(gasUnit.value_inc_vat);
+    const gasStandingValue =
+      num(gasStanding.value_inc_vat);
+    if(
+      elecUnitValue === null ||
+      elecStandingValue === null ||
+      gasUnitValue === null ||
+      gasStandingValue === null
+    ){
+      throw new Error(
+        "API 價格資料不完整"
+      );
+    }
+    /*
+      只更新 rates。
+      絕對唔改 entries。
+    */
+    const oldRate =
+      data.rates[dateStr] || {};
+    data.rates[dateStr] = {
+      ...oldRate,
+      elecUnit:
+        elecUnitValue,
+      elecStanding:
+        elecStandingValue,
+      gasUnit:
+        gasUnitValue,
+      gasStanding:
+        gasStandingValue,
+      source:"auto",
+      product:
+        version.code,
+      region,
+      updatedAt:
+        new Date().toISOString()
+    };
+    await saveData();
+    loadRateIntoForm(dateStr);
+    $("trackerStatus").className =
+      "status ok";
+    $("trackerStatus").innerHTML =
+      `Tracker 價格已更新 ✓<br>` +
+      `${version.code} · Region ${region}<br>` +
+      `<span class="small">
+        ⚡ ${elecUnitValue.toFixed(3)}p/kWh ·
+        ${elecStandingValue.toFixed(3)}p/day<br>
+        🔥 ${gasUnitValue.toFixed(3)}p/kWh ·
+        ${gasStandingValue.toFixed(3)}p/day
+      </span>`;
+    if(!silent){
+      $("entryStatus").textContent =
+        "Tracker 價格已更新 ✓";
+      $("entryStatus").className =
+        "small success";
+    }
+    render();
+    return true;
+  }catch(e){
+    console.error(e);
+    $("trackerStatus").className =
+      "status error";
+    $("trackerStatus").innerHTML =
+      "自動查詢 Tracker 價格失敗。<br>" +
+      `<span class="small">${e.message}</span>`;
+    if(!silent){
+      $("entryStatus").textContent =
+        "Tracker 價格查詢失敗。";
+      $("entryStatus").className =
+        "small error-text";
+    }
+    return false;
+  }finally{
+    $("fetchRateBtn").disabled =
+      false;
+  }
+}
+/* =========================================================
+   LOAD RATE
+========================================================= */
+function loadRateIntoForm(dateStr){
+  const rate =
+    data.rates[dateStr];
+  if(!rate){
+    $("trackerElecUnit").value = "";
+    $("trackerElecStanding").value = "";
+    $("trackerGasUnit").value = "";
+    $("trackerGasStanding").value = "";
+    $("rateDisplay").classList.add("hidden");
+    return;
+  }
+  $("trackerElecUnit").value =
+    rate.elecUnit ?? "";
+  $("trackerElecStanding").value =
+    rate.elecStanding ?? "";
+  $("trackerGasUnit").value =
+    rate.gasUnit ?? "";
+  $("trackerGasStanding").value =
+    rate.gasStanding ?? "";
+  $("showElecUnit").textContent =
+    rate.elecUnit != null
+      ? Number(rate.elecUnit).toFixed(3) + "p/kWh"
+      : "—";
+  $("showElecStanding").textContent =
+    rate.elecStanding != null
+      ? Number(rate.elecStanding).toFixed(3) + "p/day"
+      : "—";
+  $("showGasUnit").textContent =
+    rate.gasUnit != null
+      ? Number(rate.gasUnit).toFixed(3) + "p/kWh"
+      : "—";
+  $("showGasStanding").textContent =
+    rate.gasStanding != null
+      ? Number(rate.gasStanding).toFixed(3) + "p/day"
+      : "—";
+  $("rateDisplay").classList.remove("hidden");
+  if(hasCompleteRate(rate)){
+    const source =
+      rate.source === "manual"
+        ? "手動"
+        : "自動";
+    $("trackerStatus").className =
+      "status ok";
+    $("trackerStatus").innerHTML =
+      `Tracker 價格已載入 ✓<br>` +
+      `${rate.product || ""} · Region ${rate.region || data.settings.gspRegion || "_B"} · ${source}`;
+  }
+}
+/* =========================================================
+   LOAD ENTRY
+========================================================= */
+function loadEntryIntoForm(dateStr){
+  $("entryDate").value =
+    dateStr;
+  const entry =
+    data.entries[dateStr];
+  if(entry){
+    $("entryElec").value =
+      entry.elec ?? "";
+    $("entryGas").value =
+      entry.gas ?? "";
+    $("existingInfo").innerHTML =
+      `<span class="success">
+        呢日已有電錶紀錄 ✓
+      </span>`;
+  }else{
+    $("entryElec").value = "";
+    $("entryGas").value = "";
+    $("existingInfo").innerHTML =
+      `<span class="muted">
+        呢日未有電錶紀錄，可以輸入新資料。
+      </span>`;
+  }
+  loadRateIntoForm(dateStr);
+}
+/* =========================================================
+   DATE CHANGE
+========================================================= */
+async function onDateChanged(){
+  const dateStr =
+    $("entryDate").value;
+  if(!dateStr){
+    return;
+  }
+  /*
+    揀日期：
+    1. 先載入該日電錶紀錄
+    2. 再載入已保存 Rate
+    3. 沒有 Rate 才查 API
+  */
+  loadEntryIntoForm(dateStr);
+  await ensureRateForDate(dateStr);
+}
+/* =========================================================
+   SAVE ENTRY
+========================================================= */
+async function saveEntry(){
+  const dateStr =
+    $("entryDate").value;
+  if(!dateStr){
+    $("entryStatus").textContent =
+      "請先用月曆選擇日期。";
+    $("entryStatus").className =
+      "small error-text";
+    return;
+  }
+  const elec =
+    num($("entryElec").value);
+  const gas =
+    num($("entryGas").value);
+  if(
+    elec === null ||
+    gas === null ||
+    elec < 0 ||
+    gas < 0
+  ){
+    $("entryStatus").textContent =
+      "請輸入有效 Electricity 同 Gas 使用量。";
+    $("entryStatus").className =
+      "small error-text";
+    return;
+  }
+  data.entries[dateStr] = {
+    elec,
+    gas,
+    updatedAt:
+      new Date().toISOString()
+  };
+  /*
+    Tracker 價格另外儲存。
+  */
+  const te =
+    num($("trackerElecUnit").value);
+  const tes =
+    num($("trackerElecStanding").value);
+  const tg =
+    num($("trackerGasUnit").value);
+  const tgs =
+    num($("trackerGasStanding").value);
+  if(
+    te !== null &&
+    tes !== null &&
+    tg !== null &&
+    tgs !== null
+  ){
+    const oldRate =
+      data.rates[dateStr] || {};
+    const sameAsOld =
+      oldRate.elecUnit === te &&
+      oldRate.elecStanding === tes &&
+      oldRate.gasUnit === tg &&
+      oldRate.gasStanding === tgs;
+    data.rates[dateStr] = {
+      ...oldRate,
+      elecUnit:te,
+      elecStanding:tes,
+      gasUnit:tg,
+      gasStanding:tgs,
+      source:
+        sameAsOld &&
+        oldRate.source === "auto"
+          ? "auto"
+          : "manual",
+      updatedAt:
+        new Date().toISOString()
+    };
+  }
+  await saveData();
+  $("entryStatus").textContent =
+    `${formatDate(dateStr)} 電錶紀錄已儲存 ✓`;
+  $("entryStatus").className =
+    "small success";
+  loadEntryIntoForm(dateStr);
+  render();
+}
+/* =========================================================
+   DELETE
+========================================================= */
+async function deleteEntry(){
+  const dateStr =
+    $("entryDate").value;
+  if(!dateStr){
+    $("entryStatus").textContent =
+      "請先選擇日期。";
+    $("entryStatus").className =
+      "small error-text";
+    return;
+  }
+  if(!data.entries[dateStr]){
+    $("entryStatus").textContent =
+      "呢日本身冇電錶紀錄。";
+    $("entryStatus").className =
+      "small warning";
+    return;
+  }
+  const confirmed =
+    confirm(
+      `確定要刪除 ${formatDate(dateStr)} 嘅電錶紀錄？\n\n` +
+      `只會刪除你輸入嘅 Electricity 同 Gas 使用量。\n\n` +
+      `Tracker Unit Rate 同 Standard Charge 會保留。`
+    );
+  if(!confirmed){
+    return;
+  }
+  /*
+    ★ 只刪 entries。
+    ★ data.rates 完全唔碰。
+  */
+  delete data.entries[dateStr];
+  await saveData();
+  $("entryElec").value = "";
+  $("entryGas").value = "";
+  $("existingInfo").innerHTML =
+    `<span class="muted">
+      ${formatDate(dateStr)} 電錶紀錄已刪除。<br>
+      Tracker 價格資料仍然保留 ✓
+    </span>`;
+  loadRateIntoForm(dateStr);
+  $("entryStatus").textContent =
+    `${formatDate(dateStr)} 電錶紀錄已刪除 ✓`;
+  $("entryStatus").className =
+    "small success";
+  render();
+}
+/* =========================================================
+   FUSE
+========================================================= */
+function calculateFuse(dateStr){
+  const entry =
+    data.entries[dateStr];
+  if(!entry){
+    return null;
+  }
+  const s =
+    data.settings;
+  let gasKwh =
+    Number(entry.gas) || 0;
+  if(s.gasUnit === "m3"){
+    gasKwh *=
+      Number(s.gasFactor || 11.1);
+  }
+  const elecUnitCost =
+    Number(entry.elec || 0) *
+    Number(s.fuseElecUnit || 0) /
+    100;
+  const gasUnitCost =
+    gasKwh *
+    Number(s.fuseGasUnit || 0) /
+    100;
+  const standing =
+    (
+      Number(s.fuseElecStanding || 0) +
+      Number(s.fuseGasStanding || 0)
+    ) / 100;
+  return {
+    elec:elecUnitCost,
+    gas:gasUnitCost,
+    standing,
+    total:
+      elecUnitCost +
+      gasUnitCost +
+      standing
+  };
+}
+/* =========================================================
+   TRACKER CALC
+========================================================= */
+function calculateTracker(dateStr){
+  const entry =
+    data.entries[dateStr];
+  const rate =
+    data.rates[dateStr];
+  if(
+    !entry ||
+    !hasCompleteRate(rate)
+  ){
+    return null;
+  }
+  let gasKwh =
+    Number(entry.gas) || 0;
+  if(data.settings.gasUnit === "m3"){
+    gasKwh *=
+      Number(data.settings.gasFactor || 11.1);
+  }
+  const elec =
+    Number(entry.elec || 0) *
+    Number(rate.elecUnit) /
+    100;
+  const gas =
+    gasKwh *
+    Number(rate.gasUnit) /
+    100;
+  const standing =
+    (
+      Number(rate.elecStanding) +
+      Number(rate.gasStanding)
+    ) / 100;
+  return {
+    elec,
+    gas,
+    standing,
+    total:
+      elec +
+      gas +
+      standing
+  };
+}
+/* =========================================================
+   MONTH
+========================================================= */
+function calculateMonth(month){
+  const prefix =
+    month + "-";
+  const dates =
+    Object.keys(data.entries)
+      .filter(d=>d.startsWith(prefix))
+      .sort();
+  if(!dates.length){
+    return {
+      dates:[],
+      fuseTotal:0,
+      trackerTotal:0,
+      trackerDates:0
+    };
+  }
+  let fuseTotal = 0;
+  let trackerTotal = 0;
+  let trackerDates = 0;
+  for(const date of dates){
+    const f =
+      calculateFuse(date);
+    if(f){
+      fuseTotal += f.total;
+    }
+    const t =
+      calculateTracker(date);
+    if(t){
+      trackerTotal += t.total;
+      trackerDates++;
+    }
+  }
+  const s =
+    data.settings;
+  const days =
+    daysInMonth(month);
+  const monthlyFees =
+    Number(s.fuseElecMonthly || 0) +
+    Number(s.fuseGasMonthly || 0);
+  if(days > 0){
+    fuseTotal +=
+      monthlyFees *
+      (dates.length / days);
+  }
+  return {
+    dates,
+    fuseTotal,
+    trackerTotal,
+    trackerDates
+  };
+}
+/* =========================================================
+   DAILY ROW
+========================================================= */
+function renderDailyRow(dateStr){
+  const entry =
+    data.entries[dateStr];
+  if(!entry){
+    return "";
+  }
+  const fuse =
+    calculateFuse(dateStr);
+  const tracker =
+    calculateTracker(dateStr);
+  let trackerHTML = "—";
+  if(tracker){
+    trackerHTML =
+      `<span class="tracker">
+        ${formatMoney(tracker.total)}
+      </span>`;
+  }
+  let diffHTML = "—";
+  if(fuse && tracker){
+    const diff =
+      fuse.total - tracker.total;
+    diffHTML =
+      `<span class="diff">
+        ${formatMoney(diff)}
+      </span>`;
+  }
+  const rate =
+    data.rates[dateStr];
+  let badge = "";
+  if(rate){
+    const complete =
+      hasCompleteRate(rate);
+    badge =
+      `<span class="badge ${
+        rate.source === "manual"
+          ? "manual"
+          : "auto"
+      }">${
+        complete
+          ? (
+              rate.source === "manual"
+                ? "手動"
+                : "Tracker"
+            )
+          : "價格未完整"
+      }</span>`;
+  }
+  return `
+    <div
+      class="entry-row"
+      data-date="${dateStr}"
+    >
+      <div class="row">
+        <div>
+          <div class="entry-date">
+            ${formatDate(dateStr)}
+          </div>
+          <div class="small">
+            電 ${Number(entry.elec).toFixed(2)} kWh
+            · Gas ${Number(entry.gas).toFixed(2)}
+          </div>
+          <div style="margin-top:4px">
+            ${badge}
+          </div>
+        </div>
+        <div class="cost">
+          <div class="fuse">
+            Fuse ${formatMoney(fuse?.total)}
+          </div>
+          <div>
+            Tracker ${trackerHTML}
+          </div>
+          <div class="small">
+            差額 ${diffHTML}
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+/* =========================================================
+   MONTH DISPLAY
+========================================================= */
+function renderMonth(month){
+  const result =
+    calculateMonth(month);
+  if(!result.dates.length){
+    return `
+      <div class="muted">
+        ${month} 暫時未有實際電錶紀錄。
+      </div>
+    `;
+  }
+  const tracker =
+    result.trackerDates
+      ? result.trackerTotal
+      : null;
+  const diff =
+    tracker !== null
+      ? result.fuseTotal - tracker
+      : null;
+  return `
+    <div class="month-title">
+      ${month}
+    </div>
+    <div class="total-box">
+      <div class="total-line">
+        <span>實際紀錄日數</span>
+        <strong>${result.dates.length} 日</strong>
+      </div>
+      <div class="total-line">
+        <span>Fuse</span>
+        <strong class="fuse">
+          ${formatMoney(result.fuseTotal)}
+        </strong>
+      </div>
+      <div class="total-line">
+        <span>Tracker</span>
+        <strong class="tracker">
+          ${
+            tracker === null
+              ? "未有完整價格"
+              : formatMoney(tracker)
+          }
+        </strong>
+      </div>
+      <div class="total-line">
+        <span>Fuse − Tracker</span>
+        <strong>
+          ${
+            diff === null
+              ? "—"
+              : formatMoney(diff)
+          }
+        </strong>
+      </div>
+      <div
+        class="small"
+        style="margin-top:7px"
+      >
+        Tracker 價格完整覆蓋
+        ${result.trackerDates}/${result.dates.length}
+        個有紀錄日
+      </div>
+    </div>
+  `;
+}
+/* =========================================================
+   HERO
+========================================================= */
+function updateHero(dates){
+  let totalFuse = 0;
+  let totalTracker = 0;
+  let count = 0;
+  const sparkValues = [];
+  for(const date of dates){
+    const f =
+      calculateFuse(date);
+    const t =
+      calculateTracker(date);
+    if(f){
+      totalFuse += f.total;
+    }
+    if(t){
+      totalTracker += t.total;
+      count++;
+      sparkValues.push(
+        f.total - t.total
+      );
+    }
+  }
+  if(!dates.length){
+    $("heroDiff").textContent = "—";
+    $("heroSub").textContent = "等待資料";
+    $("sparkLine")
+      .setAttribute("points","");
+    return;
+  }
+  if(count === 0){
+    $("heroDiff").textContent = "—";
+    $("heroSub").textContent =
+      "已有電錶資料，但尚未有完整 Tracker 價格";
+    $("sparkLine")
+      .setAttribute("points","");
+    return;
+  }
+  const diff =
+    totalFuse - totalTracker;
+  $("heroDiff").textContent =
+    formatMoney(diff);
+  if(diff > 0){
+    $("heroSub").textContent =
+      `Fuse 比 Tracker 貴 ${formatMoney(diff)}`;
+  }else if(diff < 0){
+    $("heroSub").textContent =
+      `Fuse 比 Tracker 平 ${formatMoney(Math.abs(diff))}`;
+  }else{
+    $("heroSub").textContent =
+      "兩者一樣";
+  }
+  if(sparkValues.length > 1){
+    const min =
+      Math.min(...sparkValues);
+    const max =
+      Math.max(...sparkValues);
+    const range =
+      max - min || 1;
+    const points =
+      sparkValues
+        .map((v,i)=>{
+          const x =
+            (i / (sparkValues.length - 1)) * 500;
+          const y =
+            48 -
+            (
+              ((v-min) / range) * 40
+            );
+          return `${x},${y}`;
+        })
+        .join(" ");
+    $("sparkLine")
+      .setAttribute("points",points);
+  }else{
+    $("sparkLine")
+      .setAttribute("points","");
+  }
+}
+/* =========================================================
+   FILTER
+========================================================= */
+function setView(view){
+  currentView = view;
+  document
+    .querySelectorAll(".tab")
+    .forEach(tab=>{
+      tab.classList.toggle(
+        "active",
+        tab.dataset.view === view
+      );
+    });
+  $("monthFilter")
+    .classList.toggle(
+      "hidden",
+      view !== "month"
+    );
+  $("dayFilter")
+    .classList.toggle(
+      "hidden",
+      view !== "day"
+    );
+  updateFilterInfo();
+  render();
+}
+function updateFilterInfo(){
+  if(currentView === "all"){
+    $("filterInfo").textContent =
+      `全部紀錄：${
+        Object.keys(data.entries).length
+      } 日`;
+  }
+  else if(currentView === "month"){
+    const month =
+      $("historyMonth").value;
+    $("filterInfo").textContent =
+      month
+        ? `目前查看 ${month}`
+        : "請選擇月份";
+  }
+  else{
+    const day =
+      $("historyDay").value;
+    $("filterInfo").textContent =
+      day
+        ? `目前查看 ${formatDate(day)}`
+        : "請選擇日期";
+  }
+}
+/* =========================================================
+   RENDER
+========================================================= */
+function render(){
+  const history =
+    $("history");
   const dates =
     Object.keys(data.entries)
       .sort()
       .reverse();
-
-  if(!dates.length){
-
-    box.innerHTML =
-      `<div class="muted">暫時未有紀錄</div>`;
-
-    return;
-  }
-
-  let list = dates;
-
+  let html = "";
   if(currentView === "day"){
-
     const selected =
-      document.getElementById("date").value;
-
-    list =
-      selected && data.entries[selected]
-      ? [selected]
-      : [];
-
-  }
-
-  if(currentView === "month"){
-
-    /*
-     每月只顯示月份總結。
-     用量紀錄存在先會出現。
-    */
-
-    const months = {};
-
-    dates.forEach(d=>{
-
-      const month = d.slice(0,7);
-
-      if(!months[month]){
-        months[month]={
-          elec:0,
-          gas:0,
-          days:0
-        };
-      }
-
-      const e = data.entries[d];
-
-      if(e.elecUsage !== null &&
-         e.elecUsage !== undefined){
-
-        months[month].elec +=
-          Number(e.elecUsage || 0);
-      }
-
-      if(e.gasUsage !== null &&
-         e.gasUsage !== undefined){
-
-        let g =
-          Number(e.gasUsage || 0);
-
-        if((e.gasUnit || data.settings.gasUnit) === "m3"){
-          g *= Number(data.settings.gasFactor || 11.1);
-        }
-
-        months[month].gas += g;
-      }
-
-      months[month].days++;
-    });
-
-    let html = `
-      <table>
-        <thead>
-          <tr>
-            <th>月份</th>
-            <th>日數</th>
-            <th>Electricity kWh</th>
-            <th>Gas kWh</th>
-          </tr>
-        </thead>
-        <tbody>
-    `;
-
-    Object.keys(months)
-      .sort()
-      .reverse()
-      .forEach(m=>{
-
-        const x = months[m];
-
-        html += `
-          <tr>
-            <td>${m}</td>
-            <td>${x.days}</td>
-            <td>${x.elec.toFixed(2)}</td>
-            <td>${x.gas.toFixed(2)}</td>
-          </tr>
-        `;
-      });
-
-    html += "</tbody></table>";
-
-    box.innerHTML = html;
-
-    return;
-  }
-
-
-  if(!list.length){
-
-    box.innerHTML =
-      `<div class="muted">所選日期未有用量紀錄</div>`;
-
-    return;
-  }
-
-
-  let html = `
-    <table>
-      <thead>
-        <tr>
-          <th>日期</th>
-          <th>Electricity</th>
-          <th>Gas</th>
-          <th>Tracker</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-  `;
-
-  list.forEach(d=>{
-
-    const e = data.entries[d];
-    const r = data.rates[d];
-
-    const eu =
-      e.elecUsage === null ||
-      e.elecUsage === undefined
-      ? "-"
-      : Number(e.elecUsage).toFixed(2);
-
-    const gu =
-      e.gasUsage === null ||
-      e.gasUsage === undefined
-      ? "-"
-      : Number(e.gasUsage).toFixed(2);
-
-    let rateText = "未有";
-
-    if(r){
-      rateText =
-        `${Number(r.elecUnit).toFixed(2)} / ${Number(r.gasUnit).toFixed(2)}`;
+      $("historyDay").value;
+    if(!selected){
+      history.innerHTML =
+        `<div class="muted">
+          請用月曆選擇日期。
+        </div>`;
+      updateHero([]);
+      return;
     }
-
-    html += `
-      <tr>
-        <td>${dateText(d)}</td>
-        <td>${eu} kWh</td>
-        <td>${gu}</td>
-        <td>${rateText}</td>
-        <td>
-          <button
-            class="secondary"
-            style="width:auto;padding:6px 9px"
-            onclick="selectDate('${d}')">
-            查看
-          </button>
-        </td>
-      </tr>
-    `;
-  });
-
-  html += "</tbody></table>";
-
-  box.innerHTML = html;
+    if(!data.entries[selected]){
+      history.innerHTML =
+        `<div class="muted">
+          ${formatDate(selected)} 未有實際紀錄。
+        </div>`;
+      updateHero([]);
+      return;
+    }
+    html =
+      renderDailyRow(selected);
+    updateHero([selected]);
+  }
+  else if(currentView === "month"){
+    const month =
+      $("historyMonth").value;
+    if(!month){
+      history.innerHTML =
+        `<div class="muted">
+          請用月份選擇器選擇月份。
+        </div>`;
+      updateHero([]);
+      return;
+    }
+    html =
+      renderMonth(month);
+    const prefix =
+      month + "-";
+    const monthDates =
+      Object.keys(data.entries)
+        .filter(d=>d.startsWith(prefix));
+    updateHero(monthDates);
+  }
+  else{
+    if(!dates.length){
+      history.innerHTML =
+        `<div class="muted">
+          暫時未有任何電錶紀錄。
+        </div>`;
+      updateHero([]);
+      return;
+    }
+    for(const date of dates){
+      html +=
+        renderDailyRow(date);
+    }
+    updateHero(dates);
+  }
+  history.innerHTML = html;
+  history
+    .querySelectorAll(".entry-row")
+    .forEach(row=>{
+      const date =
+        row.dataset.date;
+      row.style.cursor =
+        "pointer";
+      row.addEventListener(
+        "click",
+        async ()=>{
+          $("entryDate").value =
+            date;
+          await onDateChanged();
+          const entryCard =
+            $("entryDate").closest(".card");
+          if(entryCard){
+            entryCard.scrollIntoView({
+              behavior:"smooth",
+              block:"start"
+            });
+          }
+        }
+      );
+    });
 }
-
-
 /* =========================================================
-   SELECT DATE
+   FETCH ALL
 ========================================================= */
-
-function selectDate(date){
-
-  document.getElementById("date").value = date;
-
-  loadDate();
-
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
-}
-
-
-/* =========================================================
-   REFRESH ALL HISTORICAL RATES
-========================================================= */
-
-async function refreshAll(){
-
+async function fetchAllRates(){
   const dates =
-    Object.keys(data.rates).sort();
-
-  const status =
-    document.getElementById("allStatus");
-
+    Object.keys(data.entries)
+      .sort();
   if(!dates.length){
-
-    status.className = "status";
-    status.textContent =
-      "暫時沒有已儲存 Tracker 價格。";
-
+    $("entryStatus").textContent =
+      "暫時未有任何電錶紀錄。";
+    $("entryStatus").className =
+      "small warning";
     return;
   }
-
-  status.className = "status loading";
-
+  $("fetchAllRatesBtn").disabled = true;
   let success = 0;
+  let skipped = 0;
   let failed = 0;
-
-  for(let i=0;i<dates.length;i++){
-
-    const d = dates[i];
-
-    status.textContent =
-      `正在更新 ${i+1}/${dates.length}：${d}`;
-
-    try{
-
-      await fetchRate(d);
+  for(const date of dates){
+    if(
+      hasCompleteRate(
+        data.rates[date]
+      )
+    ){
+      skipped++;
+      continue;
+    }
+    const ok =
+      await fetchRateForDate(
+        date,
+        true
+      );
+    if(ok){
       success++;
-
-    }catch(e){
-
-      console.error(d,e);
+    }else{
       failed++;
     }
   }
-
-  status.className =
+  $("fetchAllRatesBtn").disabled = false;
+  $("entryStatus").textContent =
+    `完成。新增／補回 ${success} 日，` +
+    `已有完整價格 ${skipped} 日，` +
+    `失敗 ${failed} 日。`;
+  $("entryStatus").className =
     failed
-    ? "status error"
-    : "status ok";
-
-  status.textContent =
-    `完成：成功 ${success} 日，失敗 ${failed} 日`;
-
-  const selected =
-    document.getElementById("date").value;
-
-  if(selected && data.rates[selected]){
-    showRate(data.rates[selected]);
-    renderComparison();
-  }
-
-  renderHistory();
+      ? "small warning"
+      : "small success";
+  render();
 }
-
-
 /* =========================================================
-   GAS UNIT
+   SETTINGS COLLAPSE
 ========================================================= */
-
-document.getElementById("gasUnit")
-  .addEventListener("change",function(){
-
-    data.settings.gasUnit = this.value;
-
-    saveData();
-
-    renderComparison();
+$("settingsHeader")
+  .addEventListener(
+    "click",
+    ()=>{
+      const content =
+        $("settingsContent");
+      const arrow =
+        $("settingsArrow");
+      const hidden =
+        content.classList.contains("hidden");
+      if(hidden){
+        content.classList.remove("hidden");
+        arrow.textContent = "−";
+      }else{
+        content.classList.add("hidden");
+        arrow.textContent = "＋";
+      }
+    }
+  );
+/* =========================================================
+   EVENTS
+========================================================= */
+$("entryDate")
+  .addEventListener(
+    "change",
+    onDateChanged
+  );
+$("todayBtn")
+  .addEventListener(
+    "click",
+    async ()=>{
+      $("entryDate").value =
+        todayString();
+      await onDateChanged();
+    }
+  );
+$("yesterdayBtn")
+  .addEventListener(
+    "click",
+    async ()=>{
+      $("entryDate").value =
+        yesterdayString();
+      await onDateChanged();
+    }
+  );
+$("fetchRateBtn")
+  .addEventListener(
+    "click",
+    ()=>{
+      const date =
+        $("entryDate").value;
+      if(!date){
+        $("entryStatus").textContent =
+          "請先用月曆選擇日期。";
+        $("entryStatus").className =
+          "small error-text";
+        return;
+      }
+      fetchRateForDate(
+        date,
+        false
+      );
+    }
+  );
+$("fetchAllRatesBtn")
+  .addEventListener(
+    "click",
+    fetchAllRates
+  );
+$("saveEntryBtn")
+  .addEventListener(
+    "click",
+    saveEntry
+  );
+$("deleteEntryBtn")
+  .addEventListener(
+    "click",
+    deleteEntry
+  );
+$("saveSettingsBtn")
+  .addEventListener(
+    "click",
+    saveSettings
+  );
+document
+  .querySelectorAll(".tab")
+  .forEach(tab=>{
+    tab.addEventListener(
+      "click",
+      ()=>{
+        setView(tab.dataset.view);
+      }
+    );
   });
-
-
-/* =========================================================
-   MANUAL RATE CHANGE
-========================================================= */
-
-[
-  "trackerElecUnit",
-  "trackerElecStanding",
-  "trackerGasUnit",
-  "trackerGasStanding"
-].forEach(id=>{
-
-  document.getElementById(id)
-    .addEventListener("change",saveManualRate);
-
-});
-
-
-/* =========================================================
-   DATE CHANGE
-========================================================= */
-
-document.getElementById("date")
-  .addEventListener("change",loadDate);
-
-
+$("historyMonth")
+  .addEventListener(
+    "change",
+    ()=>{
+      updateFilterInfo();
+      render();
+    }
+  );
+$("historyDay")
+  .addEventListener(
+    "change",
+    async ()=>{
+      const date =
+        $("historyDay").value;
+      updateFilterInfo();
+      render();
+      if(date){
+        $("entryDate").value =
+          date;
+        await onDateChanged();
+      }
+    }
+  );
 /* =========================================================
    INIT
 ========================================================= */
-
-function init(){
-
-  loadSettings();
-
+async function init(){
+  await loadData();
+  loadSettingsIntoForm();
+  const dates =
+    Object.keys(data.entries)
+      .sort();
+  const defaultDate =
+    dates.length
+      ? dates[dates.length - 1]
+      : yesterdayString();
+  $("entryDate").value =
+    defaultDate;
+  $("historyDay").value =
+    defaultDate;
+  $("historyMonth").value =
+    defaultDate.slice(0,7);
   /*
-   預設今日。
-   但只係選日期，之後先查當日資料。
+    啟動時：
+    有日期就載入該日資料。
+    有 Rate 就直接用。
+    沒有 Rate 才查 API。
   */
-
-  const today =
-    new Date();
-
-  const yyyy =
-    today.getFullYear();
-
-  const mm =
-    String(today.getMonth()+1).padStart(2,"0");
-
-  const dd =
-    String(today.getDate()).padStart(2,"0");
-
-  document.getElementById("date").value =
-    `${yyyy}-${mm}-${dd}`;
-
-  setView("day");
-
-  renderHistory();
-
-  loadDate();
+  await onDateChanged();
+  updateFilterInfo();
+  render();
 }
-
 init();
-
 </script>
-
 </body>
 </html>
